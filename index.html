@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Quizonator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Quizonator</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -30,6 +31,7 @@
         height: 200px;
         font-family: Consolas, monospace;
         font-size: 13px;
+        box-sizing: border-box; /* Zapewnia poprawne wymiary na mobile */
     }
     label {
         font-weight: bold;
@@ -135,6 +137,32 @@
     }
     .summary-block div {
         margin-bottom: 2px;
+    }
+
+    /* --- DODANO DLA RESPONSYWNOŚCI --- */
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        .app {
+            padding: 15px;
+        }
+        .controls {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .controls button, .nav-buttons button, #summaryBackToMenuBtn {
+            width: 100%;
+            padding: 12px; /* Większe przyciski na telefon */
+        }
+        .nav-buttons {
+            flex-direction: column;
+        }
+        .quiz-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
     }
 </style>
 </head>
@@ -1156,3 +1184,4 @@ document.getElementById('checkNextBtn').addEventListener('click', () => {
 </script>
 </body>
 </html>
+
