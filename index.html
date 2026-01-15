@@ -215,613 +215,96 @@
 <script>
 // PRZYKŁADOWE PYTANIA - PODMIENIASZ NA SWOJE
 const RAW_QUESTIONS = `
-1.	„Ubezpieczenie społeczne” jest pojęciem szerszym od „zabezpieczenia społecznego”
-a)	tak
-*b)	nie
-
-2.	Jaki dokumentem ONZ jako pierwszy określał kwestie dotyczące zabezpieczenia społecznego?
-*a)	Powszechna Deklaracja Praw Człowieka
-b)	Międzynarodowy Pakt Praw Ekonomicznych, Socjalnych i Kulturalnych
-c)	Konwencja MOP
-
-3.	Który dokument dotyczy minimalnych norm zabezpieczenia społecznego?
-a)	Powszechna Deklaracja Praw Człowieka
-b)	Międzynarodowy Pakt Praw Ekonomicznych, Socjalnych i Kulturalnych
-*c)	Konwencja MOP
-
-4.	Która z zasad koordynacji systemów zabezpieczenia społecznego zabezpiecza przed sytuacją, w której osoba wykonująca pracę w jednym lub kilku państwach nie jest objęta zabezpieczeniem społecznym w żadnym z nich lub jest nim objęta w kilku państwach jednocześnie?
-a)	równego traktowania
-*b)	jedności stosowanego ustawodawstwa
-c)	zachowania praw nabytych oraz w trakcie nabywania
-d)	sumowania okresów ubezpieczenia
-
-5.	Które z technik zabezpieczenia społecznego finansowane są wyłącznie z budżetu państwa? (2 odpowiedzi)
-*a)	zaopatrzeniowa
-*b)	pomocowa
-c)	ubezpieczeniowa
-
-6.	Do którego rodzaju ubezpieczenia społecznego zaliczymy następujące świadczenia: zasiłek chorobowy, świadczenie rehabilitacyjne, renty z tytułu niezdolności do pracy, renty rodzinne, jednorazowe odszkodowanie?
-a)	ubezpieczenie emerytalne
-b)	ubezpieczenie rentowe
-c)	ubezpieczenie chorobowe
-*d)	ubezpieczenie wypadkowe
-e)	ubezpieczenie zdrowotne
-
-7.	Zasiłek macierzyński jest świadczeniem z tytułu:
-a)	ubezpieczenia emerytalnego
-b)	ubezpieczenia rentowego
-*c)	ubezpieczenia chorobowego
-d)	ubezpieczenia wypadkowego
-e)	ubezpieczenia zdrowotnego
-
-8.	Która z technik zabezpieczenia społecznego wyróżnia się największym stopniem indywidualizacji, uznaniowości i fakultatywności świadczeń?
-a)	zaopatrzenie społeczne
-*b)	pomoc społeczna
-c)	ubezpieczenie społeczne
-
-9.	Zakres podmiotowy ubezpieczeń społecznych obejmuje:
-a)	tylko osoby aktywne zawodowo
-b)	tylko osoby bierne zawodowo
-*c)	osoby aktywne i bierne zawodowo
-
-10.	Finansowanie ubezpieczeń społecznych bazuje na:
-*a)	składkach i środkach z budżetu państwa
-b)	tylko na składkach wnoszonych przez pracowników
-c)	tylko na środkach z budżetu państwa
-
-11.	Na jakiej metodzie finansowania opiera się głównie polski system ubezpieczeń społecznych?
-*a)	metodzie repartycyjnej
-b)	metodzie kapitałowej
-c)	metodzie waloryzacyjnej
-d)	metodzie dekoniunkturalnej
-
-12.	Jaka metoda finansowania systemu ubezpieczeń polega na wykorzystywaniu wpłacanych składek na finansowanie bieżących świadczeń?
-*a)	metoda repartycyjna
-b)	metoda kapitałowa
-c)	metoda waloryzacyjna
-d)	metoda dekoniunkturalna
-
-13.	Jaka metoda finansowania systemu ubezpieczeń polega na akumulowaniu składek z przeznaczeniem na wypłatę przyszłych świadczeń?
-a)	metoda repartycyjna
-*b)	metoda kapitałowa
-c)	metoda waloryzacyjna
-d)	metoda dekoniunkturalna
-
-14.	Celem której zasady ubezpieczeń społecznych jest unikanie auto selekcji ze strony członków grupy, czy warstwy społecznej, która ma być objęta ubezpieczeniem?
-*a)	zasady przymusu
-b)	zasady powszechności
-c)	zasady wzajemności
-
-15.	Która zasada ubezpieczeń społecznych jest odzwierciedleniem stosunku ubezpieczenia między ubezpieczycielem a ubezpieczonym/ubezpieczającym?
-a)	zasady przymusu
-b)	zasady powszechności
-*c)	zasady wzajemności
-
-16.	Zaznacz prawidłową odpowiedź:
-a)	środki finansowe z Funduszu Ubezpieczeń Społecznych są przeznaczone na pokrycie niedoborów Funduszu Rezerwy Demograficznej
-*b)	środki finansowe z Funduszu Rezerwy Demograficznej są przeznaczone na pokrycie niedoborów Funduszu Ubezpieczeń Społecznych
-c)	żadne z powyższych
-
-17.	Zaznacz nieprawidłową odpowiedź:
-a)	KRUS prowadzi samodzielnie działalność finansową
-*b)	KRUS prowadzi samodzielnie działalność finansową i nie współpracuje z ZUS
-c)	KRUS prowadzi samodzielnie działalność finansową, ale współpracuje z ZUS
-d)	żadne z powyższych
-
-18.	Do którego filaru systemu ubezpieczeń zalicza się Otwarte Fundusze Emerytalne (OFE)?
-a)	I
-*b)	II
-c)	III
-d)	IV
-
-
-19.	Do którego roku członkostwo w OFE było obowiązkowe?
-a)	2013
-*b)	2014 
-c)	2015
-d)	żadne z powyższych
-
-20.	Zaznacz nieprawidłową odpowiedź:
-a)	ubezpieczenie gospodarcze jest w większości przypadków dobrowolne
-b)	ubezpieczenie społeczne jest w większości przypadków przymusowe
-*c)	ubezpieczenie społeczne jest w większości przypadków dobrowolne
-d)	żadne z powyższych 
-
-21.	W przypadku którego stosunku pracy nie ma obowiązku opłacania ubezpieczenia wypadkowego?
-a)	umowy o pracę
-b)	umowy zlecenia
-*c)	umowy o dzieło
-d)	działalności gospodarczej
-e)	żadne z powyższych
-
-22.	W jakiej formie mogą być realizowane świadczenia z ubezpieczenia emerytalnego?
-*a)	tylko pieniężnej
-b)	pieniężnej i rzeczowej
-c)	pieniężnej, rzeczowej i innych usług socjalnych
-d)	żadne z powyższych
-
-23.	Który system dotyczy emerytur na tzw. „nowych” zasadach?
-a)	zdefiniowanego świadczenia
-*b)	zdefiniowanej składki
-
-24.	Który system finansowania ubezpieczenia emerytalnego jest bardziej odporny na skutki niekorzystnych trendów demograficznych?
-*a)	finansowanie kapitałowe
-b)	finansowanie repartycyjne
-
-25.	Czy zabezpieczenie emerytalne może być świadczone w formie rzeczowej?
-a)	tak
-*b)	nie
-
-26.	Stwierdzenie, że system emerytalny jest narzędziem podziału bieżącego PKB między pokolenie emerytów i obecnych pracujących odpowiada perspektywie:
-a)	indywidualnej
-*b)	makroekonomicznej
-
-27.	Jaki system zabezpieczenia emerytalnego występuje w Polsce?
-a)	repartycyjny
-b)	kapitałowy
-*c)	repartycyjno-kapitałowy (mieszany)
-
-28.	Co przeważa w polskim systemie emerytalnym?
-a)	podsystem zdefiniowanego świadczenia
-*b)	podsystem zdefiniowanej składki
-
-29.	Który filar systemu emerytalnego jest administrowany wyłącznie przez instytucje publiczne?
-*a)	I
-b)	II
-c)	III
-d)	IV
-
-30.	W którym filarze systemu emerytalnego występuje opodatkowanie składki?
-a)	I
-b)	II
-*c)	III
-d)	IV
-
-31.	W którym filarze występuje metoda zdefiniowanego świadczenia?
-*a)	I
-b)	II
-c)	III
-d)	IV
-
-32.	W którym filarze nie występuje dziedziczenie środków?
-*a)	I
-a)	II
-b)	III
-c)	IV
-
-33.	Który system dotyczy emerytur na tzw. „starych” zasadach?
-*a)	zdefiniowanego świadczenia
-b)	zdefiniowanej składki
-
-34.	Która grupa otrzymuje emerytury w systemie zdefiniowanego świadczenia?
-*a)	urodzeni przed 1 stycznia 1949 r.
-b)	urodzeni po 31 grudnia 1948 r., a przed 1 stycznia 1969 r. 
-c)	urodzeni po 31 grudnia 1968 r.
-
-35.	Jaki jest podstawowy wiek emerytalny dla kobiet? 
-a)	55 
-*b)	60 
-c)	62 
-d)	65 
-e)	67
-
-36.	Jaki jest podstawowy wiek emerytalny dla mężczyzn? 
-a)	55 
-b)	60 
-c)	62 
-*d)	65 
-e)	67
-
-37.	Jaki staż pracy jest wymagany, w przypadku kobiet, do otrzymania minimalnej emerytury?
-a)	15
-*b)	20
-c)	25
-d)	30
-
-38.	Jaki staż pracy jest wymagany, w przypadku mężczyzn, do otrzymania minimalnej emerytury?
-a)	15
-b)	20
-*c)	25
-d)	30
-
-39.	Obywatele państw obcych, których pobyt na obszarze Rzeczypospolitej Polskiej nie ma charakteru stałego i którzy są zatrudnieni w obcych przedstawicielstwach dyplomatycznych, biurach konsularnych, misjach, misjach specjalnych lub instytucjach międzynarodowych:
-a)	podlegają ubezpieczeniom społecznym określonym w ustawie o systemie ubezpieczeń społecznych
-b)	nie podlegają ubezpieczeniom społecznym określonym w ustawie o systemie ubezpieczeń społecznych
-*c)	nie podlegają ubezpieczeniom społecznym określonym w ustawie o systemie ubezpieczeń społecznych, chyba że umowy międzynarodowe stanowią inaczej
-
-40.	Osoby podlegające ubezpieczeniom emerytalnemu i rentowemu: 
-*a)	podlegają obowiązkowo ubezpieczeniu wypadkowemu
-a)	mogą podlegać ubezpieczeniu wypadkowemu
-b)	nie podlegają obowiązkowo ubezpieczeniom wypadkowemu
-
-41.	Osoby wykonujące odpłatnie pracę na podstawie skierowania do pracy, w czasie odbywania kary pozbawienia wolności lub tymczasowego aresztowania: 
-a)	podlegają obowiązkowo ubezpieczeniom emerytalnemu, rentowym, chorobowemu i wypadkowemu, od dnia rozpoczęcia odbywania kary pozbawienia wolności lub tymczasowego aresztowania, do dnia zakończenia wykonywania tej kary
-*b)	podlegają obowiązkowo ubezpieczeniom emerytalnemu, rentowym, chorobowemu i wypadkowemu, od dnia rozpoczęcia wykonywania pracy, do dnia zakończenia wykonywania tej pracy
-c)	nie podlegają obowiązkowo ubezpieczeniom emerytalnemu, rentowym, chorobowemu, ani wypadkowemu
-
-42.	Bezrobotni:
-*a)	podlegają obowiązkowo ubezpieczeniom emerytalnemu, rentowym, chorobowemu i wypadkowemu, od dnia nabycia prawa do zasiłku świadczenia integracyjnego lub stypendium, do dnia utraty praw do nich nie podlegają obowiązkowo ubezpieczeniom emerytalnemu, rentowym, chorobowemu, ani wypadkowemu
-b)	podlegają obowiązkowo ubezpieczeniom emerytalnemu, rentowym, chorobowemu i wypadkowemu, od dnia utraty pracy, do dnia rozpoczęcia nowej pracy
-
-43.	Składki na ubezpieczenia emerytalne pracowników finansowane są: 
-a)	z własnych środków ubezpieczonych
-b)	z własnych środków płatników składek
-*c)	z własnych środków, w równych częściach, ubezpieczonych i płatników składek
-
-44.	Składki na ubezpieczenia emerytalne osób wykonujących pracę nakładczą i członków spółdzielni finansowane są:
-a)	z własnych środków ubezpieczonych
-b)	z własnych środków płatników składek
-*c)	z własnych środków, w równych częściach, ubezpieczonych i płatników składek
-
-45.	Składki na ubezpieczenia emerytalne posłów i senatorów finansują z własnych środków: 
-*a)	w równych częściach ubezpieczeni i płatnicy składek
-b)	w całości płatnicy składek
-c)	w całości ubezpieczeni
-
-46.	Składki na ubezpieczenie emerytalne i rentowe osób rezygnujących zatrudnienia w związku z koniecznością sprawowania bezpośredniej osobistej opieki nad długotrwale lub ciężko chorym członkiem rodziny oraz wspólnie niezamieszkującymi matką, ojcem lub rodzeństwem finansują: 
-a)	z własnych środków, w równych częściach ubezpieczeni i ośrodki pomocy społecznej 
-b)	z własnych środków płatnicy składek
-*c)	w całości ośrodki pomocy społecznej
-
-47.	Składki na ubezpieczenia emerytalne i rentowe osób przebywających na urlopach wychowawczych lub pobierających zasiłek macierzyński albo zasiłek w wysokości zasiłku macierzyńskiego finansuje: 
-*a)	w całości budżet państwa za pośrednictwem ZUSu
-b)	w całości ZUS
-c)	w całości osoby przebywające na urlopach wychowawczych lub pobierające zasiłek macierzyński albo zasiłek w wysokości zasiłku macierzyńskiego
-
-48.	Składki na ubezpieczenie emerytalne i rentowe bezrobotnych finansują: 
-a)	w połowie Powiatowe Urzędy Pracy z Funduszu Pracy, w połowie zaś wojewoda ze środków własnych
-*b)	w całości Powiatowe Urzędy Pracy z Funduszu Pracy
-c)	w całości wojewoda ze środków własnych
-
-49.	Składki na ubezpieczenia emerytalne i rentowe osób pobierających stypendium w okresie szkolenia, stażu i przygotowania zawodowego, kierowanych przez podmioty inne niż Powiatowe Urzędy Pracy, finansują:
-*a)	w całości, z własnych środków podmioty kierujące
-b)	w całości, z własnych środków pobierający stypendium
-c)	w połowie Powiatowe Urzędy Pracy, w połowie podmioty kierujące
-
-50.	Podstawę wymiaru składek na ubezpieczenie emerytalne i rentowe bezrobotnych stanowi: 
-*a)	kwota zasiłku, świadczenia integracyjnego lub stypendium
-b)	w połowie kwota zasiłku, świadczenia integracyjnego lub stypendium, w połowie zaś kwota ich ostatniego miesięcznego uposażenia w czasie, kiedy świadczyli stosunek pracy
-c)	kwota ich ostatniego miesięcznego uposażenia w czasie, kiedy świadczyli stosunek pracy
-
-51.	Podstawa wymiaru składek na ubezpieczenie chorobowe osób, które ubezpieczeniu chorobowemu podlegają dobrowolnie nie może przekraczać miesięcznie: 
-a)	200% prognozowanego przeciętnego wynagrodzenia
-*b)	250% prognozowanego przeciętnego wynagrodzenia
-c)	300% prognozowanego przeciętnego wynagrodzenia
-
-52.	Stopa procentowa składek na ubezpieczenie rentowe wynosi: 
-a)	6% podstawy wymiaru
-b)	7% podstawy wymiaru
-*c)	8% podstawy wymiaru
-
-53.	Stopa procentowa składek na ubezpieczenie emerytalne wynosi: 
-a)	15,52% podstawy wymiaru
-b)	17,52% podstawy wymiaru
-*c)	19,52% podstawy wymiaru
-
-54.	Stopa procentowa składek na ubezpieczenie chorobowe wynosi: 
-*a)	2,45% podstawy wymiaru
-b)	3,45% podstawy wymiaru
-c)	4,45% podstawy wymiaru
-
-55.	W razie nieopłacenia składek lub opłacenia ich w zaniżonej wysokości ZUS może wymierzyć płatnikowi składek dodatkową opłatę do wysokości:
-a)	50% nieopłaconych składek
-b)	75% nieopłaconych składek
-*c)	100% nieopłaconych składek
-d)	150% nieopłaconych składek
-
-56.	Należności z tytułu składek ulegają przedawnieniu co do zasady po upływie: 
-a)	3 lat od dnia, w którym stały się wymagalne
-*b)	5 lat od dnia, w którym stały się wymagalne
-c)	10 lat od dnia, w którym stały się wymagalne
-
-57.	Należności z tytułu składek zabezpieczonych hipoteką lub zastawem: 
-a)	ulegają przedawnieniu na zasadach ogólnych
-*b)	nie ulegają przedawnieniu
-
-
-58.	Po stwierdzeniu, że składki zostały nienależnie opłacone:
-*a)	płatnik składek może złożyć wniosek o ich zwrot
-b)	zostają zwrócone płatnikowi w urzędu
-c)	obie odpowiedzi są prawdziwe
-
-59.	Należności z tytułu składek na ubezpieczenia społeczne ubezpieczonych będących równocześnie płatnikami składek na te ubezpieczenia: 
-*a)	mogą być w uzasadnionych przypadkach umarzane, pomimo braku ich całkowitej nieściągalności
-b)	są umarzane, pomimo braku ich całkowitej nieściągalności 
-c)	nie mogą być umarzane w sytuacji braku ich całkowitej nieściągalności
-
-60.	Wznowienie działalności gospodarczej:
-a)	wymaga ponownego zgłoszenia do ubezpieczenia
-*b)	nie wymaga ponownego zgłoszenia do ubezpieczenia 
-c)	tylko wypadkach określonych w ustawie wymaga ponownego zgłoszenia do ubezpieczenia
-
-61.	Płatnicy składek są zobowiązani do złożenia druku – zgłoszenie płatnika składek w ZUS w terminie:
-*a)	7 dni od daty zatrudnienia pierwszego pracownika lub powstania stosunku prawnego uzasadniającego objęcie ubezpieczeniami emerytalnym i rentowymi pierwszej osoby
-b)	14 dni od daty zatrudnienia pierwszego pracownika lub powstania stosunku prawnego uzasadniającego objęcie ubezpieczeniami emerytalnym i rentowymi pierwszej osoby
-c)	30 dni od daty zatrudnienia pierwszego pracownika lub powstania stosunku prawnego uzasadniającego objęcie ubezpieczeniami emerytalnym i rentowymi pierwszej osoby
-
-62.	Dysponentem Funduszu Ubezpieczeń Społecznych jest:
-*a)	Zakład Ubezpieczeń Społecznych
-b)	minister właściwy do spraw zabezpieczenia społecznego
-c)	Rada Ministrów
-
-63.	Fundusz Ubezpieczeń Społecznych:
-a)	nie może zaciągać kredytów
-b)	może zaciągać kredyty, ale tylko za zgodą ministra właściwego do spraw zabezpieczenia społecznego
-*c)	może zaciągać kredyty, ale tylko za zgodą ministra właściwego do spraw finansów publicznych
-
-64.	Fundusz Rezerwy Demograficznej:
-*a)	posiada osobowość prawną, a jego nazwa jest prawnie chroniona
-b)	nie posiada osobowości prawnej, a jego nazwa nie jest prawnie chroniona
-c)	posiada osobowość prawną, a jego nazwa nie jest prawnie chroniona
-
-65.	Statut Funduszu Rezerwy Demograficznej nadawany jest przez:
-a)	prezesa ZUS w drodze rozporządzenia
-*b)	ministra właściwego do spraw zabezpieczenia społecznego w drodze rozporządzenia
-c)	prezesa Rady Ministrów w drodze rozporządzenia
-
-66.	Organem Funduszu Rezerwy Demograficznej jest:
-*a)	ZUS 
-b)	prezes Funduszu Rezerwy Demograficznej
-c)	prezes i wiceprezesi Funduszu Rezerwy Demograficznej
-
-67.	Gospodarka finansowa Funduszu Rezerwy Demograficznej odbywa się na podstawie: 
-a)	ustawy budżetowej
-*b)	wieloletniej prognozy kroczącej dochodów i wydatków funduszu emerytalnego sporządzanej przez zarząd ZUSu
-c)	wieloletniej prognozy kroczącej dochodów i wydatków funduszu emerytalnego sporządzanej przez ministra właściwego do spraw zabezpieczenia społecznego w drodze rozporządzenia
-
-68.	Fundusz Rezerwy Demograficznej:
-a)	może zaciągać pożyczki lub kredyty bez żadnych ograniczeń
-b)	może zaciągać pożyczki lub kredyty, ale tylko do wysokości określonej w ustawie
-*c)	nie może zaciągać pożyczek ani kredytów
-
-69.	Nadzór na zgodnością działań Zakładu Ubezpieczeń Społecznych z obowiązującymi przepisami sprawuje”
-*a)	minister właściwy do spraw zabezpieczenia społecznego
-b)	Rada Ministrów
-c)	Prezes Rady Ministrów
-
-70.	W postępowaniu administracyjnym organem wyższego stopnia w stosunku do terenowych jednostek organizacyjnych Zakładu Ubezpieczeń Społecznych jest: 
-*a)	Prezes ZUS
-b)	Minister Spraw Wewnętrznych
-c)	Prezes Rady Ministrów
-
-71.	Organami Zakładu Ubezpieczeń Społecznych są: 
-a)	Prezes i wiceprezesi ZUS, Zarząd, którego przewodniczącym jest z urzędu Prezes ZUS i Rada Nadzorca ZUS,
-*b)	Prezes ZUS, Zarząd, którego przewodniczącym jest z urzędu Prezes ZUS i Rada nadzorca ZUS
-c)	Prezes i wiceprezesi ZUS, Zarząd, którego przewodniczącym jest z urzędu Prezes ZUS i Komisja Rewizyjna
-
-72.	Prezesa Zakładu Ubezpieczeń Społecznych powołuje i odwołuje:
-*a)	Prezes Rady Ministrów
-b)	minister właściwy do spraw zabezpieczenia społecznego
-c)	Sejm
-
-73.	Rada Nadzorcza Zakładu Ubezpieczeń Społecznych jest powoływana przez Prezesa Rady Ministrów na: 
-a)	3-letnią kadencję
-b)	4-letnią kadencję
-*c)	5-letnią kadencję
-
-74.	Na wniosek ministra właściwego do spraw zabezpieczenia społecznego, złożony w porozumieniu z ministrem właściwym do spraw finansów publicznych, powoływanych jest:
-*a)	3 członków Rady Nadzorczej w tym przewodniczący Rady Nadzorczej ZUS
-b)	4 członków Rady Nadzorczej w tym przewodniczący Rady Nadzorczej ZUS
-c)	5 członków Rady Nadzorczej w tym przewodniczący Rady Nadzorczej ZUS
-
-75.	Na wniosek ogólnokrajowych organizacji emerytów i rencistów do Rady Nadzorczej ZUS powołuje się:
-*a)	1 członka tej organizacji
-b)	2 członków tej organizacji
-c)	3 członków tej organizacji
-d)	4 członków tej organizacji
-
-76.	Pracownicy Zakładu Ubezpieczeń Społecznych: 
-a)	korzystają z ochrony przewidzianej w Kodeksie karnym dla funkcjonariuszy publicznych
-*b)	korzystają z ochrony przewidzianej w Kodeksie karnym dla funkcjonariuszy publicznych, chyba że pełnią wyłącznie czynności usługowe
-c)	 nie korzystają z ochrony przewidzianej w Kodeksie karnym dla funkcjonariuszy publicznych
-
-77.	Rozłożenie na raty kwot należności z tytułu nienależnie pobranych świadczeń albo odroczenie terminu ich płatności następuje w formie: 
-a)	decyzji
-b)	postanowienia
-*c)	umowy
-
-
-
-78.	Emerytura pomostowa wymaga osiągnięcia przez kobiety wieku emerytalnego w wysokości co najmniej:
-a)	50 lat
-*b)	55 lat
-c)	60 lat
-
-79.	Emerytura pomostowa wymaga osiągnięcia przez mężczyzn wieku emerytalnego w wysokości co najmniej:
-a)	50 lat
-b)	55 lat
-*c)	60 lat
-
-80.	Z czego składa się emerytura w systemie zdefiniowanego świadczenia?
-*a)	część stała dla wszystkich (socjalna) + cześć indywidualna (staż ubezpieczeniowy i zarobki ubezpieczonego)
-b)	część stała dla wszystkich (socjalna) + cześć indywidualna (staż ubezpieczeniowy i zarobki ubezpieczonego) + kapitał początkowy
-c)	część stała dla wszystkich (socjalna) + cześć indywidualna (staż ubezpieczeniowy i zarobki ubezpieczonego) + kapitał początkowy + kapitał transferowy
-
-81.	Od kiedy składki ubezpieczonego zapisywane są na indywidualnym koncie FUS?
-a)	od 1996 r.
-*b)	od 1999 r.
-c)	od 2004 r.
-d)	od 2009 r. 
-
-82.	Od kiedy zaczęto wypłacać pierwsze tzw. „nowe” emerytury?
-a)	od 1996 r.
-b)	od 1999 r.
-c)	od 2004 r.
-*d)	od 2009 r. 
-
-83.	Kapitał początkowy jest składową?
-a)	emerytur z I filaru zdefiniowanego świadczenia
-*b)	emerytur z I filaru zdefiniowanej składki
-c)	emerytur z II filaru zdefiniowanej składki
-d)	żadna z powyższych
- 
-84.	Kapitał transferowy jest składową?
-a)	emerytur z I filaru zdefiniowanego świadczenia
-b)	emerytur z I filaru zdefiniowanej składki
-*c)	emerytur z II filaru zdefiniowanej składki
-d)	żadna z powyższych 
-
-85.	Kapitał początkowy dotyczy:
-a)	ubezpieczonych urodzonych przed 31 grudnia 1948 r., które pozostawały w ubezpieczeniu emerytalnym przed 1 stycznia 1999 r.
-*b)	ubezpieczonych urodzonych po 31 grudnia 1948 r., które pozostawały w ubezpieczeniu emerytalnym przed 1 stycznia 1999 r.
-c)	ubezpieczonych urodzonych po 31 grudnia 1948 r., które pozostawały w ubezpieczeniu emerytalnym po 1 stycznia 1999 r.
-
-86.	Średnie dalsze trwanie życia (wspólnie dla kobiet i mężczyzn) w kalkulacji kapitału początkowego wynosi:
-a)	200 miesięcy
-*b)	209 miesięcy
-c)	218 miesięcy
-
-87.	Instytucją prowadzącą OFE są:
-*a)	Powszechne Towarzystwa Emerytalne
-b)	Polskie Towarzystwa Emerytalne
-c)	Publiczne Towarzystwa Emerytalne
-
-88.	Tzw. „suwak bezpieczeństwa” dotyczy:
-*a)	wypłacania środków z OFE do ZUS
-b)	wypłacania środków z ZUS do OFE
-c)	wypłacania środków z IKZE do ZUS
-
-89.	Bezpłatne przeniesienie środków z OFE dotyczy transferu:
-*a)	do ZUS
-b)	do IKE
-c)	do IKZE
-d)	do PPE
-
-90.	Jaki jest maksymalny próg przystąpienia do PPE?
-a)	50 lat
-b)	60 lat
-*c)	70 lat
-
-91.	Pracowniczy Program Emerytalny w zakładzie pracy zatrudniającym ponad 500 osób powinien objąć:
-a)	co najmniej 1/4 pracowników
-*b)	co najmniej 1/3 pracowników
-c)	co najmniej 1/2 pracowników
-
-92.	W przypadku IKE:
-*a)	dziedziczący środki może wypłacić całość środków bez płacenia podatku dochodowego
-b)	dziedziczący środki muszą zapłacić podatek dochodowy 10%
-c)	środki nie są dziedziczone
-
-93.	Z wnioskiem o objęcie ubezpieczeniem w ramach KRUS może wystąpić: 
-a)	tylko zainteresowana, pracująca na rachunek rolnika 
-b)	tylko rolnik, na którego rachunek ta osoba pracuje
-*c)	zainteresowana osoba lub rolnik, na którego rachunek ta osoba pracuje
-
-94.	Składki na ubezpieczenie społeczne rolników za każdego ubezpieczonego opłaca: 
-*a)	rolnik
-b)	rolnik i osoba ubezpieczona
-c)	osoba ubezpieczona
-
-95.	Czy rolnik lub domownik, który podlegając ubezpieczeniu w pełnym zakresie z mocy ustawy, został objęty innym ubezpieczeniem społecznym, nadal podlega ubezpieczeniu w ramach KRUS?
-a)	tak
-*b)	nie
-
-96.	Ubezpieczeniu wypadkowemu, chorobowemu i macierzyńskiemu podlega z mocy ustawy rolnik:
-*a)	którego gospodarstwo obejmuje obszar użytków rolnych powyżej 1 ha przeliczeniowego
-b)	którego gospodarstwo obejmuje obszar użytków rolnych powyżej 2 ha przeliczeniowych
-c)	którego gospodarstwo obejmuje obszar użytków rolnych powyżej 3 ha przeliczeniowych
-
-97.	Obowiązkowi ubezpieczenia wypadkowego nie podlegają:
-a)	duchowni
-b)	absolwenci pobierający stypendium
-c)	prokuratorzy
-d)	posłowie i senatorowie
-*e)	posłowie parlamentu UE
-
-
-98.	Komu przysługuje zasiłek pogrzebowy?
-a)	członkowi rodziny
-b)	osobie obcej
-c)	pracodawcy
-d)	gminie
-e)	osobie prawnej kościoła lub związku wyznaniowego
-*f)	wszystkim – pod warunkiem pokrycia kosztów pogrzebu
-
-99.	Miesięczny standardowy zasiłek chorobowy z ubezpieczenia chorobowego przysługuje w wysokości:
-a)	60% podstawy wymiaru
-b)	70% podstawy wymiaru
-*c)	80% podstawy wymiaru
-d)	90% podstawy wymiaru
-e)	100% podstawy wymiaru 
-
-100.	Miesięczny standardowy zasiłek chorobowy z ubezpieczenia wypadkowego przysługuje w wysokości:
-a)	60% podstawy wymiaru
-b)	70% podstawy wymiaru
-c)	80% podstawy wymiaru
-d)	90% podstawy wymiaru
-*e)	100% podstawy wymiaru 
-
-101.	Wysokość świadczenia rehabilitacyjnego za okres pierwszych 3 miesięcy wynosi: 
-a)	60% podstawy wymiaru podstawy wymiaru zasiłku chorobowego
-b)	70% podstawy wymiaru podstawy wymiaru zasiłku chorobowego
-c)	80% podstawy wymiaru podstawy wymiaru zasiłku chorobowego
-*d)	90% podstawy wymiaru podstawy wymiaru zasiłku chorobowego
-
-102.	Miesięczny zasiłek opiekuńczy z ubezpieczenia wypadkowego przysługuje w wysokości:
-a)	60% podstawy wymiaru
-b)	70% podstawy wymiaru
-*c)	80% podstawy wymiaru
-d)	90% podstawy wymiaru
-e)	100% podstawy wymiaru 
-
-103.	Prawo do skorzystania z zasiłku opiekuńczego nie występuje w przypadku opieki nad:
-*a)	dzieckiem, które nie ukończyło 8 lat, podczas korzystania z urlopu wychowawczego
-b)	chorym dzieckiem niepełnosprawnym, które nie ukończyło 18 lat
-c)	macochą, z którą przebywasz we wspólnym gospodarstwie domowym
-
-104.	Zasiłek wyrównawczy przysługuje:
-a)	osobie uprawnionej do emerytury lub renty z tytułu niezdolności do pracy
-*b)	ubezpieczonemu będącemu pracownikiem ze zmniejszoną sprawnością do pracy, którego wynagrodzenie uległo obniżeniu wskutek poddania się rehabilitacji zawodowej w celu adaptacji lub przyuczenia do określonej prac
-c)	wyłączną przyczyną wypadku było udowodnione naruszenie przez ubezpieczonego przepisów dotyczących ochrony życia i zdrowia, spowodowane przez niego umyślnie lub wskutek rażącego niedbalstwa
-
-105.	Jeżeli konieczność poddania się rehabilitacji zawodowej spowodowana została wypadkiem przy pracy lub chorobą zawodową, pracownikowi przysługuje zasiłek wyrównawczy z ubezpieczenia: 
-*a)	wypadkowego
-b)	chorobowego
-
-106.	Zasiłek macierzyński za okres ustalony przepisami Kodeksu pracy jako okres urlopu macierzyńskiego, urlopu na warunkach urlopu macierzyńskiego oraz urlopu ojcowskiego, przysługuje w wysokości: 
-a)	60% podstawy wymiaru
-b)	70% podstawy wymiaru
-c)	80% podstawy wymiaru
-d)	90% podstawy wymiaru
-*e)	100% podstawy wymiaru 
-
-107.	Zasiłek pogrzebowy przysługujący członkowi rodziny wynosi:
-*a)	4000 zł, niezależnie od kwoty poniesionych kosztów pogrzebu
-b)	do wysokości poniesionych kosztów, ale nie więcej niż 4000 zł
-c)	równowartość poniesionych kosztów, nawet gdy przekroczą 4000 zł
-
-108.	W jakim kraju po raz pierwszy powstały uregulowania prawne dotyczące systemu obowiązkowego ubezpieczenia zdrowotnego?
-a)	Polska
-*b)	Niemcy
-c)	Wielka Brytania
-d)	USA
-
-109.	Wysokość składki na ubezpieczenie zdrowotne dla osób rozliczających się na skali podatkowej wynosi:
-a)	4,45% podstawy wymiaru
-a)	8% podstawy wymiaru
-*b)	9% podstawy wymiaru
-c)	9,76% podstawy wymiaru
-
-110.	Co jest źródłem finansowania świadczeń opieki zdrowotnej w przypadku świadczeniobiorców nieubezpieczonych?
-a)	składki
-*b)	budżet państwa
-
-111.	Do świadczeń zdrowotnych za granicą (na terytorium UE i wybranych krajów) uprawnia:
-a)	Europejska Karta Zdrowia
-*b)	Europejska Karta Ubezpieczenia Zdrowotnego
-c)	Europejska Karta Świadczeń Zdrowotnych
-d)	Europejska Karta Lekarska
-
-112.	Którym świadczeniobiorcom nie przysługuje bezpłatne zaopatrzenie w leki objęte wykazem?
-a)	Zasłużonym Honorowym Dawcom Krwi
-b)	Zasłużonym Dawcom Przeszczepu
-*c)	Bezrobotnym 
-d)	Świadczeniobiorcom w okresie ciąży
-e)	Seniorom po 75 roku życia
-
-113.	Czy leczenie uzależnień zalicza się do świadczeń gwarantowanych?
-*a)	tak
-b)	nie
+1.	Rachunek zysków i strat to sprawozdanie finansowe prezentujące:
+*a)	wynik finansowy w ujęciu memoriałowym,
+b)	odroczony podatek dochodowy,
+c)	wpływy i wydatki,
+d)	wynik finansowy w ujęciu kasowym.
+
+2.	Zmiana stanu produktów prezentowana jest w rachunku zysków i strat po stronie:
+*a)	przychodów ze sprzedaży,
+b)	kosztów wytworzenia wyrobów gotowych,
+c)	przychodów z pozostałej działalności operacyjnej,
+d)	kosztów finansowych.
+
+3.	Rachunek zysków i strat ma układ:
+a)	dwustronnej tabeli,
+*b)	drabinkowy,
+c)	uzależniony od wyboru jednostki.
+
+4.	Rachunek zysków i strat zgodnie z polskim prawem bilansowym sporządzamy w wariancie:
+a)	kalkulacyjnym,
+b)	porównawczym,
+*c)	kalkulacyjnym lub porównawczym w zależności od wyboru jednostki.
+
+5.	Rachunek zysków i strat może zostać sporządzony w wersji:
+*a)	standardowej lub uproszczonej dla jednostek małych i mikro,
+b)	uproszczonej dla jednostek małych i mikro lub rozwiniętej,
+c)	standardowej lub rozwiniętej.
+
+6.	Zmiana stanu produktów ustalona w sposób księgowy to:
+*a)	saldo konta Rozliczenie kosztów – Dt lub Ct,
+b)	saldo Dt konta Rozliczenie kosztów,
+c)	saldo Ct konta Rozliczenie kosztów,
+d)	saldo konta Produkcja podstawowa.
+
+7.	Zmiana stanu produktów ustalona w sposób księgowy powinna pozostawać w następującej relacji do zmiany stany produktów ustalonej w sposób bilansowy:
+a)	powinna być większa,
+b)	powinna być mniejsza,
+*c)	powinny być sobie równe.
+
+8.	Zgodnie z polskim prawem bilansowym rachunek zysków i strat sporządzany jest według metody:
+a)	netto,
+b)	brutto,
+*c)	mieszanej,
+d)	brutto lub mieszanej.
+
+9.	Zgodnie z polskim prawem bilansowym obowiązującym rachunkiem kosztów jest:
+*a)	rachunek kosztów pełnych,
+b)	rachunek kosztów zmiennych,
+c)	rachunek kosztów docelowych.
+
+10.	Skutki zdarzeń losowych ujmowane są w rachunku zysków i strat w pozycji:
+*a)	pozostałe koszty operacyjne,
+b)	straty nadzwyczajne,
+c)	koszt wytworzenia sprzedanych wyrobów gotowych.
+
+11.	Elementem wspólnym dla bilansu oraz rachunku zysków i strat jest:
+*a)	Zysk (strata) netto,
+b)	Zysk operacyjny,
+c)	Przyrost środków pieniężnych.
+
+12.	Amortyzacja jest elementem rachunku zysków i strat w wariancie:
+*a)	Porównawczym,
+b)	Kalkulacyjnym,
+c)	Poziomym.
+
+13.	Jednym z elementów wyniku finansowego są koszty. Ustalając wynik, uwzględnia się m.in. koszty poniesione na:
+a)	Produkcję wytworzoną,
+*b)	Produkcję sprzedaną oraz koszty okresu,
+c)	Produkcję w toku.
+
+14.	W firmie koszty rodzajowe wynosiły 20 000 zł. Zostały rozliczone następująco: koszty działalności podstawowej 15 000 zł, koszty zarządu 5000 zł. Wyprodukowano 1 000 szt. produktu, a sprzedano 900 sztuk po cenie 20 zł/szt. Wynik finansowy wynosi:
+a)	4 500 zł,
+b)	0,
+*c)	-500 zł,
+d)	Żadna z wymienionych odpowiedzi nie jest prawidłowa.
+
+15.	Firma „Korek” posiada akcje przeznaczone do sprzedaży. W bieżącym okresie firma sprzedała 100 szt. Akcji, których cena zbytu wynosiła 20 zł/szt., a cena nabycia 18 zł/szt. W wyniku tych operacji suma bilansowa:
+a)	Zmniejszyła się o 200 zł
+*b)	Zwiększyła się o 200 zł
+c)	Wystąpiły zmiany wyłącznie w aktywach: wzrost środków pieniężnych o 2 000 zł  i zmniejszenie wartości papierów wartościowych przeznaczonych do obrotu o 1800 zł
+
+16.	Spłata przez spółkę długoterminowego kredytu spowoduje:
+a)	Obciążenie kosztów finansowych,
+b)	Zachowanie tej samej sumy bilansowej,
+c)	Zwiększenie sumy bilansowej,
+*d)	Zmniejszenie sumy bilansowej.
+
+17.	Rozliczenia międzyokresowe kosztów stanowią składnik:
+*a)	Bilansu – aktywów
+b)	Bilansu – pasywów
+c)	Rachunku zysków i strat – kosztów
 `;
 
 // ustaw przykładowe pytania w textarea
@@ -1184,5 +667,6 @@ document.getElementById('checkNextBtn').addEventListener('click', () => {
 </script>
 </body>
 </html>
+
 
 
