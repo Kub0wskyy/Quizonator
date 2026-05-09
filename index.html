@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <title>Quizonator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" /> <title>Quizonator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -31,7 +31,7 @@
         height: 200px;
         font-family: Consolas, monospace;
         font-size: 13px;
-        box-sizing: border-box; /* Zapewnia poprawne wymiary na mobile */
+        box-sizing: border-box;
     }
     label {
         font-weight: bold;
@@ -91,6 +91,48 @@
     .answer-option.incorrect {
         background-color: #ffcdd2;
     }
+    
+    /* NOWE STYLE DLA SORTOWANIA */
+    .sortable-list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0;
+    }
+    .sortable-item {
+        background: #f9f9f9;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        cursor: move;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .sortable-item:hover {
+        background: #f0f0f0;
+    }
+    .sortable-item.dragging {
+        opacity: 0.5;
+    }
+    .sortable-item.correct {
+        background-color: #c8e6c9;
+        border-color: #4caf50;
+    }
+    .sortable-item.incorrect {
+        background-color: #ffcdd2;
+        border-color: #f44336;
+    }
+    .sortable-number {
+        font-weight: bold;
+        color: #1976d2;
+        min-width: 20px;
+    }
+    .sortable-item.checked .sortable-number {
+        color: #666;
+    }
+    
     .feedback {
         margin-top: 10px;
         font-weight: bold;
@@ -139,7 +181,6 @@
         margin-bottom: 2px;
     }
 
-    /* --- DODANO DLA RESPONSYWNOŚCI --- */
     @media (max-width: 600px) {
         body {
             padding: 10px;
@@ -153,7 +194,7 @@
         }
         .controls button, .nav-buttons button, #summaryBackToMenuBtn {
             width: 100%;
-            padding: 12px; /* Większe przyciski na telefon */
+            padding: 12px;
         }
         .nav-buttons {
             flex-direction: column;
@@ -173,7 +214,7 @@
     <!-- MENU GŁÓWNE -->
     <div id="menuScreen">
         <div class="row">
-            <label for="questionsInput">Pytania (gwiazdka * przy poprawnych):</label>
+            <label for="questionsInput">Pytania (gwiazdka * przy poprawnych, cyfra przed literą dla kolejności):</label>
             <textarea id="questionsInput"></textarea>
         </div>
 
@@ -213,7 +254,7 @@
 </div>
 
 <script>
-// PRZYKŁADOWE PYTANIA - PODMIENIASZ NA SWOJE
+// PRZYKŁADOWE PYTANIA
 const RAW_QUESTIONS = `
 1.	Rachunek zysków i strat to sprawozdanie finansowe prezentujące:
 *a)	wynik finansowy w ujęciu memoriałowym,
@@ -221,104 +262,30 @@ b)	odroczony podatek dochodowy,
 c)	wpływy i wydatki,
 d)	wynik finansowy w ujęciu kasowym.
 
+22.	Ułóż w odpowiedniej kolejności (od pierwszego do ostatniego) etapy zarządzania ryzykiem
+2a)	pomiar 
+4b)	monitorowanie i kontrolowanie 
+1c)	identyfikacja 
+3d)	sterowanie
+
 2.	Zmiana stanu produktów prezentowana jest w rachunku zysków i strat po stronie:
 *a)	przychodów ze sprzedaży,
 b)	kosztów wytworzenia wyrobów gotowych,
 c)	przychodów z pozostałej działalności operacyjnej,
 d)	kosztów finansowych.
-
-3.	Rachunek zysków i strat ma układ:
-a)	dwustronnej tabeli,
-*b)	drabinkowy,
-c)	uzależniony od wyboru jednostki.
-
-4.	Rachunek zysków i strat zgodnie z polskim prawem bilansowym sporządzamy w wariancie:
-a)	kalkulacyjnym,
-b)	porównawczym,
-*c)	kalkulacyjnym lub porównawczym w zależności od wyboru jednostki.
-
-5.	Rachunek zysków i strat może zostać sporządzony w wersji:
-*a)	standardowej lub uproszczonej dla jednostek małych i mikro,
-b)	uproszczonej dla jednostek małych i mikro lub rozwiniętej,
-c)	standardowej lub rozwiniętej.
-
-6.	Zmiana stanu produktów ustalona w sposób księgowy to:
-*a)	saldo konta Rozliczenie kosztów – Dt lub Ct,
-b)	saldo Dt konta Rozliczenie kosztów,
-c)	saldo Ct konta Rozliczenie kosztów,
-d)	saldo konta Produkcja podstawowa.
-
-7.	Zmiana stanu produktów ustalona w sposób księgowy powinna pozostawać w następującej relacji do zmiany stany produktów ustalonej w sposób bilansowy:
-a)	powinna być większa,
-b)	powinna być mniejsza,
-*c)	powinny być sobie równe.
-
-8.	Zgodnie z polskim prawem bilansowym rachunek zysków i strat sporządzany jest według metody:
-a)	netto,
-b)	brutto,
-*c)	mieszanej,
-d)	brutto lub mieszanej.
-
-9.	Zgodnie z polskim prawem bilansowym obowiązującym rachunkiem kosztów jest:
-*a)	rachunek kosztów pełnych,
-b)	rachunek kosztów zmiennych,
-c)	rachunek kosztów docelowych.
-
-10.	Skutki zdarzeń losowych ujmowane są w rachunku zysków i strat w pozycji:
-*a)	pozostałe koszty operacyjne,
-b)	straty nadzwyczajne,
-c)	koszt wytworzenia sprzedanych wyrobów gotowych.
-
-11.	Elementem wspólnym dla bilansu oraz rachunku zysków i strat jest:
-*a)	Zysk (strata) netto,
-b)	Zysk operacyjny,
-c)	Przyrost środków pieniężnych.
-
-12.	Amortyzacja jest elementem rachunku zysków i strat w wariancie:
-*a)	Porównawczym,
-b)	Kalkulacyjnym,
-c)	Poziomym.
-
-13.	Jednym z elementów wyniku finansowego są koszty. Ustalając wynik, uwzględnia się m.in. koszty poniesione na:
-a)	Produkcję wytworzoną,
-*b)	Produkcję sprzedaną oraz koszty okresu,
-c)	Produkcję w toku.
-
-14.	W firmie koszty rodzajowe wynosiły 20 000 zł. Zostały rozliczone następująco: koszty działalności podstawowej 15 000 zł, koszty zarządu 5000 zł. Wyprodukowano 1 000 szt. produktu, a sprzedano 900 sztuk po cenie 20 zł/szt. Wynik finansowy wynosi:
-a)	4 500 zł,
-b)	0,
-*c)	-500 zł,
-d)	Żadna z wymienionych odpowiedzi nie jest prawidłowa.
-
-15.	Firma „Korek” posiada akcje przeznaczone do sprzedaży. W bieżącym okresie firma sprzedała 100 szt. Akcji, których cena zbytu wynosiła 20 zł/szt., a cena nabycia 18 zł/szt. W wyniku tych operacji suma bilansowa:
-a)	Zmniejszyła się o 200 zł
-*b)	Zwiększyła się o 200 zł
-c)	Wystąpiły zmiany wyłącznie w aktywach: wzrost środków pieniężnych o 2 000 zł  i zmniejszenie wartości papierów wartościowych przeznaczonych do obrotu o 1800 zł
-
-16.	Spłata przez spółkę długoterminowego kredytu spowoduje:
-a)	Obciążenie kosztów finansowych,
-b)	Zachowanie tej samej sumy bilansowej,
-c)	Zwiększenie sumy bilansowej,
-*d)	Zmniejszenie sumy bilansowej.
-
-17.	Rozliczenia międzyokresowe kosztów stanowią składnik:
-*a)	Bilansu – aktywów
-b)	Bilansu – pasywów
-c)	Rachunku zysków i strat – kosztów
 `;
 
-// ustaw przykładowe pytania w textarea
 document.getElementById('questionsInput').value = RAW_QUESTIONS.trim();
 
 // stan aplikacji
 let allQuestions = [];
 let quizQuestions = [];
 let currentIndex = 0;
-let userAnswers = [];      // tablica tablic (indeksy odpowiedzi)
-let checkedQuestions = []; // czy konkretne pytanie już sprawdzone
-let quizFinished = false;  // czy pokazano już podsumowanie
+let userAnswers = [];
+let checkedQuestions = [];
+let quizFinished = false;
 
-// PARSOWANIE PYTAŃ
+// PARSOWANIE PYTAŃ - ROZSZERZONE O PYTANIA SORTUJĄCE
 function parseQuestions(raw) {
     const blocks = raw
         .split(/\n\s*\n/)
@@ -344,11 +311,26 @@ function parseQuestions(raw) {
 
         const answers = [];
         const correctIndexes = [];
+        let isSortQuestion = false;
+        const sortOrder = [];
 
         for (let i = 1; i < lines.length; i++) {
             let line = lines[i];
             let isCorrect = false;
 
+            // Sprawdź czy to pytanie sortujące (cyfra przed literą)
+            const sortMatch = line.match(/^(\d+)([a-zA-Z])\)\s*(.*)$/);
+            if (sortMatch) {
+                isSortQuestion = true;
+                const orderNum = parseInt(sortMatch[1], 10);
+                const text = sortMatch[3].trim();
+                const idx = answers.length;
+                answers.push(text);
+                sortOrder.push({ idx, orderNum });
+                continue;
+            }
+
+            // Standardowe pytanie z gwiazdką
             if (line.startsWith('*')) {
                 isCorrect = true;
                 line = line.substring(1).trim();
@@ -362,12 +344,26 @@ function parseQuestions(raw) {
             if (isCorrect) correctIndexes.push(idx);
         }
 
-        if (answers.length > 0 && correctIndexes.length > 0) {
-            parsed.push({
-                text: qText,
-                answers,
-                correctIndexes
-            });
+        if (answers.length > 0) {
+            if (isSortQuestion && sortOrder.length > 0) {
+                // Pytanie sortujące
+                sortOrder.sort((a, b) => a.orderNum - b.orderNum);
+                const correctOrder = sortOrder.map(item => item.idx);
+                parsed.push({
+                    text: qText,
+                    answers,
+                    correctOrder,  // tablica indeksów w prawidłowej kolejności
+                    type: 'sort'
+                });
+            } else if (correctIndexes.length > 0) {
+                // Standardowe pytanie
+                parsed.push({
+                    text: qText,
+                    answers,
+                    correctIndexes,
+                    type: 'standard'
+                });
+            }
         }
     });
 
@@ -384,29 +380,111 @@ function pickRandomQuestions(all, n) {
     return idx.slice(0, n).map(i => all[i]);
 }
 
-// PORÓWNANIE ODPOWIEDZI
-function isUserCorrect(user, correct) {
-    if (user.length !== correct.length) return false;
-    const setU = new Set(user);
-    for (const c of correct) {
-        if (!setU.has(c)) return false;
+// PORÓWNANIE ODPOWIEDZI - ROZSZERZONE O SORTOWANIE
+function isUserCorrect(user, question) {
+    if (question.type === 'sort') {
+        // Porównaj kolejność
+        if (user.length !== question.correctOrder.length) return false;
+        for (let i = 0; i < user.length; i++) {
+            if (user[i] !== question.correctOrder[i]) return false;
+        }
+        return true;
+    } else {
+        // Standardowe pytanie
+        if (user.length !== question.correctIndexes.length) return false;
+        const setU = new Set(user);
+        for (const c of question.correctIndexes) {
+            if (!setU.has(c)) return false;
+        }
+        return true;
     }
-    return true;
 }
 
 // ZAPIS WYBORU BIEŻĄCEGO PYTANIA
 function saveCurrentSelection() {
-    const inputs = document.querySelectorAll('#quizAnswers input[name="answer"]');
-    const chosen = [];
-    inputs.forEach(input => {
-        if (input.checked) {
-            chosen.push(parseInt(input.value, 10));
-        }
-    });
-    userAnswers[currentIndex] = chosen;
+    const q = quizQuestions[currentIndex];
+    
+    if (q.type === 'sort') {
+        // Pobierz obecną kolejność z listy
+        const items = document.querySelectorAll('#quizAnswers .sortable-item');
+        const order = [];
+        items.forEach(item => {
+            order.push(parseInt(item.dataset.index, 10));
+        });
+        userAnswers[currentIndex] = order;
+    } else {
+        // Standardowe pytanie
+        const inputs = document.querySelectorAll('#quizAnswers input[name="answer"]');
+        const chosen = [];
+        inputs.forEach(input => {
+            if (input.checked) {
+                chosen.push(parseInt(input.value, 10));
+            }
+        });
+        userAnswers[currentIndex] = chosen;
+    }
 }
 
-// RENDER PYTANIA
+// DRAG AND DROP dla pytań sortujących
+let draggedElement = null;
+
+function handleDragStart(e) {
+    draggedElement = e.target;
+    e.target.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+}
+
+function handleDragEnd(e) {
+    e.target.classList.remove('dragging');
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault();
+    }
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+}
+
+function handleDragEnter(e) {
+    if (e.target.classList.contains('sortable-item')) {
+        e.target.style.borderTop = '3px solid #1976d2';
+    }
+}
+
+function handleDragLeave(e) {
+    if (e.target.classList.contains('sortable-item')) {
+        e.target.style.borderTop = '2px solid #ddd';
+    }
+}
+
+function handleDrop(e) {
+    if (e.stopPropagation) {
+        e.stopPropagation();
+    }
+    e.preventDefault();
+
+    if (draggedElement !== e.target && e.target.classList.contains('sortable-item')) {
+        const list = document.querySelector('.sortable-list');
+        const items = Array.from(list.children);
+        const draggedIndex = items.indexOf(draggedElement);
+        const targetIndex = items.indexOf(e.target);
+
+        if (draggedIndex < targetIndex) {
+            e.target.parentNode.insertBefore(draggedElement, e.target.nextSibling);
+        } else {
+            e.target.parentNode.insertBefore(draggedElement, e.target);
+        }
+    }
+
+    if (e.target.classList.contains('sortable-item')) {
+        e.target.style.borderTop = '2px solid #ddd';
+    }
+
+    return false;
+}
+
+// RENDER PYTANIA - ROZSZERZONE O SORTOWANIE
 function renderQuestion() {
     const q = quizQuestions[currentIndex];
     const qNumEl = document.getElementById('quizQuestionNumber');
@@ -426,51 +504,121 @@ function renderQuestion() {
     feedbackEl.textContent = '';
     feedbackEl.className = 'feedback';
 
-    const multiple = q.correctIndexes.length > 1;
-    const inputType = multiple ? 'checkbox' : 'radio';
-    const correctSet = new Set(q.correctIndexes);
-    const user = userAnswers[currentIndex] || [];
-    const userSet = new Set(user);
     const alreadyChecked = !!checkedQuestions[currentIndex];
+    const user = userAnswers[currentIndex] || [];
 
-    q.answers.forEach((ans, idx) => {
-        const label = document.createElement('label');
-        label.className = 'answer-option';
+    if (q.type === 'sort') {
+        // PYTANIE SORTUJĄCE
+        const ul = document.createElement('ul');
+        ul.className = 'sortable-list';
 
-        const input = document.createElement('input');
-        input.type = inputType;
-        input.name = 'answer';
-        input.value = idx;
-        if (userSet.has(idx)) {
-            input.checked = true;
+        // Ustal kolejność wyświetlania
+        let displayOrder;
+        if (user.length > 0) {
+            displayOrder = user;
+        } else {
+            // Pierwsza wizyta - wyświetl w kolejności z danych (losowej)
+            displayOrder = q.answers.map((_, idx) => idx);
         }
+
+        displayOrder.forEach((ansIdx, position) => {
+            const li = document.createElement('li');
+            li.className = 'sortable-item';
+            li.dataset.index = ansIdx;
+            li.draggable = !alreadyChecked;
+
+            const numSpan = document.createElement('span');
+            numSpan.className = 'sortable-number';
+            numSpan.textContent = `${position + 1}.`;
+
+            const textSpan = document.createElement('span');
+            textSpan.textContent = q.answers[ansIdx];
+
+            li.appendChild(numSpan);
+            li.appendChild(textSpan);
+
+            if (!alreadyChecked) {
+                li.addEventListener('dragstart', handleDragStart);
+                li.addEventListener('dragend', handleDragEnd);
+                li.addEventListener('dragover', handleDragOver);
+                li.addEventListener('dragenter', handleDragEnter);
+                li.addEventListener('dragleave', handleDragLeave);
+                li.addEventListener('drop', handleDrop);
+            } else {
+                li.classList.add('checked');
+                // Pokaż poprawność
+                if (q.correctOrder[position] === ansIdx) {
+                    li.classList.add('correct');
+                } else {
+                    li.classList.add('incorrect');
+                }
+            }
+
+            ul.appendChild(li);
+        });
+
+        answersEl.appendChild(ul);
+
         if (alreadyChecked) {
-            input.disabled = true;
-            if (correctSet.has(idx)) {
-                label.classList.add('correct');
-            }
-            if (userSet.has(idx) && !correctSet.has(idx)) {
-                label.classList.add('incorrect');
+            const correct = isUserCorrect(user, q);
+            if (correct) {
+                feedbackEl.textContent = 'Prawidłowa kolejność!';
+                feedbackEl.classList.add('ok');
+            } else {
+                feedbackEl.textContent = 'Błędna kolejność.';
+                feedbackEl.classList.add('bad');
             }
         }
 
-        const span = document.createElement('span');
-        span.textContent = ans;
+    } else {
+        // STANDARDOWE PYTANIE (checkbox/radio)
+        const multiple = q.correctIndexes.length > 1;
+        const inputType = multiple ? 'checkbox' : 'radio';
+        const correctSet = new Set(q.correctIndexes);
+        const userSet = new Set(user);
 
-        label.appendChild(input);
-        label.appendChild(span);
-        answersEl.appendChild(label);
-    });
+        q.answers.forEach((ans, idx) => {
+            const label = document.createElement('label');
+            label.className = 'answer-option';
+
+            const input = document.createElement('input');
+            input.type = inputType;
+            input.name = 'answer';
+            input.value = idx;
+            if (userSet.has(idx)) {
+                input.checked = true;
+            }
+            if (alreadyChecked) {
+                input.disabled = true;
+                if (correctSet.has(idx)) {
+                    label.classList.add('correct');
+                }
+                if (userSet.has(idx) && !correctSet.has(idx)) {
+                    label.classList.add('incorrect');
+                }
+            }
+
+            const span = document.createElement('span');
+            span.textContent = ans;
+
+            label.appendChild(input);
+            label.appendChild(span);
+            answersEl.appendChild(label);
+        });
+
+        if (alreadyChecked) {
+            const correct = isUserCorrect(user, q);
+            if (correct) {
+                feedbackEl.textContent = 'Prawidłowa odpowiedź.';
+                feedbackEl.classList.add('ok');
+            } else {
+                feedbackEl.textContent = 'Błędna odpowiedź.';
+                feedbackEl.classList.add('bad');
+            }
+        }
+    }
 
     if (alreadyChecked) {
-        const correct = isUserCorrect(user, q.correctIndexes);
-        if (correct) {
-            feedbackEl.textContent = 'Prawidłowa odpowiedź.';
-            feedbackEl.classList.add('ok');
-        } else {
-            feedbackEl.textContent = 'Błędna odpowiedź.';
-            feedbackEl.classList.add('bad');
-        }
         if (currentIndex === quizQuestions.length - 1) {
             checkNextBtn.textContent = 'Zakończ';
         } else {
@@ -490,47 +638,15 @@ function checkCurrentQuestion() {
 
     const user = userAnswers[currentIndex] || [];
     if (user.length === 0) {
-        alert('Najpierw zaznacz odpowiedź.');
+        alert('Najpierw zaznacz odpowiedź lub ułóż kolejność.');
         return;
     }
 
     checkedQuestions[currentIndex] = true;
-
-    const answersEl = document.getElementById('quizAnswers');
-    const feedbackEl = document.getElementById('quizFeedback');
-    const checkNextBtn = document.getElementById('checkNextBtn');
-
-    const correctSet = new Set(q.correctIndexes);
-    const userSet = new Set(user);
-
-    answersEl.querySelectorAll('.answer-option').forEach((opt, idx) => {
-        const input = opt.querySelector('input');
-        input.disabled = true;
-        if (correctSet.has(idx)) {
-            opt.classList.add('correct');
-        }
-        if (userSet.has(idx) && !correctSet.has(idx)) {
-            opt.classList.add('incorrect');
-        }
-    });
-
-    const correct = isUserCorrect(user, q.correctIndexes);
-    if (correct) {
-        feedbackEl.textContent = 'Prawidłowa odpowiedź.';
-        feedbackEl.className = 'feedback ok';
-    } else {
-        feedbackEl.textContent = 'Błędna odpowiedź.';
-        feedbackEl.className = 'feedback bad';
-    }
-
-    if (currentIndex === quizQuestions.length - 1) {
-        checkNextBtn.textContent = 'Zakończ';
-    } else {
-        checkNextBtn.textContent = 'Dalej';
-    }
+    renderQuestion();
 }
 
-// PODSUMOWANIE
+// PODSUMOWANIE - ROZSZERZONE O SORTOWANIE
 function showSummary() {
     quizFinished = true;
     document.getElementById('quizScreen').classList.add('hidden');
@@ -545,8 +661,7 @@ function showSummary() {
 
     quizQuestions.forEach((q, idx) => {
         const user = userAnswers[idx] || [];
-        const correct = q.correctIndexes;
-        const isCorrect = isUserCorrect(user, correct);
+        const isCorrect = isUserCorrect(user, q);
         if (isCorrect) correctCount++;
 
         const item = document.createElement('div');
@@ -563,37 +678,74 @@ function showSummary() {
             : 'Odpowiedź błędna – z tym miałeś problem.';
         item.appendChild(status);
 
-        const userBlock = document.createElement('div');
-        userBlock.className = 'summary-block';
-        const userTitle = document.createElement('div');
-        userTitle.textContent = 'To zaznaczyłeś:';
-        userBlock.appendChild(userTitle);
+        if (q.type === 'sort') {
+            // Podsumowanie dla pytania sortującego
+            const userBlock = document.createElement('div');
+            userBlock.className = 'summary-block';
+            const userTitle = document.createElement('div');
+            userTitle.textContent = 'Twoja kolejność:';
+            userBlock.appendChild(userTitle);
 
-        if (user.length === 0) {
-            const d = document.createElement('div');
-            d.textContent = '- Nic nie zaznaczyłeś.';
-            userBlock.appendChild(d);
+            if (user.length === 0) {
+                const d = document.createElement('div');
+                d.textContent = '- Nie ułożyłeś kolejności.';
+                userBlock.appendChild(d);
+            } else {
+                user.forEach((aIdx, pos) => {
+                    const d = document.createElement('div');
+                    d.textContent = `${pos + 1}. ${q.answers[aIdx]}`;
+                    userBlock.appendChild(d);
+                });
+            }
+            item.appendChild(userBlock);
+
+            const correctBlock = document.createElement('div');
+            correctBlock.className = 'summary-block';
+            const correctTitle = document.createElement('div');
+            correctTitle.textContent = 'Prawidłowa kolejność:';
+            correctBlock.appendChild(correctTitle);
+
+            q.correctOrder.forEach((aIdx, pos) => {
+                const d = document.createElement('div');
+                d.textContent = `${pos + 1}. ${q.answers[aIdx]}`;
+                correctBlock.appendChild(d);
+            });
+            item.appendChild(correctBlock);
+
         } else {
-            user.forEach(aIdx => {
+            // Podsumowanie dla standardowego pytania
+            const userBlock = document.createElement('div');
+            userBlock.className = 'summary-block';
+            const userTitle = document.createElement('div');
+            userTitle.textContent = 'To zaznaczyłeś:';
+            userBlock.appendChild(userTitle);
+
+            if (user.length === 0) {
+                const d = document.createElement('div');
+                d.textContent = '- Nic nie zaznaczyłeś.';
+                userBlock.appendChild(d);
+            } else {
+                user.forEach(aIdx => {
+                    const d = document.createElement('div');
+                    d.textContent = '- ' + q.answers[aIdx];
+                    userBlock.appendChild(d);
+                });
+            }
+            item.appendChild(userBlock);
+
+            const correctBlock = document.createElement('div');
+            correctBlock.className = 'summary-block';
+            const correctTitle = document.createElement('div');
+            correctTitle.textContent = 'Prawidłowe odpowiedzi:';
+            correctBlock.appendChild(correctTitle);
+
+            q.correctIndexes.forEach(aIdx => {
                 const d = document.createElement('div');
                 d.textContent = '- ' + q.answers[aIdx];
-                userBlock.appendChild(d);
+                correctBlock.appendChild(d);
             });
+            item.appendChild(correctBlock);
         }
-        item.appendChild(userBlock);
-
-        const correctBlock = document.createElement('div');
-        correctBlock.className = 'summary-block';
-        const correctTitle = document.createElement('div');
-        correctTitle.textContent = 'Prawidłowe odpowiedzi:';
-        correctBlock.appendChild(correctTitle);
-
-        correct.forEach(aIdx => {
-            const d = document.createElement('div');
-            d.textContent = '- ' + q.answers[aIdx];
-            correctBlock.appendChild(d);
-        });
-        item.appendChild(correctBlock);
 
         summaryList.appendChild(item);
     });
@@ -654,7 +806,6 @@ document.getElementById('checkNextBtn').addEventListener('click', () => {
     if (!checkedQuestions[currentIndex]) {
         checkCurrentQuestion();
     } else {
-        // już sprawdzone -> idziemy dalej albo kończymy
         saveCurrentSelection();
         if (currentIndex === quizQuestions.length - 1) {
             showSummary();
@@ -667,6 +818,3 @@ document.getElementById('checkNextBtn').addEventListener('click', () => {
 </script>
 </body>
 </html>
-
-
-
