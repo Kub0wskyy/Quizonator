@@ -5,212 +5,411 @@
 <title>Quizonator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
+    :root {
+        --bg: #f4f4f4;
+        --card: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --primary: #1976d2;
+        --primary-dark: #1258a0;
+        --success-bg: #c8e6c9;
+        --success-border: #4caf50;
+        --danger-bg: #ffcdd2;
+        --danger-border: #f44336;
+        --info-bg: #e3f2fd;
+        --info-border: #64b5f6;
+        --warning-bg: #fff3cd;
+        --warning-border: #e0b100;
+        --surface: #fafafa;
+        --border: #dddddd;
+        --shadow: 0 10px 30px rgba(0,0,0,0.08);
+        --radius: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
         font-family: Arial, sans-serif;
-        background: #f4f4f4;
+        background: linear-gradient(180deg, #f4f4f4 0%, #eef5fb 100%);
         margin: 0;
         padding: 20px;
+        color: var(--text);
     }
+
     .app {
-        max-width: 800px;
+        max-width: 950px;
         margin: 0 auto;
-        background: #ffffff;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        padding: 20px 25px 30px;
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 24px 26px 32px;
     }
+
     h1 {
         text-align: center;
+        margin: 0 0 10px;
+    }
+
+    h2 {
         margin-top: 0;
     }
+
+    .subtitle {
+        text-align: center;
+        color: var(--muted);
+        margin: 0 0 22px;
+        font-size: 14px;
+    }
+
     .hidden {
         display: none;
     }
+
     textarea {
         width: 100%;
-        height: 200px;
+        min-height: 240px;
         font-family: Consolas, monospace;
         font-size: 13px;
         box-sizing: border-box;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px;
+        resize: vertical;
+        background: #fcfcfc;
     }
+
     label {
         font-weight: bold;
     }
+
     .row {
         margin-top: 15px;
     }
+
     .controls {
-        margin-top: 15px;
+        margin-top: 18px;
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
         align-items: center;
     }
+
     input[type="number"] {
-        width: 80px;
-        padding: 5px;
+        width: 90px;
+        padding: 9px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
     }
+
     button {
-        padding: 7px 16px;
-        border-radius: 4px;
+        padding: 10px 16px;
+        border-radius: 10px;
         border: none;
         cursor: pointer;
-        background: #1976d2;
+        background: var(--primary);
         color: #fff;
         font-weight: bold;
+        transition: background 0.2s ease, transform 0.15s ease;
     }
+
+    button:hover {
+        background: var(--primary-dark);
+    }
+
+    button:active {
+        transform: translateY(1px);
+    }
+
+    button.secondary {
+        background: #607d8b;
+    }
+
+    button.secondary:hover {
+        background: #4d6571;
+    }
+
+    button.ghost {
+        background: #e9eef3;
+        color: #26435e;
+    }
+
+    button.ghost:hover {
+        background: #dde6ee;
+    }
+
     button:disabled {
         background: #9e9e9e;
         cursor: default;
+        transform: none;
     }
+
+    .menu-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+    }
+
+    .hint-box {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: var(--info-bg);
+        border: 1px solid var(--info-border);
+        font-size: 14px;
+    }
+
     .quiz-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
-    }
-    .quiz-question {
-        font-size: 16px;
-        font-weight: bold;
         margin-bottom: 10px;
+        gap: 10px;
     }
+
+    .quiz-question {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+
     .answers {
         margin-top: 10px;
     }
+
     .answer-option {
         display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 4px 7px;
-        border-radius: 4px;
-        margin-bottom: 4px;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 8px;
+        background: #f9fafb;
+        border: 1px solid #edf0f2;
     }
+
     .answer-option.correct {
-        background-color: #c8e6c9;
+        background-color: var(--success-bg);
+        border-color: var(--success-border);
     }
+
     .answer-option.incorrect {
-        background-color: #ffcdd2;
+        background-color: var(--danger-bg);
+        border-color: var(--danger-border);
     }
-    
-    /* STYLE DLA SORTOWANIA */
-    .sortable-list {
+
+    .answer-option.study-highlight {
+        background-color: var(--success-bg);
+        border-color: var(--success-border);
+    }
+
+    .answer-option input {
+        margin-top: 2px;
+    }
+
+    .answer-prefix {
+        font-weight: bold;
+        color: #54606d;
+        min-width: 26px;
+        display: inline-block;
+    }
+
+    .sortable-list,
+    .study-sort-list {
         list-style: none;
         padding: 0;
-        margin: 10px 0;
+        margin: 12px 0 0;
     }
-    .sortable-item {
+
+    .sortable-item,
+    .study-sort-item {
         background: #f9f9f9;
-        border: 2px solid #ddd;
-        border-radius: 6px;
+        border: 2px solid var(--border);
+        border-radius: 10px;
         padding: 10px 12px;
         margin-bottom: 8px;
-        cursor: move;
         user-select: none;
         display: flex;
         align-items: center;
         gap: 10px;
     }
+
+    .sortable-item {
+        cursor: move;
+    }
+
     .sortable-item:hover {
         background: #f0f0f0;
     }
+
     .sortable-item.dragging {
         opacity: 0.5;
     }
-    .sortable-item.correct {
-        background-color: #c8e6c9;
-        border-color: #4caf50;
+
+    .sortable-item.correct,
+    .study-sort-item.correct {
+        background-color: var(--success-bg);
+        border-color: var(--success-border);
     }
+
     .sortable-item.incorrect {
-        background-color: #ffcdd2;
-        border-color: #f44336;
+        background-color: var(--danger-bg);
+        border-color: var(--danger-border);
     }
-    /* Pozycja w kolejności (1, 2, 3, 4) */
+
+    .study-sort-item {
+        cursor: default;
+        box-shadow: 0 1px 0 rgba(255,255,255,0.5) inset;
+    }
+
     .position-number {
         font-weight: bold;
-        color: #1976d2;
-        min-width: 25px;
+        color: var(--primary);
+        min-width: 28px;
         font-size: 16px;
     }
-    /* Numer odpowiedzi (pozostaje przy odpowiedzi) */
+
     .answer-label {
         font-weight: bold;
         color: #666;
-        min-width: 20px;
+        min-width: 24px;
     }
+
     .sortable-item.checked .position-number {
         color: #666;
     }
-    
+
     .feedback {
-        margin-top: 10px;
+        margin-top: 12px;
         font-weight: bold;
+        min-height: 22px;
     }
+
     .feedback.ok {
         color: #2e7d32;
     }
+
     .feedback.bad {
         color: #c62828;
     }
+
     .nav-buttons {
-        margin-top: 15px;
+        margin-top: 18px;
         display: flex;
         justify-content: space-between;
         gap: 10px;
     }
+
     .progress {
         font-size: 14px;
-        color: #555;
+        color: var(--muted);
     }
-    .summary-item {
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        padding: 8px 10px;
-        margin-bottom: 8px;
-        background: #fafafa;
+
+    .summary-item,
+    .study-item {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px 14px;
+        margin-bottom: 12px;
+        background: var(--surface);
     }
-    .summary-item h3 {
-        margin: 0 0 4px;
-        font-size: 14px;
+
+    .summary-item h3,
+    .study-item h3 {
+        margin: 0 0 8px;
+        font-size: 15px;
+        line-height: 1.4;
     }
+
     .summary-correct {
         color: #2e7d32;
         font-weight: bold;
     }
+
     .summary-wrong {
         color: #c62828;
         font-weight: bold;
     }
-    .summary-block {
-        margin-top: 3px;
+
+    .summary-block,
+    .study-block {
+        margin-top: 8px;
         padding-left: 10px;
-        font-size: 13px;
+        font-size: 14px;
     }
-    .summary-block div {
-        margin-bottom: 2px;
+
+    .summary-block div,
+    .study-block div {
+        margin-bottom: 4px;
+    }
+
+    .study-topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .study-intro {
+        background: var(--warning-bg);
+        border: 1px solid var(--warning-border);
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 18px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .study-question-type {
+        display: inline-block;
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: #e8f0fe;
+        color: #1b4d8a;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 0.2px;
+    }
+
+    .study-answer-note {
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 13px;
     }
 
     @media (max-width: 600px) {
         body {
             padding: 10px;
         }
+
         .app {
-            padding: 15px;
+            padding: 16px;
         }
-        .controls {
+
+        .controls,
+        .menu-actions,
+        .nav-buttons,
+        .study-topbar {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
         }
-        .controls button, .nav-buttons button, #summaryBackToMenuBtn {
+
+        .controls button,
+        .menu-actions button,
+        .nav-buttons button,
+        #summaryBackToMenuBtn,
+        #studyBackToMenuBtn {
             width: 100%;
             padding: 12px;
         }
-        .nav-buttons {
-            flex-direction: column;
-        }
+
         .quiz-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 5px;
         }
     }
 </style>
@@ -218,6 +417,7 @@
 <body>
 <div class="app">
     <h1>Quizonator</h1>
+    <p class="subtitle">Tryb quizu i tryb nauki w jednym miejscu</p>
 
     <!-- MENU GŁÓWNE -->
     <div id="menuScreen">
@@ -229,7 +429,15 @@
         <div class="row controls">
             <label for="questionCount">Ile pytań wylosować:</label>
             <input type="number" id="questionCount" min="1" value="5" />
-            <button id="startBtn">Start</button>
+        </div>
+
+        <div class="menu-actions">
+            <button id="startBtn">Start quizu</button>
+            <button id="studyBtn" class="secondary">Tryb nauki</button>
+        </div>
+
+        <div class="hint-box">
+            <strong>Tryb quizu</strong> losuje pytania i pozwala sprawdzać wiedzę. <strong>Tryb nauki</strong> pokazuje od razu wszystkie pytania wraz z zaznaczonymi poprawnymi odpowiedziami albo poprawną kolejnością.
         </div>
     </div>
 
@@ -244,8 +452,8 @@
         <div id="quizFeedback" class="feedback"></div>
 
         <div class="nav-buttons">
-            <button id="backToMenuBtn">Powrót do menu</button>
-            <button id="prevQuestionBtn">Cofnij</button>
+            <button id="backToMenuBtn" class="ghost">Powrót do menu</button>
+            <button id="prevQuestionBtn" class="ghost">Cofnij</button>
             <button id="checkNextBtn">Sprawdź</button>
         </div>
     </div>
@@ -256,13 +464,29 @@
         <div id="summaryResult"></div>
         <div id="summaryList"></div>
         <div class="row">
-            <button id="summaryBackToMenuBtn">Powrót do menu</button>
+            <button id="summaryBackToMenuBtn" class="ghost">Powrót do menu</button>
         </div>
+    </div>
+
+    <!-- TRYB NAUKI -->
+    <div id="studyScreen" class="hidden">
+        <div class="study-topbar">
+            <div>
+                <h2>Tryb nauki</h2>
+                <div id="studyMeta" class="progress"></div>
+            </div>
+            <button id="studyBackToMenuBtn" class="ghost">Powrót do menu</button>
+        </div>
+
+        <div class="study-intro">
+            Tutaj widzisz od razu cały materiał. W pytaniach testowych podświetlone są tylko poprawne odpowiedzi, a w pytaniach z kolejnością pokazana jest gotowa prawidłowa sekwencja od pierwszego do ostatniego elementu.
+        </div>
+
+        <div id="studyList"></div>
     </div>
 </div>
 
 <script>
-// PRZYKŁADOWE PYTANIA
 const RAW_QUESTIONS = `
 1.	Rachunek zysków i strat to sprawozdanie finansowe prezentujące:
 *a)	wynik finansowy w ujęciu memoriałowym,
@@ -285,7 +509,6 @@ d)	kosztów finansowych.
 
 document.getElementById('questionsInput').value = RAW_QUESTIONS.trim();
 
-// stan aplikacji
 let allQuestions = [];
 let quizQuestions = [];
 let currentIndex = 0;
@@ -293,7 +516,6 @@ let userAnswers = [];
 let checkedQuestions = [];
 let quizFinished = false;
 
-// PARSOWANIE PYTAŃ - ROZSZERZONE O PYTANIA SORTUJĄCE
 function parseQuestions(raw) {
     const blocks = raw
         .split(/\n\s*\n/)
@@ -318,7 +540,7 @@ function parseQuestions(raw) {
         }
 
         const answers = [];
-        const answerLabels = []; // etykiety a), b), c), d)
+        const answerLabels = [];
         const correctIndexes = [];
         let isSortQuestion = false;
         const sortOrder = [];
@@ -327,7 +549,6 @@ function parseQuestions(raw) {
             let line = lines[i];
             let isCorrect = false;
 
-            // Sprawdź czy to pytanie sortujące (cyfra przed literą)
             const sortMatch = line.match(/^(\d+)([a-zA-Z])\)\s*(.*)$/);
             if (sortMatch) {
                 isSortQuestion = true;
@@ -341,7 +562,6 @@ function parseQuestions(raw) {
                 continue;
             }
 
-            // Standardowe pytanie z gwiazdką
             if (line.startsWith('*')) {
                 isCorrect = true;
                 line = line.substring(1).trim();
@@ -359,7 +579,6 @@ function parseQuestions(raw) {
 
         if (answers.length > 0) {
             if (isSortQuestion && sortOrder.length > 0) {
-                // Pytanie sortujące
                 sortOrder.sort((a, b) => a.orderNum - b.orderNum);
                 const correctOrder = sortOrder.map(item => item.idx);
                 parsed.push({
@@ -370,7 +589,6 @@ function parseQuestions(raw) {
                     type: 'sort'
                 });
             } else if (correctIndexes.length > 0) {
-                // Standardowe pytanie
                 parsed.push({
                     text: qText,
                     answers,
@@ -385,7 +603,6 @@ function parseQuestions(raw) {
     return parsed;
 }
 
-// LOSOWANIE PYTAŃ
 function pickRandomQuestions(all, n) {
     const idx = all.map((_, i) => i);
     for (let i = idx.length - 1; i > 0; i--) {
@@ -395,7 +612,6 @@ function pickRandomQuestions(all, n) {
     return idx.slice(0, n).map(i => all[i]);
 }
 
-// PORÓWNANIE ODPOWIEDZI - ROZSZERZONE O SORTOWANIE
 function isUserCorrect(user, question) {
     if (question.type === 'sort') {
         if (user.length !== question.correctOrder.length) return false;
@@ -413,10 +629,9 @@ function isUserCorrect(user, question) {
     }
 }
 
-// ZAPIS WYBORU BIEŻĄCEGO PYTANIA
 function saveCurrentSelection() {
     const q = quizQuestions[currentIndex];
-    
+
     if (q.type === 'sort') {
         const items = document.querySelectorAll('#quizAnswers .sortable-item');
         const order = [];
@@ -436,7 +651,6 @@ function saveCurrentSelection() {
     }
 }
 
-// DRAG AND DROP
 let draggedElement = null;
 
 function handleDragStart(e) {
@@ -451,9 +665,7 @@ function handleDragEnd(e) {
 }
 
 function handleDragOver(e) {
-    if (e.preventDefault) {
-        e.preventDefault();
-    }
+    if (e.preventDefault) e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     return false;
 }
@@ -471,9 +683,7 @@ function handleDragLeave(e) {
 }
 
 function handleDrop(e) {
-    if (e.stopPropagation) {
-        e.stopPropagation();
-    }
+    if (e.stopPropagation) e.stopPropagation();
     e.preventDefault();
 
     if (draggedElement !== e.target && e.target.classList.contains('sortable-item')) {
@@ -497,7 +707,6 @@ function handleDrop(e) {
     return false;
 }
 
-// AKTUALIZACJA NUMERÓW POZYCJI (1, 2, 3, 4)
 function updatePositionNumbers() {
     const items = document.querySelectorAll('.sortable-list .sortable-item');
     items.forEach((item, index) => {
@@ -508,7 +717,6 @@ function updatePositionNumbers() {
     });
 }
 
-// RENDER PYTANIA
 function renderQuestion() {
     const q = quizQuestions[currentIndex];
     const qNumEl = document.getElementById('quizQuestionNumber');
@@ -532,7 +740,6 @@ function renderQuestion() {
     const user = userAnswers[currentIndex] || [];
 
     if (q.type === 'sort') {
-        // PYTANIE SORTUJĄCE
         const ul = document.createElement('ul');
         ul.className = 'sortable-list';
 
@@ -549,17 +756,14 @@ function renderQuestion() {
             li.dataset.index = ansIdx;
             li.draggable = !alreadyChecked;
 
-            // Pozycja w kolejności (zmienna)
             const posSpan = document.createElement('span');
             posSpan.className = 'position-number';
             posSpan.textContent = `${position + 1}.`;
 
-            // Etykieta odpowiedzi (stała, np. a), b), c), d))
             const labelSpan = document.createElement('span');
             labelSpan.className = 'answer-label';
             labelSpan.textContent = q.answerLabels[ansIdx];
 
-            // Tekst odpowiedzi
             const textSpan = document.createElement('span');
             textSpan.textContent = q.answers[ansIdx];
 
@@ -598,9 +802,7 @@ function renderQuestion() {
                 feedbackEl.classList.add('bad');
             }
         }
-
     } else {
-        // STANDARDOWE PYTANIE
         const multiple = q.correctIndexes.length > 1;
         const inputType = multiple ? 'checkbox' : 'radio';
         const correctSet = new Set(q.correctIndexes);
@@ -627,11 +829,19 @@ function renderQuestion() {
                 }
             }
 
+            const content = document.createElement('div');
+            const prefix = document.createElement('span');
+            prefix.className = 'answer-prefix';
+            prefix.textContent = q.answerLabels[idx] || '';
+
             const span = document.createElement('span');
             span.textContent = ans;
 
+            content.appendChild(prefix);
+            content.appendChild(span);
+
             label.appendChild(input);
-            label.appendChild(span);
+            label.appendChild(content);
             answersEl.appendChild(label);
         });
 
@@ -648,11 +858,7 @@ function renderQuestion() {
     }
 
     if (alreadyChecked) {
-        if (currentIndex === quizQuestions.length - 1) {
-            checkNextBtn.textContent = 'Zakończ';
-        } else {
-            checkNextBtn.textContent = 'Dalej';
-        }
+        checkNextBtn.textContent = currentIndex === quizQuestions.length - 1 ? 'Zakończ' : 'Dalej';
     } else {
         checkNextBtn.textContent = 'Sprawdź';
     }
@@ -660,7 +866,6 @@ function renderQuestion() {
     prevBtn.disabled = currentIndex === 0;
 }
 
-// SPRAWDZENIE PYTANIA
 function checkCurrentQuestion() {
     const q = quizQuestions[currentIndex];
     saveCurrentSelection();
@@ -675,10 +880,11 @@ function checkCurrentQuestion() {
     renderQuestion();
 }
 
-// PODSUMOWANIE
 function showSummary() {
     quizFinished = true;
     document.getElementById('quizScreen').classList.add('hidden');
+    document.getElementById('studyScreen').classList.add('hidden');
+
     const summaryScreen = document.getElementById('summaryScreen');
     const summaryResult = document.getElementById('summaryResult');
     const summaryList = document.getElementById('summaryList');
@@ -739,7 +945,6 @@ function showSummary() {
                 correctBlock.appendChild(d);
             });
             item.appendChild(correctBlock);
-
         } else {
             const userBlock = document.createElement('div');
             userBlock.className = 'summary-block';
@@ -754,7 +959,7 @@ function showSummary() {
             } else {
                 user.forEach(aIdx => {
                     const d = document.createElement('div');
-                    d.textContent = '- ' + q.answers[aIdx];
+                    d.textContent = `- ${q.answerLabels[aIdx]} ${q.answers[aIdx]}`;
                     userBlock.appendChild(d);
                 });
             }
@@ -768,7 +973,7 @@ function showSummary() {
 
             q.correctIndexes.forEach(aIdx => {
                 const d = document.createElement('div');
-                d.textContent = '- ' + q.answers[aIdx];
+                d.textContent = `- ${q.answerLabels[aIdx]} ${q.answers[aIdx]}`;
                 correctBlock.appendChild(d);
             });
             item.appendChild(correctBlock);
@@ -780,22 +985,126 @@ function showSummary() {
     summaryResult.textContent = `Wynik: ${correctCount} z ${quizQuestions.length} prawidłowych odpowiedzi.`;
 }
 
-// RESET DO MENU
+function renderStudyMode(questions) {
+    const studyScreen = document.getElementById('studyScreen');
+    const studyList = document.getElementById('studyList');
+    const studyMeta = document.getElementById('studyMeta');
+
+    studyList.innerHTML = '';
+    studyMeta.textContent = `Łącznie pytań: ${questions.length}`;
+
+    questions.forEach((q, idx) => {
+        const item = document.createElement('div');
+        item.className = 'study-item';
+
+        const typeBadge = document.createElement('div');
+        typeBadge.className = 'study-question-type';
+        typeBadge.textContent = q.type === 'sort' ? 'Pytanie z kolejnością' : 'Pytanie testowe';
+        item.appendChild(typeBadge);
+
+        const title = document.createElement('h3');
+        title.textContent = `Pytanie ${idx + 1}: ${q.text}`;
+        item.appendChild(title);
+
+        if (q.type === 'sort') {
+            const list = document.createElement('ul');
+            list.className = 'study-sort-list';
+
+            q.correctOrder.forEach((answerIndex, position) => {
+                const li = document.createElement('li');
+                li.className = 'study-sort-item correct';
+
+                const posSpan = document.createElement('span');
+                posSpan.className = 'position-number';
+                posSpan.textContent = `${position + 1}.`;
+
+                const labelSpan = document.createElement('span');
+                labelSpan.className = 'answer-label';
+                labelSpan.textContent = q.answerLabels[answerIndex];
+
+                const textSpan = document.createElement('span');
+                textSpan.textContent = q.answers[answerIndex];
+
+                li.appendChild(posSpan);
+                li.appendChild(labelSpan);
+                li.appendChild(textSpan);
+                list.appendChild(li);
+            });
+
+            item.appendChild(list);
+
+            const note = document.createElement('div');
+            note.className = 'study-answer-note';
+            note.textContent = 'Powyżej pokazana jest poprawna kolejność elementów.';
+            item.appendChild(note);
+        } else {
+            const correctSet = new Set(q.correctIndexes);
+
+            q.answers.forEach((ans, ansIdx) => {
+                const label = document.createElement('label');
+                label.className = 'answer-option';
+                if (correctSet.has(ansIdx)) {
+                    label.classList.add('study-highlight');
+                }
+
+                const input = document.createElement('input');
+                input.type = q.correctIndexes.length > 1 ? 'checkbox' : 'radio';
+                input.disabled = true;
+                input.checked = correctSet.has(ansIdx);
+
+                const content = document.createElement('div');
+                const prefix = document.createElement('span');
+                prefix.className = 'answer-prefix';
+                prefix.textContent = q.answerLabels[ansIdx] || '';
+
+                const span = document.createElement('span');
+                span.textContent = ans;
+
+                content.appendChild(prefix);
+                content.appendChild(span);
+
+                label.appendChild(input);
+                label.appendChild(content);
+                item.appendChild(label);
+            });
+
+            const note = document.createElement('div');
+            note.className = 'study-answer-note';
+            note.textContent = 'Na zielono zaznaczone są prawidłowe odpowiedzi.';
+            item.appendChild(note);
+        }
+
+        studyList.appendChild(item);
+    });
+
+    document.getElementById('menuScreen').classList.add('hidden');
+    document.getElementById('quizScreen').classList.add('hidden');
+    document.getElementById('summaryScreen').classList.add('hidden');
+    studyScreen.classList.remove('hidden');
+}
+
 function goToMenu() {
     document.getElementById('menuScreen').classList.remove('hidden');
     document.getElementById('quizScreen').classList.add('hidden');
     document.getElementById('summaryScreen').classList.add('hidden');
+    document.getElementById('studyScreen').classList.add('hidden');
     quizFinished = false;
 }
 
-// ZDARZENIA
-document.getElementById('startBtn').addEventListener('click', () => {
+function parseInputQuestions() {
     const raw = document.getElementById('questionsInput').value;
     allQuestions = parseQuestions(raw);
+
     if (allQuestions.length === 0) {
         alert('Brak poprawnie sparsowanych pytań. Sprawdź format.');
-        return;
+        return false;
     }
+
+    return true;
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+    if (!parseInputQuestions()) return;
 
     const desired = parseInt(document.getElementById('questionCount').value, 10) || 1;
     const count = Math.min(Math.max(1, desired), allQuestions.length);
@@ -808,9 +1117,15 @@ document.getElementById('startBtn').addEventListener('click', () => {
 
     document.getElementById('menuScreen').classList.add('hidden');
     document.getElementById('summaryScreen').classList.add('hidden');
+    document.getElementById('studyScreen').classList.add('hidden');
     document.getElementById('quizScreen').classList.remove('hidden');
 
     renderQuestion();
+});
+
+document.getElementById('studyBtn').addEventListener('click', () => {
+    if (!parseInputQuestions()) return;
+    renderStudyMode(allQuestions);
 });
 
 document.getElementById('backToMenuBtn').addEventListener('click', () => {
@@ -818,6 +1133,10 @@ document.getElementById('backToMenuBtn').addEventListener('click', () => {
 });
 
 document.getElementById('summaryBackToMenuBtn').addEventListener('click', () => {
+    goToMenu();
+});
+
+document.getElementById('studyBackToMenuBtn').addEventListener('click', () => {
     goToMenu();
 });
 
