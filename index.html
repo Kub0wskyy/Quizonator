@@ -1589,13 +1589,24 @@ function renderStudyMode(questions){
 // ================================================
 // ============ TRYB MILIONERÓW ==================
 // ================================================
+
+// Stan milionerów
+let milQuestions=[], milCurrentQ=0;
+// fifty/change/second = true oznacza ZUżYTE globalnie
+// second_active = true oznacza aktywne (włączone) na bieżące pytanie
+let milLifelines={fifty:false, change:false, second:false, second_active:false};
+let milSecondChanceUsed=false, milAnswered=false;
+let milDisabled50=[];   // indeksy wyszarzone przez 50:50 lub 2szansę
+let milUsedThisRound=false; // czy użyto koła w tej rundzie
+
 function startMillionaire(questions){
     const eligible=filterMilQuestions(questions);
     if(eligible.length<13){ alert('Za mało pytań kwalifikujących się do trybu Milionerzy (min. 13).'); return; }
-    milQuestions=shuffle(eligible).slice(0,13); // 13 (12 gra + 1 zapas na zmianę)
+    milQuestions=shuffle(eligible).slice(0,13); // indeksy 0-11 = gra, 12 = zapas
     milCurrentQ=0;
-    milLifelines={fifty:false,change:false,second:false};
-    milAnswered=false; milFirstWrongIdx=-1; milSecondChanceUsed=false;
+    milLifelines={fifty:false, change:false, second:false, second_active:false};
+    milSecondChanceUsed=false; milAnswered=false;
+    milDisabled50=[]; milUsedThisRound=false;
     buildLadder();
     hideAll();
     document.getElementById('milScreen').classList.remove('hidden');
@@ -1632,13 +1643,18 @@ function renderMilQuestion(){
     document.getElementById('milQuestion').textContent=q.text;
     document.getElementById('milFeedback').textContent='';
     document.getElementById('milFeedback').className='mil-feedback';
-    milAnswered=false; milFirstWrongIdx=-1; milSecondChanceUsed=false;
+    milAnswered=false;
+    milDisabled50=[];
+    milUsedThisRound=false;
+    // Jeśli second_active zostało z poprzedniej rundy (nie użyte) - zachowaj
+    // (second_active resetujemy tylko po użyciu lub po błędnej odpowiedzi)
+    milLifelines.second_active=false; // reset aktywacji 2szansy na nową rundę
     updateLadder();
+    updateLifelineButtons();
     renderMilAnswers();
-    // Reset stanu kół (tylko wizualny per-pytanie - nie resetujemy użycia globalnego)
 }
 
-function renderMilAnswers(disabled50=[], selectedIdx=-1, revealCorrect=false){
+function renderMilAnswers(revealCorrect=false, selectedIdx=-1){
     const q=milQuestions[milCurrentQ];
     const letters=['A','B','C','D'];
     const container=document.getElementById('milAnswers');
@@ -1646,63 +1662,177 @@ function renderMilAnswers(disabled50=[], selectedIdx=-1, revealCorrect=false){
     q.answers.forEach((ans,idx)=>{
         const btn=document.createElement('button');
         btn.className='mil-answer-btn';
-        if(disabled50.includes(idx)) btn.classList.add('disabled-ans');
+        const isDisabled=milDisabled50.includes(idx);
+        if(isDisabled){
+            btn.classList.add('disabled-ans');
+            btn.disabled=true;
+        }
         if(revealCorrect){
             if(q.correctIndexes[0]===idx) btn.classList.add('correct-ans');
-            else if(idx===selectedIdx&&!q.correctIndexes.includes(idx)) btn.classList.add('wrong-ans');
-        } else if(idx===selectedIdx) btn.classList.add('selected');
+            else if(idx===selectedIdx) btn.classList.add('wrong-ans');
+            btn.disabled=true;
+        }
         const lspan=document.createElement('span'); lspan.className='mil-answer-letter'; lspan.textContent=letters[idx]+':';
         const tspan=document.createElement('span'); tspan.textContent=ans;
         btn.appendChild(lspan); btn.appendChild(tspan);
-        if(!disabled50.includes(idx) && !revealCorrect && !milAnswered){
+        if(!isDisabled && !revealCorrect && !milAnswered){
             btn.addEventListener('click',()=>milSelectAnswer(idx));
-        } else { btn.disabled=true; }
+        }
         container.appendChild(btn);
     });
 }
 
-// Aktualny stan (które odpowiedzi są wyszarzone przez 50:50)
-let milDisabled50=[];
-// Naprawiona logika wyboru odpowiedzi z 2 szansą
+// Aktualizuje wizualny stan przycisków kół ratunkowych
+function updateLifelineButtons(){
+    const ll50=document.getElementById('ll50');
+    const llChange=document.getElementById('llChange');
+    const ll2=document.getElementById('ll2chance');
+
+    // Wyszarz zużyte globalnie
+    ll50.classList.toggle('used', milLifelines.fifty);
+    llChange.classList.toggle('used', milLifelines.change || milQuestions[12]===null);
+    ll2.classList.toggle('used', milLifelines.second);
+
+    // Jeśli w tej rundzie użyto już jakiegokolwiek koła - wyszarz pozostałe
+    if(milUsedThisRound){
+        if(!milLifelines.fifty) ll50.classList.add('used');
+        if(!milLifelines.change && milQuestions[12]!==null) llChange.classList.add('used');
+        if(!milLifelines.second && !milLifelines.second_active) ll2.classList.add('used');
+    }
+
+    // 2 szansa aktywna - podświetl
+    if(milLifelines.second_active){
+        ll2.style.background='#fff3cd';
+        ll2.style.borderColor='#f0c040';
+    } else {
+        ll2.style.background='';
+        ll2.style.borderColor='';
+    }
+}
+
+// --- KOŁA RATUNKOWE ---
+
+function useFiftyFifty(){
+    // Sprawdź czy można użyć
+    if(milLifelines.fifty) return; // już globalnie zużyte
+    if(milUsedThisRound) return;   // w tej rundzie już użyto koła
+    if(milAnswered) return;
+
+    milLifelines.fifty=true;
+    milUsedThisRound=true;
+
+    const q=milQuestions[milCurrentQ];
+    const correct=q.correctIndexes[0];
+    const wrongOpts=q.answers.map((_,i)=>i).filter(i=>i!==correct && !milDisabled50.includes(i));
+    const toRemove=shuffle(wrongOpts).slice(0,2);
+    milDisabled50=[...milDisabled50, ...toRemove];
+
+    updateLifelineButtons();
+    renderMilAnswers();
+
+    const fb=document.getElementById('milFeedback');
+    fb.textContent='⚖️ Usunięto 2 błędne odpowiedzi!';
+    fb.className='mil-feedback';
+}
+
+function useChangeQuestion(){
+    if(milLifelines.change) return;
+    if(milQuestions[12]===null || milQuestions[12]===undefined) return;
+    if(milUsedThisRound) return;
+    if(milAnswered) return;
+
+    milLifelines.change=true;
+    milUsedThisRound=true;
+
+    // Zamień bieżące pytanie na zapasowe (13.)
+    milQuestions[milCurrentQ]=milQuestions[12];
+    milQuestions[12]=null;
+    milDisabled50=[];
+
+    updateLifelineButtons();
+    renderMilQuestion();
+    // Nadpisz feedback po renderMilQuestion (który czyści feedback)
+    setTimeout(()=>{
+        const fb=document.getElementById('milFeedback');
+        fb.textContent='🔄 Pytanie zostało zmienione!';
+        fb.className='mil-feedback';
+    },50);
+}
+
+function useSecondChance(){
+    if(milLifelines.second) return;       // globalnie zużyte
+    if(milLifelines.second_active) return; // już aktywne
+    if(milUsedThisRound) return;
+    if(milAnswered) return;
+
+    milLifelines.second_active=true;
+    milUsedThisRound=true;
+
+    updateLifelineButtons();
+
+    const fb=document.getElementById('milFeedback');
+    fb.textContent='💡 Koło „2 szansa" aktywne! Możesz się pomylić raz bez końca gry.';
+    fb.className='mil-feedback';
+}
+
+// --- WYBÓR ODPOWIEDZI ---
+
 function milSelectAnswer(idx){
     if(milAnswered) return;
+    if(milDisabled50.includes(idx)) return;
+
     const q=milQuestions[milCurrentQ];
     const correct=q.correctIndexes[0];
 
     if(idx===correct){
+        // POPRAWNA
         milAnswered=true;
-        renderMilAnswers(milDisabled50,idx,true);
+        // Jeśli second_active nie zostało użyte - oznacz jako globalnie zużyte
+        if(milLifelines.second_active){
+            milLifelines.second=true;
+            milLifelines.second_active=false;
+        }
+        renderMilAnswers(true, idx);
         const fb=document.getElementById('milFeedback');
         fb.textContent='✅ Prawidłowa odpowiedź!';
         fb.className='mil-feedback ok';
-        // Oznacz koło 2szansa jako zużyte przy końcu pytania jeśli było aktywne
-        if(milLifelines.second_active){ milLifelines.second=true; milLifelines.second_active=false; }
         milCurrentQ++;
         setTimeout(()=>{
-            milDisabled50=[];
             if(milCurrentQ>=12) endMillionaire(true);
             else renderMilQuestion();
         },1800);
     } else {
-        // Błędna
-        if(milLifelines.second_active && !milSecondChanceUsed){
-            // Pierwsza błędna z aktywną 2 szansą
-            milSecondChanceUsed=true;
+        // BŁĘDNA
+        if(milLifelines.second_active){
+            // 2 szansa chroni - zaznacz odpowiedź na czerwono, gra trwa
             milLifelines.second_active=false;
-            milLifelines.second=true;
+            milLifelines.second=true; // globalnie zużyte
+            milUsedThisRound=true;
+
+            // Dodaj błędną odpowiedź do wyszarzonych i przerenderuj
+            milDisabled50=[...milDisabled50, idx];
+            updateLifelineButtons();
+
+            // Przerenderuj odpowiedzi - błędna będzie wyszarzona
+            renderMilAnswers(false, -1);
+            // Dodatkowo oznacz tę odpowiedź kolorem czerwonym (jest w milDisabled50 więc disabled)
+            const allBtns=document.getElementById('milAnswers').querySelectorAll('.mil-answer-btn');
+            if(allBtns[idx]){
+                allBtns[idx].classList.add('wrong-ans');
+                allBtns[idx].style.opacity='0.7';
+            }
+
             const fb=document.getElementById('milFeedback');
-            fb.textContent='⚠️ Błędna! Masz jeszcze jedną szansę – wybierz inną odpowiedź.';
+            fb.textContent='⚠️ Błędna odpowiedź! Ale masz jeszcze jedną szansę – wybierz inną.';
             fb.className='mil-feedback bad';
-            milDisabled50=[...milDisabled50,idx];
-            renderMilAnswers(milDisabled50,-1,false);
         } else {
-            // Koniec gry
+            // KONIEC GRY
             milAnswered=true;
-            renderMilAnswers(milDisabled50,idx,true);
+            renderMilAnswers(true, idx);
             const fb=document.getElementById('milFeedback');
-            fb.textContent='❌ Błędna odpowiedź!';
+            fb.textContent='❌ Błędna odpowiedź! Koniec gry.';
             fb.className='mil-feedback bad';
-            setTimeout(()=>endMillionaire(false),2000);
+            setTimeout(()=>endMillionaire(false),2200);
         }
     }
 }
@@ -1714,8 +1844,7 @@ function quitMillionaire(){
 
 function endMillionaire(won, quit=false, quitPrize=0){
     hideAll();
-    const endScreen=document.getElementById('milEndScreen');
-    endScreen.classList.remove('hidden');
+    document.getElementById('milEndScreen').classList.remove('hidden');
     const icon=document.getElementById('milEndIcon');
     const title=document.getElementById('milEndTitle');
     const prize=document.getElementById('milEndPrize');
@@ -1733,18 +1862,18 @@ function endMillionaire(won, quit=false, quitPrize=0){
         prize.textContent=quitPrize>0?'Zabierasz: '+formatPrize(quitPrize):'Zabierasz: 0 zł';
         msg.textContent='Odważna decyzja! Wychodzisz z wygraną.';
     } else {
-        const safePrize= milCurrentQ>=7?MIL_PRIZES[6]: milCurrentQ>=2?MIL_PRIZES[1]:0;
+        const safePrize=milCurrentQ>=7?MIL_PRIZES[6]:milCurrentQ>=2?MIL_PRIZES[1]:0;
+        const reached=milCurrentQ>0?MIL_PRIZES[milCurrentQ-1]:0;
         icon.textContent='😔';
         title.textContent='Koniec gry!';
-        const reached=milCurrentQ>0?MIL_PRIZES[milCurrentQ-1]:0;
-        prize.textContent='Wygrałeś: '+formatPrize(safePrize)+' (próg gwarantowany)';
-        msg.textContent=`Dotarłeś do pytania ${milCurrentQ+1} za ${formatPrize(reached>0?reached:0)}.`;
+        prize.textContent='Kwota gwarantowana: '+formatPrize(safePrize);
+        msg.textContent=`Dotarłeś do pytania ${milCurrentQ+1} za ${formatPrize(reached)}.`;
     }
 }
 
 function milGoBack(){
-    if(activeSetIndex!==null){ openSetMenu(parsedSets[activeSetIndex],allQuestions.length); }
-    else { goBackToStart(); }
+    if(activeSetIndex!==null) openSetMenu(parsedSets[activeSetIndex],allQuestions.length);
+    else goBackToStart();
 }
 
 // ================================================
