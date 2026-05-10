@@ -167,6 +167,18 @@ input[type=number] { width: 90px; padding: 8px 10px; border: 1px solid #ddd; bor
     .tip-wrap { width: 100%; }
     .mode-btn { min-width: 100%; }
 }
+.instruction-box {
+    background: #fff9e6;
+    border: 1px solid #f0c040;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+}
+.instruction-box h4 { margin: 0 0 8px; }
+.instruction-box pre { background: #fffae0; border: 1px solid #e0c840; border-radius: 6px; padding: 10px; font-size: 12px; overflow-x: auto; margin: 6px 0; white-space: pre-wrap; }
+.instruction-box code { background: #fff3cc; border-radius: 3px; padding: 1px 4px; font-family: Consolas, monospace; }
 </style>
 </head>
 <body>
@@ -193,22 +205,28 @@ input[type=number] { width: 90px; padding: 8px 10px; border: 1px solid #ddd; bor
                 <span class="tip-box" id="customMilTip">Wymaga min. 13 pytań z 4 odpowiedziami (a–d) i 1 poprawną.</span>
             </div>
         </div>
-        <div class="instr">
-            <h4>📋 Format pytań</h4>
-            <p><strong>Gwiazdka * = poprawna odpowiedź:</strong></p>
-            <pre>1. Treść pytania
+        <div class="instruction-box">
+                <h4>📋 Jak formatować pytania?</h4>
+                <p><strong>Pytanie testowe</strong> — gwiazdka <code>*</code> przed literą poprawnej odpowiedzi:</p>
+                <pre>1. Treść pytania
 *a) Odpowiedź prawidłowa
-b)  Błędna
-c)  Błędna
-d)  Błędna</pre>
-            <p style="margin-top:8px"><strong>Pytanie z kolejnością (cyfra przed literą):</strong></p>
-            <pre>2. Ułóż kolejność:
-2a) krok drugi
+b)  Odpowiedź błędna
+c)  Inna błędna
+d)  Kolejna błędna</pre>
+                <p style="margin-top:10px"><strong>Kilka poprawnych odpowiedzi</strong> — gwiazdka przy każdej z nich:</p>
+                <pre>2. Które są parzyste?
+*a) 2
+b)  3
+*c) 4
+d)  5</pre>
+                <p style="margin-top:10px"><strong>Pytanie z kolejnością</strong> — cyfra + litera przed nawiasem (cyfra = właściwa pozycja):</p>
+                <pre>3. Ułóż etapy rosnąco:
+3a) krok trzeci
 1b) krok pierwszy
 4c) krok czwarty
-3d) krok trzeci</pre>
-            <p style="margin-top:8px;color:#666">Pytania oddzielaj <strong>pustą linią</strong>. Zestawy zaczynaj od: <code>!Zestaw 1 "Nazwa"</code></p>
-        </div>
+2d) krok drugi</pre>
+                <p style="margin-top:8px; color:#666">Pytania oddzielaj <strong>pustą linią</strong>.</p>
+            </div>
     </div>
     <div id="setGridSection">
         <div id="setGrid" class="set-grid"></div>
@@ -327,7 +345,7 @@ d)  Błędna</pre>
     </div>
 </div>
 
-<div class="footer">Quizonator</div>
+<div class="footer">Autor: Kub0wskyy</div>
 </div><!-- /.app -->
 
 <script>
