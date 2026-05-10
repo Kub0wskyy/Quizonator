@@ -5,231 +5,217 @@
 <title>Quizonator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
-:root {
-    --bg: #f4f4f4; --card: #fff; --text: #1f2937; --muted: #6b7280;
-    --primary: #1976d2; --primary-dark: #1258a0;
-    --success-bg: #c8e6c9; --success-border: #4caf50;
-    --danger-bg: #ffcdd2; --danger-border: #f44336;
-    --info-bg: #e3f2fd; --info-border: #64b5f6;
-    --warning-bg: #fff9e6; --warning-border: #f0c040;
-    --surface: #fafafa; --border: #ddd;
-    --shadow: 0 10px 30px rgba(0,0,0,.08); --radius: 12px;
-}
-* { box-sizing: border-box; }
-body { font-family: Arial, sans-serif; background: linear-gradient(180deg,#f0f4f8,#e8f0fb); margin:0; padding:20px; color:var(--text); }
-.app { max-width:960px; margin:0 auto; background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow); padding:26px 28px 34px; }
-h1 { text-align:center; margin:0 0 6px; font-size:26px; }
-h2 { margin-top:0; }
-.subtitle { text-align:center; color:var(--muted); margin:0 0 22px; font-size:14px; }
-.hidden { display:none !important; }
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; }
+body { font-family: Arial, sans-serif; background: #f0f4f8; margin: 0; padding: 20px; }
+.app { max-width: 960px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.1); padding: 24px 28px 32px; }
+h1 { text-align: center; margin: 0 0 4px; font-size: 26px; }
+.subtitle { text-align: center; color: #666; margin: 0 0 20px; font-size: 14px; }
+.hidden { display: none !important; }
 
-/* PRZYCISKI */
-button { padding:10px 18px; border-radius:10px; border:none; cursor:pointer; background:var(--primary); color:#fff; font-weight:bold; font-size:14px; transition:background .2s,transform .12s; }
-button:hover { background:var(--primary-dark); }
-button:active { transform:translateY(1px); }
-button.secondary { background:#607d8b; }
-button.secondary:hover { background:#4d6571; }
-button.ghost { background:#e9eef3; color:#26435e; }
-button.ghost:hover { background:#dde6ee; }
-button:disabled { background:#9e9e9e; cursor:default; transform:none; }
+/* ===== BUTTONY ===== */
+button { padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer; background: #1976d2; color: #fff; font-weight: bold; font-size: 14px; transition: background .2s; }
+button:hover { background: #1258a0; }
+button.secondary { background: #607d8b; } button.secondary:hover { background: #4d6571; }
+button.ghost { background: #e9eef3; color: #26435e; } button.ghost:hover { background: #dde6ee; }
+button:disabled { background: #9e9e9e !important; cursor: default; }
 
-/* START SCREEN */
-.custom-db-header { display:flex; align-items:center; gap:10px; background:#eef3fb; border:1px solid #c4d8f0; border-radius:10px; padding:12px 16px; cursor:pointer; user-select:none; margin-bottom:6px; font-weight:bold; font-size:15px; color:var(--primary); transition:background .18s; }
-.custom-db-header:hover { background:#ddeeff; }
-.custom-db-header .chevron { margin-left:auto; font-size:18px; transition:transform .2s; }
-.custom-db-header.open .chevron { transform:rotate(180deg); }
-.custom-db-body { background:#fafcff; border:1px solid #c4d8f0; border-radius:0 0 10px 10px; padding:16px; margin-bottom:16px; display:none; }
-.custom-db-body.open { display:block; }
-textarea { width:100%; min-height:200px; font-family:Consolas,monospace; font-size:13px; border:1px solid var(--border); border-radius:8px; padding:10px; resize:vertical; background:#fcfcfc; }
-label { font-weight:bold; }
-input[type=number] { width:90px; padding:9px 10px; border:1px solid var(--border); border-radius:8px; }
-.custom-db-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; align-items:center; }
-.instruction-box { background:var(--warning-bg); border:1px solid var(--warning-border); border-radius:10px; padding:14px 16px; margin-top:14px; font-size:13px; line-height:1.6; }
-.instruction-box h4 { margin:0 0 8px; font-size:14px; }
-.instruction-box code { background:#fff3cc; border-radius:4px; padding:1px 5px; font-family:Consolas,monospace; font-size:12px; }
-.instruction-box pre { background:#fffae0; border:1px solid #e0c840; border-radius:6px; padding:10px; font-size:12px; overflow-x:auto; margin:8px 0 0; white-space:pre-wrap; }
+/* ===== FORMULARZ ===== */
+textarea { width: 100%; min-height: 200px; font-family: Consolas, monospace; font-size: 13px; border: 1px solid #ddd; border-radius: 8px; padding: 10px; box-sizing: border-box; resize: vertical; }
+label { font-weight: bold; }
+input[type=number] { width: 90px; padding: 8px 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
 
-/* SIATKA ZESTAWÓW */
-.set-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; margin:18px 0 10px; }
-.set-card { background:#f4f8fd; border:2px solid #c4d8f0; border-radius:14px; padding:18px 14px; cursor:pointer; transition:background .18s,border-color .18s,transform .14s; text-align:center; }
-.set-card:hover { background:#ddeeff; border-color:var(--primary); transform:translateY(-2px); }
-.set-card-number { font-size:22px; font-weight:bold; color:var(--primary); }
-.set-card-name { font-size:13px; color:var(--text); margin-top:6px; font-weight:bold; word-break:break-word; }
-.set-card-count { font-size:12px; color:var(--muted); margin-top:4px; }
+/* ===== START SCREEN ===== */
+.custom-db-header { display: flex; align-items: center; gap: 10px; background: #eef3fb; border: 1px solid #c4d8f0; border-radius: 10px; padding: 12px 16px; cursor: pointer; user-select: none; margin-bottom: 6px; font-weight: bold; font-size: 15px; color: #1976d2; transition: background .18s; }
+.custom-db-header:hover { background: #ddeeff; }
+.custom-db-header .chevron { margin-left: auto; font-size: 18px; transition: transform .2s; }
+.custom-db-header.open .chevron { transform: rotate(180deg); }
+.custom-db-body { background: #fafcff; border: 1px solid #c4d8f0; border-top: none; border-radius: 0 0 10px 10px; padding: 16px; margin-bottom: 16px; display: none; }
+.custom-db-body.open { display: block; }
+.custom-db-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; align-items: center; }
+.instr { background: #fff9e6; border: 1px solid #f0c040; border-radius: 10px; padding: 12px 16px; margin-top: 14px; font-size: 13px; line-height: 1.6; }
+.instr h4 { margin: 0 0 8px; } .instr pre { background: #fffae0; border: 1px solid #e0c840; border-radius: 6px; padding: 10px; font-size: 12px; overflow-x: auto; margin: 6px 0; white-space: pre-wrap; }
+.instr code { background: #fff3cc; border-radius: 3px; padding: 1px 4px; font-family: Consolas, monospace; }
 
-/* MENU ZESTAWU */
-#setMenuScreen .set-menu-title { font-size:20px; font-weight:bold; margin-bottom:4px; }
-#setMenuScreen .set-menu-subtitle { color:var(--muted); font-size:14px; margin-bottom:20px; }
-.set-menu-actions { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:16px; }
-.set-menu-btn { flex:1; min-width:140px; padding:22px 16px; border-radius:14px; border:2px solid #c4d8f0; background:#f4f8fd; color:var(--text); cursor:pointer; text-align:center; transition:background .18s,border-color .18s,transform .14s; }
-.set-menu-btn:hover { background:#ddeeff; border-color:var(--primary); transform:translateY(-2px); }
-.set-menu-btn.disabled-mode { opacity:.45; cursor:not-allowed; pointer-events:none; position:relative; }
-.set-menu-btn .btn-icon { font-size:30px; margin-bottom:6px; }
-.set-menu-btn .btn-label { font-size:15px; font-weight:bold; color:var(--primary); }
-.set-menu-btn .btn-desc { font-size:12px; color:var(--muted); margin-top:4px; }
-.milionerzy-tooltip { position:relative; display:inline-block; width:100%; }
-.milionerzy-tooltip .tooltip-text { visibility:hidden; background:#333; color:#fff; text-align:center; border-radius:6px; padding:6px 10px; position:absolute; z-index:10; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%); width:220px; font-size:12px; pointer-events:none; opacity:0; transition:opacity .2s; }
-.milionerzy-tooltip:hover .tooltip-text { visibility:visible; opacity:1; }
-.count-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+/* ===== SIATKA ZESTAWÓW ===== */
+.set-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; margin: 16px 0 10px; }
+.set-card { background: #f4f8fd; border: 2px solid #c4d8f0; border-radius: 12px; padding: 18px 14px; cursor: pointer; transition: background .18s, transform .14s; text-align: center; }
+.set-card:hover { background: #ddeeff; border-color: #1976d2; transform: translateY(-2px); }
+.set-card-num { font-size: 22px; font-weight: bold; color: #1976d2; }
+.set-card-name { font-size: 13px; font-weight: bold; margin-top: 6px; word-break: break-word; }
+.set-card-count { font-size: 12px; color: #666; margin-top: 4px; }
 
-/* QUIZ */
-.quiz-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px; }
-.quiz-question { font-size:17px; font-weight:bold; margin-bottom:12px; line-height:1.45; }
-.answers { margin-top:10px; }
-.answer-option { display:flex; align-items:flex-start; gap:10px; padding:10px 12px; border-radius:10px; margin-bottom:8px; background:#f9fafb; border:1px solid #edf0f2; cursor:pointer; }
-.answer-option:hover:not(.disabled-ans) { background:#eef3fb; border-color:#c4d8f0; }
-.answer-option.correct { background:var(--success-bg); border-color:var(--success-border); }
-.answer-option.incorrect { background:var(--danger-bg); border-color:var(--danger-border); }
-.answer-option.study-highlight { background:var(--success-bg); border-color:var(--success-border); }
-.answer-option.disabled-ans { opacity:.35; cursor:default; pointer-events:none; }
-.answer-option input { margin-top:2px; }
-.answer-prefix { font-weight:bold; color:#54606d; min-width:26px; display:inline-block; }
-.sortable-list,.study-sort-list { list-style:none; padding:0; margin:12px 0 0; }
-.sortable-item,.study-sort-item { background:#f9f9f9; border:2px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:8px; user-select:none; display:flex; align-items:center; gap:10px; }
-.sortable-item { cursor:move; }
-.sortable-item:hover { background:#f0f0f0; }
-.sortable-item.dragging { opacity:.5; }
-.sortable-item.correct,.study-sort-item.correct { background:var(--success-bg); border-color:var(--success-border); }
-.sortable-item.incorrect { background:var(--danger-bg); border-color:var(--danger-border); }
-.study-sort-item { cursor:default; }
-.position-number { font-weight:bold; color:var(--primary); min-width:28px; font-size:16px; }
-.answer-label { font-weight:bold; color:#666; min-width:24px; }
-.feedback { margin-top:12px; font-weight:bold; min-height:22px; }
-.feedback.ok { color:#2e7d32; }
-.feedback.bad { color:#c62828; }
-.nav-buttons { margin-top:18px; display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; }
-.progress { font-size:14px; color:var(--muted); }
+/* ===== MENU ZESTAWU ===== */
+.set-menu-title { font-size: 20px; font-weight: bold; margin-bottom: 4px; }
+.set-menu-subtitle { color: #666; font-size: 14px; margin-bottom: 18px; }
+.count-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.set-menu-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+.mode-btn { flex: 1; min-width: 140px; padding: 20px 14px; border-radius: 12px; border: 2px solid #c4d8f0; background: #f4f8fd; cursor: pointer; text-align: center; transition: background .18s, transform .14s; }
+.mode-btn:hover:not(.mode-disabled) { background: #ddeeff; border-color: #1976d2; transform: translateY(-2px); }
+.mode-btn .btn-icon { font-size: 28px; margin-bottom: 6px; }
+.mode-btn .btn-label { font-size: 15px; font-weight: bold; color: #1976d2; }
+.mode-btn .btn-desc { font-size: 12px; color: #666; margin-top: 4px; }
+.mode-btn.mode-disabled { opacity: .45; cursor: not-allowed; }
+.mode-btn.mil-mode .btn-label { color: #c8860a; }
 
-/* PODSUMOWANIE */
-.summary-item { border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; background:var(--surface); }
-.summary-item h3 { margin:0 0 8px; font-size:15px; line-height:1.4; }
-.summary-correct { color:#2e7d32; font-weight:bold; }
-.summary-wrong { color:#c62828; font-weight:bold; }
-.summary-block { margin-top:8px; padding-left:10px; font-size:14px; }
-.summary-block div { margin-bottom:4px; }
+/* Tooltip dla Milionerów */
+.tip-wrap { position: relative; flex: 1; min-width: 140px; }
+.tip-wrap .tip-box { visibility: hidden; opacity: 0; background: #333; color: #fff; font-size: 12px; text-align: center; padding: 6px 10px; border-radius: 6px; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); width: 220px; pointer-events: none; transition: opacity .2s; z-index: 20; }
+.tip-wrap:hover .tip-box { visibility: visible; opacity: 1; }
 
-/* TRYB NAUKI */
-.study-topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:16px; }
-.study-intro { background:var(--warning-bg); border:1px solid var(--warning-border); border-radius:10px; padding:12px 14px; margin-bottom:18px; font-size:14px; line-height:1.5; }
-.study-item { border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:12px; background:var(--surface); }
-.study-item h3 { margin:0 0 8px; font-size:15px; line-height:1.4; }
-.study-question-type { display:inline-block; margin-bottom:10px; padding:4px 10px; border-radius:999px; background:#e8f0fe; color:#1b4d8a; font-size:12px; font-weight:bold; }
-.study-answer-note { margin-top:8px; color:var(--muted); font-size:13px; }
+/* ===== QUIZ ===== */
+.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; }
+.quiz-question { font-size: 17px; font-weight: bold; margin-bottom: 12px; line-height: 1.45; }
+.answers { margin-top: 10px; }
+.answer-option { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; margin-bottom: 7px; background: #f9fafb; border: 1px solid #edf0f2; cursor: pointer; }
+.answer-option:hover:not(.ans-disabled) { background: #eef3fb; }
+.answer-option.correct { background: #c8e6c9 !important; border-color: #4caf50; }
+.answer-option.incorrect { background: #ffcdd2 !important; border-color: #f44336; }
+.answer-option.study-ok { background: #c8e6c9; border-color: #4caf50; }
+.answer-prefix { font-weight: bold; color: #555; min-width: 26px; }
+.sortable-list { list-style: none; padding: 0; margin: 10px 0; }
+.sortable-item { background: #f9f9f9; border: 2px solid #ddd; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; cursor: move; user-select: none; display: flex; align-items: center; gap: 10px; }
+.sortable-item:hover { background: #f0f0f0; }
+.sortable-item.dragging { opacity: .5; }
+.sortable-item.correct { background: #c8e6c9; border-color: #4caf50; }
+.sortable-item.incorrect { background: #ffcdd2; border-color: #f44336; }
+.position-number { font-weight: bold; color: #1976d2; min-width: 26px; font-size: 16px; }
+.answer-label { font-weight: bold; color: #666; min-width: 22px; }
+.feedback { margin-top: 12px; font-weight: bold; min-height: 22px; }
+.feedback.ok { color: #2e7d32; } .feedback.bad { color: #c62828; }
+.progress { font-size: 14px; color: #666; }
+.nav-buttons { margin-top: 16px; display: flex; justify-content: space-between; gap: 10px; }
 
-/* ============ MILIONERZY ============ */
-.mil-layout { display:flex; gap:20px; align-items:flex-start; }
-.mil-main { flex:1; min-width:0; }
-.mil-ladder { width:200px; flex-shrink:0; background:#0d1b2e; border-radius:12px; padding:10px 8px; }
-.mil-ladder-row { display:flex; align-items:center; justify-content:space-between; padding:5px 8px; border-radius:6px; margin-bottom:3px; font-size:12px; color:#aec6e8; font-weight:bold; transition:background .2s; cursor:default; }
-.mil-ladder-row.current { background:#d4a017; color:#000; font-size:13px; }
-.mil-ladder-row.done { color:#4caf50; }
-.mil-ladder-row .mil-q-num { min-width:22px; }
-.mil-ladder-row .mil-q-prize { text-align:right; flex:1; }
+/* ===== PODSUMOWANIE ===== */
+.summary-item { border: 1px solid #ddd; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; background: #fafafa; }
+.summary-item h3 { margin: 0 0 6px; font-size: 15px; line-height: 1.4; }
+.summary-correct { color: #2e7d32; font-weight: bold; }
+.summary-wrong { color: #c62828; font-weight: bold; }
+.summary-block { margin-top: 8px; padding-left: 10px; font-size: 13px; }
+.summary-block div { margin-bottom: 3px; }
 
-.mil-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px; flex-wrap:wrap; }
-.mil-prize-display { background:#0d1b2e; color:#d4a017; font-size:18px; font-weight:bold; padding:8px 16px; border-radius:10px; }
-.mil-question { font-size:17px; font-weight:bold; margin-bottom:14px; line-height:1.45; background:#eef3fb; padding:14px; border-radius:10px; }
+/* ===== TRYB NAUKI ===== */
+.study-topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+.study-intro { background: #fff9e6; border: 1px solid #f0c040; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 14px; }
+.study-item { border: 1px solid #ddd; border-radius: 10px; padding: 14px; margin-bottom: 12px; background: #fafafa; }
+.study-item h3 { margin: 0 0 8px; font-size: 15px; line-height: 1.4; }
+.study-badge { display: inline-block; margin-bottom: 8px; padding: 3px 10px; border-radius: 999px; background: #e8f0fe; color: #1b4d8a; font-size: 12px; font-weight: bold; }
+.study-note { margin-top: 8px; color: #666; font-size: 13px; }
+.study-sort-list { list-style: none; padding: 0; margin: 10px 0 0; }
+.study-sort-item { background: #c8e6c9; border: 2px solid #4caf50; border-radius: 8px; padding: 10px 12px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
 
-.mil-answers { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
-.mil-answer-btn { padding:12px 14px; border-radius:10px; border:2px solid #c4d8f0; background:#f4f8fd; cursor:pointer; font-size:14px; font-weight:bold; color:var(--text); text-align:left; transition:background .18s,border-color .18s; display:flex; gap:8px; align-items:center; }
-.mil-answer-btn:hover:not(:disabled) { background:#ddeeff; border-color:var(--primary); }
-.mil-answer-btn:disabled { opacity:.35; cursor:default; }
-.mil-answer-btn.selected { background:#1976d2; color:#fff; border-color:#1258a0; }
-.mil-answer-btn.correct-ans { background:var(--success-bg); border-color:var(--success-border); }
-.mil-answer-btn.wrong-ans { background:var(--danger-bg); border-color:var(--danger-border); }
-.mil-answer-letter { font-weight:bold; min-width:22px; }
+/* ===== MILIONERZY ===== */
+.mil-layout { display: flex; gap: 20px; align-items: flex-start; }
+.mil-main { flex: 1; min-width: 0; }
 
-.mil-lifelines { display:flex; gap:10px; flex-wrap:wrap; margin:14px 0; }
-.mil-lifeline-btn { flex:1; min-width:100px; padding:10px 12px; border-radius:10px; border:2px solid #c4d8f0; background:#f4f8fd; cursor:pointer; text-align:center; font-size:13px; font-weight:bold; color:var(--primary); transition:background .18s; }
-.mil-lifeline-btn:hover:not(.used) { background:#ddeeff; border-color:var(--primary); }
-.mil-lifeline-btn.used { opacity:.4; cursor:not-allowed; text-decoration:line-through; border-color:#ccc; background:#f0f0f0; color:#999; }
-.mil-lifeline-icon { font-size:20px; display:block; margin-bottom:3px; }
+/* Drabinka */
+.mil-ladder { width: 200px; flex-shrink: 0; background: #0d1b2e; border-radius: 12px; padding: 10px 8px; }
+.mil-row { display: flex; justify-content: space-between; padding: 5px 8px; border-radius: 6px; margin-bottom: 3px; font-size: 12px; color: #aec6e8; font-weight: bold; }
+.mil-row.done { color: #4caf50; }
+.mil-row.current { background: #d4a017; color: #000; font-size: 13px; }
+.mil-row .rnum { min-width: 24px; }
 
-.mil-feedback { margin:12px 0; font-size:16px; font-weight:bold; min-height:24px; text-align:center; }
-.mil-feedback.ok { color:#2e7d32; }
-.mil-feedback.bad { color:#c62828; }
+/* Header pytania */
+.mil-hdr { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+.mil-prize-box { background: #0d1b2e; color: #d4a017; font-size: 18px; font-weight: bold; padding: 8px 16px; border-radius: 10px; }
+.mil-question { font-size: 17px; font-weight: bold; margin-bottom: 14px; background: #eef3fb; padding: 14px; border-radius: 10px; line-height: 1.45; }
 
-.mil-nav { display:flex; justify-content:space-between; gap:10px; margin-top:14px; flex-wrap:wrap; }
+/* Odpowiedzi */
+.mil-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px; }
+.mil-ans-btn { padding: 12px 14px; border-radius: 10px; border: 2px solid #c4d8f0; background: #f4f8fd; cursor: pointer; font-size: 14px; font-weight: bold; color: #1f2937; text-align: left; display: flex; gap: 8px; align-items: center; transition: background .18s; }
+.mil-ans-btn:hover:not(:disabled) { background: #ddeeff; border-color: #1976d2; }
+.mil-ans-btn:disabled { opacity: .35; cursor: default; }
+.mil-ans-btn.ans-wrong { background: #ffcdd2 !important; border-color: #f44336 !important; opacity: .7; }
+.mil-ans-btn.ans-correct { background: #c8e6c9 !important; border-color: #4caf50 !important; }
+.mil-ans-letter { font-weight: bold; min-width: 22px; }
 
-/* Ekran końca gry milionerów */
-.mil-end-screen { text-align:center; padding:20px 0; }
-.mil-end-icon { font-size:64px; margin-bottom:10px; }
-.mil-end-title { font-size:26px; font-weight:bold; margin-bottom:8px; }
-.mil-end-prize { font-size:20px; color:var(--primary); font-weight:bold; margin-bottom:16px; }
-.mil-end-msg { font-size:15px; color:var(--muted); margin-bottom:20px; }
+/* Koła ratunkowe */
+.mil-lifelines { display: flex; gap: 10px; flex-wrap: wrap; margin: 14px 0; }
+.ll-btn { flex: 1; min-width: 90px; padding: 10px 10px; border-radius: 10px; border: 2px solid #c4d8f0; background: #f4f8fd; cursor: pointer; text-align: center; font-size: 13px; font-weight: bold; color: #1976d2; transition: background .18s; user-select: none; }
+.ll-btn:hover:not(.ll-used):not(.ll-blocked) { background: #ddeeff; border-color: #1976d2; }
+.ll-btn.ll-used { opacity: .35; cursor: not-allowed; text-decoration: line-through; background: #f0f0f0; border-color: #ccc; color: #999; }
+.ll-btn.ll-blocked { opacity: .45; cursor: not-allowed; background: #f5f5f5; border-color: #ddd; color: #aaa; }
+.ll-btn.ll-active { background: #fff3cd; border-color: #f0c040; color: #856404; }
+.ll-icon { font-size: 20px; display: block; margin-bottom: 3px; }
+
+.mil-feedback { margin: 10px 0; font-size: 15px; font-weight: bold; min-height: 22px; }
+.mil-feedback.ok { color: #2e7d32; } .mil-feedback.bad { color: #c62828; }
+.mil-nav { margin-top: 14px; }
+
+/* Ekran końca */
+.mil-end { text-align: center; padding: 20px 10px; }
+.mil-end-icon { font-size: 64px; margin-bottom: 10px; }
+.mil-end-title { font-size: 26px; font-weight: bold; margin-bottom: 8px; }
+.mil-end-prize { font-size: 20px; color: #1976d2; font-weight: bold; margin-bottom: 14px; }
+.mil-end-msg { font-size: 15px; color: #555; margin-bottom: 22px; }
 
 /* Konfetti */
-.confetti-piece { position:fixed; width:10px; height:10px; top:-20px; opacity:1; border-radius:2px; animation:confettiFall linear forwards; pointer-events:none; z-index:9999; }
-@keyframes confettiFall { 0%{transform:translateY(0) rotate(0deg); opacity:1;} 100%{transform:translateY(110vh) rotate(720deg); opacity:0;} }
+.cfp { position: fixed; width: 10px; height: 10px; top: -20px; border-radius: 2px; animation: cffall linear forwards; pointer-events: none; z-index: 9999; }
+@keyframes cffall { 0%{transform:translateY(0) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(720deg);opacity:0} }
 
-/* FOOTER */
-.footer-author { text-align:right; margin-top:24px; padding-top:12px; border-top:1px solid var(--border); font-size:13px; color:var(--muted); }
-.footer-author span { font-weight:bold; color:var(--text); }
+/* Footer */
+.footer { text-align: right; margin-top: 24px; padding-top: 12px; border-top: 1px solid #eee; font-size: 13px; color: #888; }
 
-@media(max-width:700px){
-    .mil-layout { flex-direction:column; }
-    .mil-ladder { width:100%; }
-    .mil-answers { grid-template-columns:1fr; }
-    #startScreen .mode-cards,.set-menu-actions { flex-direction:column; }
-    .nav-buttons,.custom-db-actions,.count-row { flex-direction:column; align-items:stretch; }
-    .nav-buttons button,.custom-db-actions button { width:100%; padding:12px; }
-    .quiz-header { flex-direction:column; align-items:flex-start; }
+/* ===== RESPONSIVE ===== */
+@media (max-width: 680px) {
+    .mil-layout { flex-direction: column; }
+    .mil-ladder { width: 100%; }
+    .mil-answers { grid-template-columns: 1fr; }
+    .set-menu-actions, .custom-db-actions, .nav-buttons { flex-direction: column; }
+    .nav-buttons button, .custom-db-actions button { width: 100%; padding: 12px; }
+    .quiz-header { flex-direction: column; align-items: flex-start; }
+    .tip-wrap { width: 100%; }
+    .mode-btn { min-width: 100%; }
 }
 </style>
 </head>
 <body>
 <div class="app">
-<h1>Quizonator</h1>
-<p class="subtitle">Tryb quizu, nauki i Milionerów w jednym miejscu</p>
+<h1>🎓 Quizonator</h1>
+<p class="subtitle">Quiz · Nauka · Milionerzy</p>
 
-<!-- EKRAN STARTOWY -->
+<!-- ========== START SCREEN ========== -->
 <div id="startScreen">
     <div id="customDbHeader" class="custom-db-header">
-        <span>✏️ Własna baza pytań i odpowiedzi</span>
+        <span>✏️ Własna baza pytań</span>
         <span class="chevron">▼</span>
     </div>
     <div id="customDbBody" class="custom-db-body">
-        <label for="questionsInput">Wklej tutaj swoje pytania:</label>
-        <textarea id="questionsInput" placeholder="Wklej tutaj pytania w odpowiednim formacie..."></textarea>
+        <label for="questionsInput">Wklej pytania:</label>
+        <textarea id="questionsInput" placeholder="Wklej pytania w formacie podanym poniżej..."></textarea>
         <div class="custom-db-actions">
-            <label for="questionCount">Ile pytań losować:</label>
+            <label for="questionCount">Ile pytań:</label>
             <input type="number" id="questionCount" min="1" value="5" />
-            <button id="customStartBtn">▶ Start quizu</button>
-            <button id="customStudyBtn" class="secondary">📖 Tryb nauki</button>
-            <div class="milionerzy-tooltip" style="flex:none;display:inline-block;width:auto;">
-                <button id="customMilBtn" class="secondary" style="background:#c8860a;color:#fff;">🎰 Tryb: Milionerzy</button>
-                <span class="tooltip-text" id="customMilTooltip">Wymaga min. 13 pytań z dokładnie 4 odpowiedziami (a–d) i 1 poprawną.</span>
+            <button id="customStartBtn">▶ Quiz</button>
+            <button id="customStudyBtn" class="secondary">📖 Nauka</button>
+            <div class="tip-wrap" style="flex:none;display:inline-block;">
+                <button id="customMilBtn" style="background:#c8860a;">🎰 Milionerzy</button>
+                <span class="tip-box" id="customMilTip">Wymaga min. 13 pytań z 4 odpowiedziami (a–d) i 1 poprawną.</span>
             </div>
         </div>
-        <div class="instruction-box">
-            <h4>📋 Jak formatować pytania?</h4>
-            <p><strong>Pytanie testowe</strong> — gwiazdka <code>*</code> przed literą poprawnej odpowiedzi:</p>
+        <div class="instr">
+            <h4>📋 Format pytań</h4>
+            <p><strong>Gwiazdka * = poprawna odpowiedź:</strong></p>
             <pre>1. Treść pytania
 *a) Odpowiedź prawidłowa
-b)  Odpowiedź błędna
-c)  Inna błędna
-d)  Kolejna błędna</pre>
-            <p style="margin-top:10px"><strong>Kilka poprawnych odpowiedzi</strong> — gwiazdka przy każdej z nich:</p>
-            <pre>2. Które są parzyste?
-*a) 2
-b)  3
-*c) 4
-d)  5</pre>
-            <p style="margin-top:10px"><strong>Pytanie z kolejnością</strong> — cyfra + litera przed nawiasem:</p>
-            <pre>3. Ułóż etapy rosnąco:
-3a) krok trzeci
+b)  Błędna
+c)  Błędna
+d)  Błędna</pre>
+            <p style="margin-top:8px"><strong>Pytanie z kolejnością (cyfra przed literą):</strong></p>
+            <pre>2. Ułóż kolejność:
+2a) krok drugi
 1b) krok pierwszy
 4c) krok czwarty
-2d) krok drugi</pre>
-            <p style="margin-top:8px; color:#666">Pytania oddzielaj <strong>pustą linią</strong>.</p>
+3d) krok trzeci</pre>
+            <p style="margin-top:8px;color:#666">Pytania oddzielaj <strong>pustą linią</strong>. Zestawy zaczynaj od: <code>!Zestaw 1 "Nazwa"</code></p>
         </div>
     </div>
-    <div id="predefinedSetsSection">
+    <div id="setGridSection">
         <div id="setGrid" class="set-grid"></div>
     </div>
 </div>
 
-<!-- MENU ZESTAWU -->
+<!-- ========== MENU ZESTAWU ========== -->
 <div id="setMenuScreen" class="hidden">
     <div class="set-menu-title" id="setMenuTitle"></div>
     <div class="set-menu-subtitle" id="setMenuSubtitle"></div>
@@ -238,104 +224,102 @@ d)  5</pre>
         <input type="number" id="setQuestionCount" min="1" value="10" />
     </div>
     <div class="set-menu-actions">
-        <div class="set-menu-btn" id="setStartBtn">
+        <div class="mode-btn" id="setStartBtn">
             <div class="btn-icon">🎯</div>
             <div class="btn-label">Start quizu</div>
             <div class="btn-desc">Losowe pytania, sprawdzaj wiedzę</div>
         </div>
-        <div class="set-menu-btn" id="setStudyBtn">
+        <div class="mode-btn" id="setStudyBtn">
             <div class="btn-icon">📖</div>
             <div class="btn-label">Tryb nauki</div>
             <div class="btn-desc">Wszystkie pytania z odpowiedziami</div>
         </div>
-        <div class="milionerzy-tooltip" style="flex:1;min-width:140px;">
-            <div class="set-menu-btn" id="setMilBtn">
+        <div class="tip-wrap">
+            <div class="mode-btn mil-mode" id="setMilBtn">
                 <div class="btn-icon">🎰</div>
-                <div class="btn-label" style="color:#c8860a;">Tryb: Milionerzy</div>
+                <div class="btn-label">Tryb: Milionerzy</div>
                 <div class="btn-desc">12 pytań, drabinka nagród</div>
             </div>
-            <span class="tooltip-text" id="setMilTooltip">Wymaga min. 13 pytań z dokładnie 4 odpowiedziami (a–d) i 1 poprawną.</span>
+            <span class="tip-box" id="setMilTip">Wymaga min. 13 pytań z 4 odpowiedziami (a–d) i 1 poprawną.</span>
         </div>
     </div>
     <button id="backToStartBtn" class="ghost">← Wróć</button>
 </div>
 
-<!-- EKRAN QUIZU -->
+<!-- ========== EKRAN QUIZU ========== -->
 <div id="quizScreen" class="hidden">
     <div class="quiz-header">
-        <div id="quizQuestionNumber"></div>
-        <div id="quizProgress" class="progress"></div>
+        <div id="quizNum"></div>
+        <div id="quizProg" class="progress"></div>
     </div>
-    <div id="quizQuestionText" class="quiz-question"></div>
+    <div id="quizText" class="quiz-question"></div>
     <div id="quizAnswers" class="answers"></div>
     <div id="quizFeedback" class="feedback"></div>
     <div class="nav-buttons">
-        <button id="backToMenuBtn" class="ghost">← Wróć</button>
-        <button id="prevQuestionBtn" class="ghost">Cofnij</button>
-        <button id="checkNextBtn">Sprawdź</button>
+        <button id="quizBackBtn" class="ghost">← Wróć</button>
+        <button id="prevBtn" class="ghost">Cofnij</button>
+        <button id="checkBtn">Sprawdź</button>
     </div>
 </div>
 
-<!-- PODSUMOWANIE -->
+<!-- ========== PODSUMOWANIE ========== -->
 <div id="summaryScreen" class="hidden">
     <h2>Podsumowanie</h2>
-    <div id="summaryResult"></div>
+    <div id="summaryResult" style="font-size:16px;font-weight:bold;margin-bottom:14px;"></div>
     <div id="summaryList"></div>
-    <button id="summaryBackToMenuBtn" class="ghost" style="margin-top:10px">← Wróć</button>
+    <button id="summaryBackBtn" class="ghost" style="margin-top:10px">← Wróć</button>
 </div>
 
-<!-- TRYB NAUKI -->
+<!-- ========== TRYB NAUKI ========== -->
 <div id="studyScreen" class="hidden">
     <div class="study-topbar">
         <div>
-            <h2 style="margin-bottom:2px">Tryb nauki</h2>
+            <h2 style="margin:0 0 2px">Tryb nauki</h2>
             <div id="studyMeta" class="progress"></div>
         </div>
-        <button id="studyBackToMenuBtn" class="ghost">← Wróć</button>
+        <button id="studyBackBtn" class="ghost">← Wróć</button>
     </div>
-    <div class="study-intro">Wszystkie pytania z zaznaczonymi poprawnymi odpowiedziami.</div>
+    <div class="study-intro">Poniżej wszystkie pytania z zaznaczonymi poprawnymi odpowiedziami.</div>
     <div id="studyList"></div>
 </div>
 
-<!-- TRYB MILIONERZY -->
+<!-- ========== MILIONERZY – GRA ========== -->
 <div id="milScreen" class="hidden">
     <div class="mil-layout">
         <div class="mil-main">
-            <div class="mil-header">
+            <div class="mil-hdr">
                 <div>
                     <strong>🎰 Milionerzy</strong>
-                    <span style="font-size:13px;color:var(--muted);margin-left:8px;" id="milQuestionNum"></span>
+                    <span id="milQNum" style="font-size:13px;color:#666;margin-left:8px;"></span>
                 </div>
-                <div class="mil-prize-display" id="milPrizeDisplay">1 000 zł</div>
+                <div class="mil-prize-box" id="milPrizeBox"></div>
             </div>
-            <!-- KOŁA RATUNKOWE -->
             <div class="mil-lifelines">
-                <div class="mil-lifeline-btn" id="ll50" onclick="useFiftyFifty()">
-                    <span class="mil-lifeline-icon">⚖️</span>50:50
+                <div class="ll-btn" id="ll50" onclick="llFifty()">
+                    <span class="ll-icon">⚖️</span>50:50
                 </div>
-                <div class="mil-lifeline-btn" id="llChange" onclick="useChangeQuestion()">
-                    <span class="mil-lifeline-icon">🔄</span>Zmiana pytania
+                <div class="ll-btn" id="llChange" onclick="llChange_()">
+                    <span class="ll-icon">🔄</span>Zmiana pytania
                 </div>
-                <div class="mil-lifeline-btn" id="ll2chance" onclick="useSecondChance()">
-                    <span class="mil-lifeline-icon">💡</span>2 szansa
+                <div class="ll-btn" id="ll2nd" onclick="llSecond()">
+                    <span class="ll-icon">💡</span>2 szansa
                 </div>
             </div>
             <div class="mil-question" id="milQuestion"></div>
             <div class="mil-answers" id="milAnswers"></div>
             <div class="mil-feedback" id="milFeedback"></div>
             <div class="mil-nav">
-                <button class="ghost" onclick="quitMillionaire()">🚪 Rezygnuję i biorę wygraną</button>
+                <button class="ghost" onclick="milQuit()">🚪 Rezygnuję i biorę wygraną</button>
             </div>
         </div>
-        <!-- DRABINKA -->
         <div class="mil-ladder" id="milLadder"></div>
     </div>
 </div>
 
-<!-- EKRAN KOŃCA MILIONERÓW -->
+<!-- ========== MILIONERZY – KONIEC ========== -->
 <div id="milEndScreen" class="hidden">
-    <div class="mil-end-screen">
-        <div class="mil-end-icon" id="milEndIcon">🎉</div>
+    <div class="mil-end">
+        <div class="mil-end-icon" id="milEndIcon"></div>
         <div class="mil-end-title" id="milEndTitle"></div>
         <div class="mil-end-prize" id="milEndPrize"></div>
         <div class="mil-end-msg" id="milEndMsg"></div>
@@ -343,14 +327,13 @@ d)  5</pre>
     </div>
 </div>
 
-<!-- AUTOR -->
-<div class="footer-author">Autor: <span></span></div>
-</div><!-- end .app -->
+<div class="footer">Quizonator</div>
+</div><!-- /.app -->
 
 <script>
-// ================================================
-// PREDEFINIOWANE ZESTAWY
-// ================================================
+// =====================================================================
+// PREDEFINIOWANE ZESTAWY – wpisz swoje pytania między backticki poniżej
+// =====================================================================
 const RAW_QUESTIONS = `
 !Zestaw 1 "Ubezpieczenia gospodarcze (20.05.2026 środa)"
 UBEZPIECZENIA GOSPODARCZE
@@ -1275,749 +1258,753 @@ b)  nastąpią procesy dostosowawcze w postaci wzrostu stopy procentowej,
 c)  stopa procentowa nie ulegnie zmianie,
 *d)  odpowiedzi (a) i (b) są prawdziwe.
 `;
-// ================================================
+// =====================================================================
 
-// KWOTY MILIONERÓW (pytanie 1–12)
+// ===== KWOTY MILIONERÓW =====
 const MIL_PRIZES = [1000,2000,5000,10000,15000,25000,50000,75000,125000,250000,500000,1000000];
+function fPrize(n){ return n.toLocaleString('pl-PL') + ' zł'; }
 
-function formatPrize(n){ return n.toLocaleString('pl-PL') + ' zł'; }
-
-// ================================================
-// STAN
-// ================================================
-let allQuestions=[], quizQuestions=[], currentIndex=0;
-let userAnswers=[], checkedQuestions=[], quizFinished=false;
-let parsedSets=[], activeSetIndex=null;
+// ===== STAN GLOBALNY =====
+let allQuestions = [], quizQuestions = [], currentIndex = 0;
+let userAnswers = [], checkedQuestions = [], quizFinished = false;
+let parsedSets = [], activeSetIndex = null;
 
 // Milionerzy
-let milQuestions=[], milCurrentQ=0, milLifelines={fifty:false,change:false,second:false};
-let milSecondChanceUsed=false, milAnswered=false, milFirstWrongIdx=-1;
+let milQs = [], milIdx = 0;
+let milLL = { fifty: false, change: false, second: false }; // globalnie zużyte
+let milSecondActive = false;   // 2szansa włączona na bieżące pytanie
+let milUsedThisRound = false;  // użyto koła w tej rundzie
+let milDisabled = [];           // indeksy odpowiedzi wyszarzonych
+let milAnswered = false;
 
-// ================================================
-// PARSOWANIE ZESTAWÓW
-// ================================================
-function parseSets(raw){
-    const lines=raw.split('\n'); const sets=[]; let current=null;
-    const re=/^!Zestaw\s+(\d+)(?:\s+"([^"]*)")?/i;
-    for(const line of lines){
-        const m=line.match(re);
-        if(m){ if(current) sets.push(current); current={number:parseInt(m[1]),name:m[2]?m[2].trim():null,rawLines:[]}; }
-        else { if(current) current.rawLines.push(line); }
-    }
-    if(current) sets.push(current);
-    if(sets.length===0) sets.push({number:null,name:null,rawLines:lines});
-    return sets.map(s=>({number:s.number,name:s.name,raw:s.rawLines.join('\n')}));
+// ===== EKRANY =====
+const SCREENS = ['startScreen','setMenuScreen','quizScreen','summaryScreen','studyScreen','milScreen','milEndScreen'];
+function hideAll(){ SCREENS.forEach(id => document.getElementById(id).classList.add('hidden')); }
+function showScreen(id){ hideAll(); document.getElementById(id).classList.remove('hidden'); }
+
+function goBackToStart(){
+    hideAll();
+    document.getElementById('startScreen').classList.remove('hidden');
+    activeSetIndex = null;
 }
 
-// ================================================
-// PARSOWANIE PYTAŃ
-// ================================================
+function goBackFromQuiz(){
+    if(activeSetIndex !== null){
+        openSetMenu(parsedSets[activeSetIndex], allQuestions.length);
+    } else {
+        goBackToStart();
+    }
+}
+
+// ===== LOSOWANIE =====
+function shuffle(arr){
+    const a = [...arr];
+    for(let i = a.length-1; i > 0; i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+}
+function pickRandom(all, n){
+    return shuffle(all.map((_,i)=>i)).slice(0,n).map(i=>all[i]);
+}
+
+// ===== PARSOWANIE ZESTAWÓW =====
+function parseSets(raw){
+    const lines = raw.split('\n');
+    const sets = [];
+    let current = null;
+    const re = /^!Zestaw\s+(\d+)(?:\s+"([^"]*)")?/i;
+    for(const line of lines){
+        const m = line.match(re);
+        if(m){
+            if(current) sets.push(current);
+            current = { number: parseInt(m[1]), name: m[2]?m[2].trim():null, rawLines: [] };
+        } else {
+            if(current) current.rawLines.push(line);
+        }
+    }
+    if(current) sets.push(current);
+    if(sets.length === 0) sets.push({ number: null, name: null, rawLines: lines });
+    return sets.map(s => ({ number: s.number, name: s.name, raw: s.rawLines.join('\n') }));
+}
+
+// ===== PARSOWANIE PYTAŃ =====
 function parseQuestions(raw){
-    const blocks=raw.split(/\n\s*\n/).map(b=>b.trim()).filter(b=>b.length>0);
-    const parsed=[];
-    blocks.forEach(block=>{
-        const lines=block.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
-        if(lines.length<2) return;
-        const first=lines[0];
-        const m=first.match(/^(\d+)\.\s*(.*)$/);
-        let qText=first; if(m) qText=m[2].trim();
-        const answers=[],answerLabels=[],correctIndexes=[];
-        let isSortQ=false; const sortOrder=[];
-        for(let i=1;i<lines.length;i++){
-            let line=lines[i]; let isCorrect=false;
-            const sm=line.match(/^(\d+)([a-zA-Z])\)\s*(.*)$/);
-            if(sm){ isSortQ=true; const on=parseInt(sm[1]); const lb=sm[2]; const tx=sm[3].trim(); const idx=answers.length; answers.push(tx); answerLabels.push(lb+')'); sortOrder.push({idx,orderNum:on}); continue; }
-            if(line.startsWith('*')){ isCorrect=true; line=line.substring(1).trim(); }
-            const am=line.match(/^([a-zA-Z])\)\s*(.*)$/);
+    const blocks = raw.split(/\n\s*\n/).map(b=>b.trim()).filter(b=>b.length>0);
+    const parsed = [];
+    blocks.forEach(block => {
+        const lines = block.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
+        if(lines.length < 2) return;
+        const first = lines[0];
+        const mq = first.match(/^(\d+)\.\s*(.*)$/);
+        let qText = mq ? mq[2].trim() : first;
+        const answers = [], answerLabels = [], correctIndexes = [];
+        let isSortQ = false;
+        const sortOrder = [];
+        for(let i = 1; i < lines.length; i++){
+            let line = lines[i];
+            let isCorrect = false;
+            const sm = line.match(/^(\d+)([a-zA-Z])\)\s*(.*)$/);
+            if(sm){
+                isSortQ = true;
+                sortOrder.push({ idx: answers.length, orderNum: parseInt(sm[1]) });
+                answerLabels.push(sm[2]+')');
+                answers.push(sm[3].trim());
+                continue;
+            }
+            if(line.startsWith('*')){ isCorrect = true; line = line.substring(1).trim(); }
+            const am = line.match(/^([a-zA-Z])\)\s*(.*)$/);
             if(!am) continue;
-            const idx=answers.length; answers.push(am[2].trim()); answerLabels.push(am[1]+')');
+            const idx = answers.length;
+            answers.push(am[2].trim());
+            answerLabels.push(am[1]+')');
             if(isCorrect) correctIndexes.push(idx);
         }
-        if(answers.length>0){
-            if(isSortQ&&sortOrder.length>0){ sortOrder.sort((a,b)=>a.orderNum-b.orderNum); parsed.push({text:qText,answers,answerLabels,correctOrder:sortOrder.map(x=>x.idx),type:'sort'}); }
-            else if(correctIndexes.length>0){ parsed.push({text:qText,answers,answerLabels,correctIndexes,type:'standard'}); }
+        if(answers.length === 0) return;
+        if(isSortQ && sortOrder.length > 0){
+            sortOrder.sort((a,b)=>a.orderNum-b.orderNum);
+            parsed.push({ text: qText, answers, answerLabels, correctOrder: sortOrder.map(x=>x.idx), type: 'sort' });
+        } else if(correctIndexes.length > 0){
+            parsed.push({ text: qText, answers, answerLabels, correctIndexes, type: 'standard' });
         }
     });
     return parsed;
 }
 
-// Filtr pytań nadających się do Milionerów: dokładnie 4 odpowiedzi a-d, 1 poprawna
-function filterMilQuestions(qs){
-    return qs.filter(q=>q.type==='standard' && q.answers.length===4 && q.correctIndexes.length===1);
+// Filtr pytań Milionerzy: dokładnie 4 odp. abcd, 1 poprawna, typ standard
+function filterMil(qs){
+    return qs.filter(q =>
+        q.type === 'standard' &&
+        q.answers.length === 4 &&
+        q.correctIndexes.length === 1
+    );
 }
 
-function checkMilEligible(qs){ return filterMilQuestions(qs).length>=13; }
-
-// ================================================
-// LOSOWANIE
-// ================================================
-function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function pickRandom(all,n){ return shuffle(all.map((_,i)=>i)).slice(0,n).map(i=>all[i]); }
-
-// ================================================
-// NAWIGACJA
-// ================================================
-const ALL_SCREENS=['startScreen','setMenuScreen','quizScreen','summaryScreen','studyScreen','milScreen','milEndScreen'];
-function hideAll(){ ALL_SCREENS.forEach(id=>document.getElementById(id).classList.add('hidden')); }
-function show(id){ hideAll(); document.getElementById(id).classList.remove('hidden'); }
-
-function goBackToStart(){ show('startScreen'); quizFinished=false; activeSetIndex=null; }
-
-function goBackFromQuiz(){
-    if(activeSetIndex!==null){ openSetMenu(parsedSets[activeSetIndex],allQuestions.length); }
-    else { goBackToStart(); }
+// ===== SPRAWDZANIE ODPOWIEDZI =====
+function isCorrect(user, q){
+    if(q.type === 'sort'){
+        if(user.length !== q.correctOrder.length) return false;
+        return user.every((v,i) => v === q.correctOrder[i]);
+    } else {
+        if(user.length !== q.correctIndexes.length) return false;
+        const s = new Set(user);
+        return q.correctIndexes.every(c => s.has(c));
+    }
 }
 
-// ================================================
-// SET MENU
-// ================================================
+// ===== DRAG & DROP =====
+let draggedEl = null;
+function onDragStart(e){ draggedEl = e.target; e.target.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
+function onDragEnd(e){ e.target.classList.remove('dragging'); updatePosNums(); }
+function onDragOver(e){ e.preventDefault(); return false; }
+function onDragEnter(e){ if(e.target.classList.contains('sortable-item')) e.target.style.borderTop='3px solid #1976d2'; }
+function onDragLeave(e){ if(e.target.classList.contains('sortable-item')) e.target.style.borderTop='2px solid #ddd'; }
+function onDrop(e){
+    e.stopPropagation(); e.preventDefault();
+    if(draggedEl !== e.target && e.target.classList.contains('sortable-item')){
+        const list = document.querySelector('.sortable-list');
+        const items = [...list.children];
+        const di = items.indexOf(draggedEl), ti = items.indexOf(e.target);
+        if(di < ti) e.target.parentNode.insertBefore(draggedEl, e.target.nextSibling);
+        else e.target.parentNode.insertBefore(draggedEl, e.target);
+    }
+    if(e.target.classList.contains('sortable-item')) e.target.style.borderTop='2px solid #ddd';
+    updatePosNums();
+    return false;
+}
+function updatePosNums(){
+    document.querySelectorAll('.sortable-list .sortable-item').forEach((x,i)=>{
+        const p = x.querySelector('.position-number');
+        if(p) p.textContent = (i+1)+'.';
+    });
+}
+
+// ===== RENDER SIATKI ZESTAWÓW =====
+function buildSetCard(s, qs, i){
+    const card = document.createElement('div');
+    card.className = 'set-card';
+    const numEl = document.createElement('div'); numEl.className = 'set-card-num'; numEl.textContent = 'Zestaw '+s.number;
+    card.appendChild(numEl);
+    if(s.name){ const nEl = document.createElement('div'); nEl.className = 'set-card-name'; nEl.textContent = s.name; card.appendChild(nEl); }
+    const cEl = document.createElement('div'); cEl.className = 'set-card-count'; cEl.textContent = qs.length+' pytań';
+    card.appendChild(cEl);
+    card.addEventListener('click', ()=>{ activeSetIndex = i; allQuestions = qs; openSetMenu(s, qs.length); });
+    return card;
+}
+
+function renderSetGrid(){
+    parsedSets = parseSets(RAW_QUESTIONS.trim());
+    const hasSets = parsedSets.some(s => s.number !== null);
+    const grid = document.getElementById('setGrid');
+    const section = document.getElementById('setGridSection');
+    grid.innerHTML = '';
+    if(!hasSets){ section.style.display='none'; return; }
+    section.style.display = '';
+    parsedSets.forEach((s, i)=>{
+        if(s.number === null) return;
+        const qs = parseQuestions(s.raw);
+        grid.appendChild(buildSetCard(s, qs, i));
+    });
+}
+
+// ===== MENU ZESTAWU =====
 function openSetMenu(s, total){
     hideAll();
     document.getElementById('setMenuTitle').textContent = s.name ? `Zestaw ${s.number}: ${s.name}` : `Zestaw ${s.number}`;
     document.getElementById('setMenuSubtitle').textContent = `${total} pytań w tym zestawie`;
-    const ci=document.getElementById('setQuestionCount');
-    ci.max=total; ci.value=Math.min(parseInt(ci.value)||10,total);
+    const ci = document.getElementById('setQuestionCount');
+    ci.max = total;
+    ci.value = Math.min(parseInt(ci.value)||10, total);
     // Milionerzy eligibility
-    const milBtn=document.getElementById('setMilBtn');
-    const milTip=document.getElementById('setMilTooltip');
-    const milQs=filterMilQuestions(allQuestions);
-    if(milQs.length>=13){
-        milBtn.classList.remove('disabled-mode');
-        milTip.textContent='Kliknij, aby zagrać w Milionerów! Dostępnych pytań: '+milQs.length;
+    const milAvail = filterMil(allQuestions);
+    const milBtn = document.getElementById('setMilBtn');
+    const milTip = document.getElementById('setMilTip');
+    if(milAvail.length >= 13){
+        milBtn.classList.remove('mode-disabled');
+        milTip.textContent = `Kliknij aby zagrać! Dostępnych pytań: ${milAvail.length}`;
     } else {
-        milBtn.classList.add('disabled-mode');
-        milTip.textContent='Tryb Milionerzy wymaga min. 13 pytań z dokładnie 4 odpowiedziami (a–d) i 1 poprawną. Dostępnych: '+milQs.length;
-        document.getElementById('setMilBtn').parentElement.style.pointerEvents='auto';
+        milBtn.classList.add('mode-disabled');
+        milTip.textContent = `Wymaga min. 13 pytań z 4 odp. (a–d) i 1 poprawną. Dostępnych: ${milAvail.length}`;
     }
     document.getElementById('setMenuScreen').classList.remove('hidden');
 }
 
-// ================================================
-// START QUIZU
-// ================================================
-function startQuiz(questions, countInputId){
-    allQuestions=questions;
-    const desired=parseInt(document.getElementById(countInputId).value,10)||1;
-    const count=Math.min(Math.max(1,desired),allQuestions.length);
-    quizQuestions=pickRandom(allQuestions,count);
-    currentIndex=0;
-    userAnswers=new Array(quizQuestions.length).fill(null).map(()=>[]);
-    checkedQuestions=new Array(quizQuestions.length).fill(false);
-    quizFinished=false;
-    hideAll();
-    document.getElementById('quizScreen').classList.remove('hidden');
+// ===== START QUIZU =====
+function startQuiz(questions, countId){
+    allQuestions = questions;
+    const desired = parseInt(document.getElementById(countId).value, 10) || 1;
+    const count = Math.min(Math.max(1, desired), allQuestions.length);
+    quizQuestions = pickRandom(allQuestions, count);
+    currentIndex = 0;
+    userAnswers = quizQuestions.map(()=>[]);
+    checkedQuestions = new Array(quizQuestions.length).fill(false);
+    quizFinished = false;
+    showScreen('quizScreen');
     renderQuestion();
 }
 
-// ================================================
-// ZAPIS SELEKCJI
-// ================================================
-function saveCurrentSelection(){
-    const q=quizQuestions[currentIndex];
-    if(q.type==='sort'){
-        const items=document.querySelectorAll('#quizAnswers .sortable-item');
-        userAnswers[currentIndex]=[...items].map(x=>parseInt(x.dataset.index));
+// ===== ZAPIS SELEKCJI =====
+function saveSelection(){
+    const q = quizQuestions[currentIndex];
+    if(q.type === 'sort'){
+        const items = document.querySelectorAll('#quizAnswers .sortable-item');
+        userAnswers[currentIndex] = [...items].map(x => parseInt(x.dataset.index));
     } else {
-        const inputs=document.querySelectorAll('#quizAnswers input[name="answer"]');
-        userAnswers[currentIndex]=[...inputs].filter(x=>x.checked).map(x=>parseInt(x.value));
+        const inputs = document.querySelectorAll('#quizAnswers input[name="ans"]');
+        userAnswers[currentIndex] = [...inputs].filter(x=>x.checked).map(x=>parseInt(x.value));
     }
 }
 
-// ================================================
-// SPRAWDZANIE
-// ================================================
-function isCorrect(user,q){
-    if(q.type==='sort'){
-        if(user.length!==q.correctOrder.length) return false;
-        return user.every((v,i)=>v===q.correctOrder[i]);
-    } else {
-        if(user.length!==q.correctIndexes.length) return false;
-        const s=new Set(user); return q.correctIndexes.every(c=>s.has(c));
-    }
-}
-
-// ================================================
-// DRAG & DROP
-// ================================================
-let draggedEl=null;
-function handleDragStart(e){ draggedEl=e.target; e.target.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; }
-function handleDragEnd(e){ e.target.classList.remove('dragging'); updatePosNums(); }
-function handleDragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect='move'; return false; }
-function handleDragEnter(e){ if(e.target.classList.contains('sortable-item')) e.target.style.borderTop='3px solid #1976d2'; }
-function handleDragLeave(e){ if(e.target.classList.contains('sortable-item')) e.target.style.borderTop='2px solid #ddd'; }
-function handleDrop(e){
-    e.stopPropagation(); e.preventDefault();
-    if(draggedEl!==e.target&&e.target.classList.contains('sortable-item')){
-        const list=document.querySelector('.sortable-list'); const items=[...list.children];
-        const di=items.indexOf(draggedEl),ti=items.indexOf(e.target);
-        if(di<ti) e.target.parentNode.insertBefore(draggedEl,e.target.nextSibling);
-        else e.target.parentNode.insertBefore(draggedEl,e.target);
-    }
-    if(e.target.classList.contains('sortable-item')) e.target.style.borderTop='2px solid #ddd';
-    updatePosNums(); return false;
-}
-function updatePosNums(){ document.querySelectorAll('.sortable-list .sortable-item').forEach((x,i)=>{ const p=x.querySelector('.position-number'); if(p) p.textContent=(i+1)+'.'; }); }
-
-// ================================================
-// RENDER PYTANIA (quiz normalny)
-// ================================================
+// ===== RENDER PYTANIA (quiz) =====
 function renderQuestion(){
-    const q=quizQuestions[currentIndex];
-    document.getElementById('quizQuestionNumber').textContent='Pytanie '+(currentIndex+1);
-    document.getElementById('quizProgress').textContent=`Pytanie ${currentIndex+1} z ${quizQuestions.length}`;
-    document.getElementById('quizQuestionText').textContent=q.text;
-    const answersEl=document.getElementById('quizAnswers');
-    const feedbackEl=document.getElementById('quizFeedback');
-    answersEl.innerHTML=''; feedbackEl.textContent=''; feedbackEl.className='feedback';
-    const checked=!!checkedQuestions[currentIndex];
-    const user=userAnswers[currentIndex]||[];
-    if(q.type==='sort'){
-        const ul=document.createElement('ul'); ul.className='sortable-list';
-        const disp=user.length>0?user:q.answers.map((_,i)=>i);
-        disp.forEach((ai,pos)=>{
-            const li=document.createElement('li'); li.className='sortable-item'; li.dataset.index=ai; li.draggable=!checked;
-            const ps=document.createElement('span'); ps.className='position-number'; ps.textContent=(pos+1)+'.';
-            const ls=document.createElement('span'); ls.className='answer-label'; ls.textContent=q.answerLabels[ai];
-            const ts=document.createElement('span'); ts.textContent=q.answers[ai];
+    const q = quizQuestions[currentIndex];
+    document.getElementById('quizNum').textContent = 'Pytanie '+(currentIndex+1);
+    document.getElementById('quizProg').textContent = `Pytanie ${currentIndex+1} z ${quizQuestions.length}`;
+    document.getElementById('quizText').textContent = q.text;
+    const answersEl = document.getElementById('quizAnswers');
+    const feedbackEl = document.getElementById('quizFeedback');
+    answersEl.innerHTML = ''; feedbackEl.textContent = ''; feedbackEl.className = 'feedback';
+    const checked = !!checkedQuestions[currentIndex];
+    const user = userAnswers[currentIndex] || [];
+
+    if(q.type === 'sort'){
+        const ul = document.createElement('ul'); ul.className = 'sortable-list';
+        const disp = user.length > 0 ? user : q.answers.map((_,i)=>i);
+        disp.forEach((ai, pos)=>{
+            const li = document.createElement('li'); li.className = 'sortable-item'; li.dataset.index = ai; li.draggable = !checked;
+            const ps = document.createElement('span'); ps.className = 'position-number'; ps.textContent = (pos+1)+'.';
+            const ls = document.createElement('span'); ls.className = 'answer-label'; ls.textContent = q.answerLabels[ai];
+            const ts = document.createElement('span'); ts.textContent = q.answers[ai];
             li.appendChild(ps); li.appendChild(ls); li.appendChild(ts);
-            if(!checked){ li.addEventListener('dragstart',handleDragStart); li.addEventListener('dragend',handleDragEnd); li.addEventListener('dragover',handleDragOver); li.addEventListener('dragenter',handleDragEnter); li.addEventListener('dragleave',handleDragLeave); li.addEventListener('drop',handleDrop); }
-            else { li.classList.add('checked'); li.classList.add(q.correctOrder[pos]===ai?'correct':'incorrect'); }
+            if(!checked){
+                li.addEventListener('dragstart', onDragStart); li.addEventListener('dragend', onDragEnd);
+                li.addEventListener('dragover', onDragOver); li.addEventListener('dragenter', onDragEnter);
+                li.addEventListener('dragleave', onDragLeave); li.addEventListener('drop', onDrop);
+            } else {
+                li.classList.add(q.correctOrder[pos] === ai ? 'correct' : 'incorrect');
+            }
             ul.appendChild(li);
         });
         answersEl.appendChild(ul);
-        if(checked){ const ok=isCorrect(user,q); feedbackEl.textContent=ok?'Prawidłowa kolejność!':'Błędna kolejność.'; feedbackEl.classList.add(ok?'ok':'bad'); }
+        if(checked){
+            const ok = isCorrect(user, q);
+            feedbackEl.textContent = ok ? 'Prawidłowa kolejność!' : 'Błędna kolejność.';
+            feedbackEl.classList.add(ok ? 'ok' : 'bad');
+        }
     } else {
-        const multi=q.correctIndexes.length>1; const itype=multi?'checkbox':'radio';
-        const cs=new Set(q.correctIndexes); const us=new Set(user);
-        q.answers.forEach((ans,idx)=>{
-            const lbl=document.createElement('label'); lbl.className='answer-option';
-            const inp=document.createElement('input'); inp.type=itype; inp.name='answer'; inp.value=idx;
-            if(us.has(idx)) inp.checked=true;
-            if(checked){ inp.disabled=true; if(cs.has(idx)) lbl.classList.add('correct'); if(us.has(idx)&&!cs.has(idx)) lbl.classList.add('incorrect'); }
-            const cnt=document.createElement('div');
-            const pref=document.createElement('span'); pref.className='answer-prefix'; pref.textContent=q.answerLabels[idx]||'';
-            const sp=document.createElement('span'); sp.textContent=ans;
-            cnt.appendChild(pref); cnt.appendChild(sp); lbl.appendChild(inp); lbl.appendChild(cnt); answersEl.appendChild(lbl);
+        const multi = q.correctIndexes.length > 1;
+        const cs = new Set(q.correctIndexes), us = new Set(user);
+        q.answers.forEach((ans, idx)=>{
+            const lbl = document.createElement('label'); lbl.className = 'answer-option';
+            const inp = document.createElement('input'); inp.type = multi?'checkbox':'radio'; inp.name = 'ans'; inp.value = idx;
+            if(us.has(idx)) inp.checked = true;
+            if(checked){
+                inp.disabled = true;
+                if(cs.has(idx)) lbl.classList.add('correct');
+                if(us.has(idx) && !cs.has(idx)) lbl.classList.add('incorrect');
+            }
+            const pref = document.createElement('span'); pref.className = 'answer-prefix'; pref.textContent = q.answerLabels[idx]||'';
+            const sp = document.createElement('span'); sp.textContent = ans;
+            lbl.appendChild(inp); lbl.appendChild(pref); lbl.appendChild(sp);
+            answersEl.appendChild(lbl);
         });
-        if(checked){ const ok=isCorrect(user,q); feedbackEl.textContent=ok?'Prawidłowa odpowiedź.':'Błędna odpowiedź.'; feedbackEl.classList.add(ok?'ok':'bad'); }
+        if(checked){
+            const ok = isCorrect(user, q);
+            feedbackEl.textContent = ok ? 'Prawidłowa odpowiedź.' : 'Błędna odpowiedź.';
+            feedbackEl.classList.add(ok ? 'ok' : 'bad');
+        }
     }
-    const cnb=document.getElementById('checkNextBtn');
-    cnb.textContent=checked?(currentIndex===quizQuestions.length-1?'Zakończ':'Dalej'):'Sprawdź';
-    document.getElementById('prevQuestionBtn').disabled=currentIndex===0;
+    const cb = document.getElementById('checkBtn');
+    cb.textContent = checked ? (currentIndex === quizQuestions.length-1 ? 'Zakończ' : 'Dalej') : 'Sprawdź';
+    document.getElementById('prevBtn').disabled = currentIndex === 0;
 }
 
 function checkCurrentQuestion(){
-    saveCurrentSelection();
-    const user=userAnswers[currentIndex]||[];
-    if(user.length===0){ alert('Najpierw zaznacz odpowiedź lub ułóż kolejność.'); return; }
-    checkedQuestions[currentIndex]=true; renderQuestion();
+    saveSelection();
+    const user = userAnswers[currentIndex] || [];
+    if(user.length === 0){ alert('Zaznacz odpowiedź lub ułóż kolejność.'); return; }
+    checkedQuestions[currentIndex] = true;
+    renderQuestion();
 }
 
-// ================================================
-// PODSUMOWANIE
-// ================================================
+// ===== PODSUMOWANIE =====
 function showSummary(){
-    quizFinished=true; hideAll();
-    const sl=document.getElementById('summaryList'); sl.innerHTML='';
-    let cc=0;
-    quizQuestions.forEach((q,idx)=>{
-        const user=userAnswers[idx]||[]; const ok=isCorrect(user,q); if(ok) cc++;
-        const item=document.createElement('div'); item.className='summary-item';
-        const t=document.createElement('h3'); t.textContent=`Pytanie ${idx+1}: ${q.text}`; item.appendChild(t);
-        const st=document.createElement('div'); st.className=ok?'summary-correct':'summary-wrong';
-        st.textContent=ok?'Odpowiedź prawidłowa.':'Odpowiedź błędna.'; item.appendChild(st);
-        if(q.type==='sort'){
-            appendBlock(item,'Twoja kolejność:',user.length===0?['- Nie ułożyłeś.']:user.map((ai,pos)=>`${pos+1}. ${q.answerLabels[ai]} ${q.answers[ai]}`));
-            appendBlock(item,'Prawidłowa kolejność:',q.correctOrder.map((ai,pos)=>`${pos+1}. ${q.answerLabels[ai]} ${q.answers[ai]}`));
+    quizFinished = true;
+    showScreen('summaryScreen');
+    const sl = document.getElementById('summaryList'); sl.innerHTML = '';
+    let cc = 0;
+    quizQuestions.forEach((q, idx)=>{
+        const user = userAnswers[idx]||[]; const ok = isCorrect(user, q); if(ok) cc++;
+        const item = document.createElement('div'); item.className = 'summary-item';
+        const t = document.createElement('h3'); t.textContent = `Pytanie ${idx+1}: ${q.text}`; item.appendChild(t);
+        const st = document.createElement('div'); st.className = ok?'summary-correct':'summary-wrong';
+        st.textContent = ok ? 'Odpowiedź prawidłowa.' : 'Odpowiedź błędna.'; item.appendChild(st);
+        if(q.type === 'sort'){
+            addBlock(item,'Twoja kolejność:', user.length===0?['– Nie ułożyłeś.']:user.map((ai,pos)=>`${pos+1}. ${q.answerLabels[ai]} ${q.answers[ai]}`));
+            addBlock(item,'Prawidłowa kolejność:', q.correctOrder.map((ai,pos)=>`${pos+1}. ${q.answerLabels[ai]} ${q.answers[ai]}`));
         } else {
-            appendBlock(item,'To zaznaczyłeś:',user.length===0?['- Nic.']:user.map(ai=>`- ${q.answerLabels[ai]} ${q.answers[ai]}`));
-            appendBlock(item,'Prawidłowe:',q.correctIndexes.map(ai=>`- ${q.answerLabels[ai]} ${q.answers[ai]}`));
+            addBlock(item,'Zaznaczyłeś:', user.length===0?['– Nic.']:user.map(ai=>`– ${q.answerLabels[ai]} ${q.answers[ai]}`));
+            addBlock(item,'Prawidłowe:', q.correctIndexes.map(ai=>`– ${q.answerLabels[ai]} ${q.answers[ai]}`));
         }
         sl.appendChild(item);
     });
-    document.getElementById('summaryResult').textContent=`Wynik: ${cc} z ${quizQuestions.length} prawidłowych.`;
-    document.getElementById('summaryScreen').classList.remove('hidden');
+    document.getElementById('summaryResult').textContent = `Wynik: ${cc} z ${quizQuestions.length} prawidłowych.`;
 }
-function appendBlock(parent,title,items){
-    const b=document.createElement('div'); b.className='summary-block';
-    const t=document.createElement('div'); t.textContent=title; t.style.fontWeight='bold'; b.appendChild(t);
-    items.forEach(txt=>{ const d=document.createElement('div'); d.textContent=txt; b.appendChild(d); });
+function addBlock(parent, title, items){
+    const b = document.createElement('div'); b.className = 'summary-block';
+    const t = document.createElement('div'); t.textContent = title; t.style.fontWeight='bold'; b.appendChild(t);
+    items.forEach(txt=>{ const d = document.createElement('div'); d.textContent = txt; b.appendChild(d); });
     parent.appendChild(b);
 }
 
-// ================================================
-// TRYB NAUKI
-// ================================================
-function renderStudyMode(questions){
-    hideAll();
-    const sl=document.getElementById('studyList');
-    document.getElementById('studyMeta').textContent=`Łącznie pytań: ${questions.length}`;
-    sl.innerHTML='';
-    questions.forEach((q,idx)=>{
-        const item=document.createElement('div'); item.className='study-item';
-        const badge=document.createElement('div'); badge.className='study-question-type';
-        badge.textContent=q.type==='sort'?'Pytanie z kolejnością':'Pytanie testowe'; item.appendChild(badge);
-        const title=document.createElement('h3'); title.textContent=`Pytanie ${idx+1}: ${q.text}`; item.appendChild(title);
-        if(q.type==='sort'){
-            const ul=document.createElement('ul'); ul.className='study-sort-list';
-            q.correctOrder.forEach((ai,pos)=>{
-                const li=document.createElement('li'); li.className='study-sort-item correct';
-                const ps=document.createElement('span'); ps.className='position-number'; ps.textContent=(pos+1)+'.';
-                const ls=document.createElement('span'); ls.className='answer-label'; ls.textContent=q.answerLabels[ai];
-                const ts=document.createElement('span'); ts.textContent=q.answers[ai];
+// ===== TRYB NAUKI =====
+function renderStudy(questions){
+    showScreen('studyScreen');
+    document.getElementById('studyMeta').textContent = `Łącznie: ${questions.length} pytań`;
+    const sl = document.getElementById('studyList'); sl.innerHTML = '';
+    questions.forEach((q, idx)=>{
+        const item = document.createElement('div'); item.className = 'study-item';
+        const badge = document.createElement('div'); badge.className = 'study-badge';
+        badge.textContent = q.type==='sort' ? 'Kolejność' : 'Testowe'; item.appendChild(badge);
+        const h = document.createElement('h3'); h.textContent = `Pytanie ${idx+1}: ${q.text}`; item.appendChild(h);
+        if(q.type === 'sort'){
+            const ul = document.createElement('ul'); ul.className = 'study-sort-list';
+            q.correctOrder.forEach((ai, pos)=>{
+                const li = document.createElement('li'); li.className = 'study-sort-item';
+                const ps = document.createElement('span'); ps.className = 'position-number'; ps.textContent = (pos+1)+'.';
+                const ls = document.createElement('span'); ls.className = 'answer-label'; ls.textContent = q.answerLabels[ai];
+                const ts = document.createElement('span'); ts.textContent = q.answers[ai];
                 li.appendChild(ps); li.appendChild(ls); li.appendChild(ts); ul.appendChild(li);
             });
             item.appendChild(ul);
-            const note=document.createElement('div'); note.className='study-answer-note'; note.textContent='Pokazana jest poprawna kolejność.'; item.appendChild(note);
+            const note = document.createElement('div'); note.className = 'study-note'; note.textContent = 'Pokazana poprawna kolejność.'; item.appendChild(note);
         } else {
-            const cs=new Set(q.correctIndexes);
-            q.answers.forEach((ans,ai)=>{
-                const lbl=document.createElement('label'); lbl.className='answer-option'; if(cs.has(ai)) lbl.classList.add('study-highlight');
-                const inp=document.createElement('input'); inp.type=q.correctIndexes.length>1?'checkbox':'radio'; inp.disabled=true; inp.checked=cs.has(ai);
-                const cnt=document.createElement('div');
-                const pref=document.createElement('span'); pref.className='answer-prefix'; pref.textContent=q.answerLabels[ai]||'';
-                const sp=document.createElement('span'); sp.textContent=ans;
-                cnt.appendChild(pref); cnt.appendChild(sp); lbl.appendChild(inp); lbl.appendChild(cnt); item.appendChild(lbl);
+            const cs = new Set(q.correctIndexes);
+            q.answers.forEach((ans, ai)=>{
+                const lbl = document.createElement('label');
+                lbl.className = 'answer-option' + (cs.has(ai)?' study-ok':'');
+                const inp = document.createElement('input'); inp.type = q.correctIndexes.length>1?'checkbox':'radio'; inp.disabled=true; inp.checked=cs.has(ai);
+                const pref = document.createElement('span'); pref.className='answer-prefix'; pref.textContent=q.answerLabels[ai]||'';
+                const sp = document.createElement('span'); sp.textContent=ans;
+                lbl.appendChild(inp); lbl.appendChild(pref); lbl.appendChild(sp); item.appendChild(lbl);
             });
-            const note=document.createElement('div'); note.className='study-answer-note'; note.textContent='Zielone = prawidłowe odpowiedzi.'; item.appendChild(note);
+            const note = document.createElement('div'); note.className='study-note'; note.textContent='Zielone = prawidłowe.'; item.appendChild(note);
         }
         sl.appendChild(item);
     });
-    document.getElementById('studyScreen').classList.remove('hidden');
 }
 
-// ================================================
-// ============ TRYB MILIONERÓW ==================
-// ================================================
+// =====================================================================
+// ==================== TRYB MILIONERÓW ================================
+// =====================================================================
 
-// Stan milionerów
-let milQuestions=[], milCurrentQ=0;
-// fifty/change/second = true oznacza ZUżYTE globalnie
-// second_active = true oznacza aktywne (włączone) na bieżące pytanie
-let milLifelines={fifty:false, change:false, second:false, second_active:false};
-let milSecondChanceUsed=false, milAnswered=false;
-let milDisabled50=[];   // indeksy wyszarzone przez 50:50 lub 2szansę
-let milUsedThisRound=false; // czy użyto koła w tej rundzie
-
-function startMillionaire(questions){
-    const eligible=filterMilQuestions(questions);
-    if(eligible.length<13){ alert('Za mało pytań kwalifikujących się do trybu Milionerzy (min. 13).'); return; }
-    milQuestions=shuffle(eligible).slice(0,13); // indeksy 0-11 = gra, 12 = zapas
-    milCurrentQ=0;
-    milLifelines={fifty:false, change:false, second:false, second_active:false};
-    milSecondChanceUsed=false; milAnswered=false;
-    milDisabled50=[]; milUsedThisRound=false;
+function startMil(questions){
+    const eligible = filterMil(questions);
+    if(eligible.length < 13){ alert('Za mało pytań (min. 13 z 4 odp. i 1 poprawną).'); return; }
+    milQs = shuffle(eligible).slice(0, 13); // indeks 0–11 gra, 12 zapas
+    milIdx = 0;
+    milLL = { fifty: false, change: false, second: false };
+    milSecondActive = false;
+    milUsedThisRound = false;
+    milDisabled = [];
+    milAnswered = false;
     buildLadder();
-    hideAll();
-    document.getElementById('milScreen').classList.remove('hidden');
-    renderMilQuestion();
+    showScreen('milScreen');
+    renderMilQ();
 }
 
 function buildLadder(){
-    const ladder=document.getElementById('milLadder');
-    ladder.innerHTML='';
-    for(let i=11;i>=0;i--){
-        const row=document.createElement('div'); row.className='mil-ladder-row'; row.id='milRow'+i;
-        const qn=document.createElement('span'); qn.className='mil-q-num'; qn.textContent=(i+1)+'.';
-        const pr=document.createElement('span'); pr.className='mil-q-prize'; pr.textContent=formatPrize(MIL_PRIZES[i]);
-        row.appendChild(qn); row.appendChild(pr); ladder.appendChild(row);
+    const el = document.getElementById('milLadder');
+    el.innerHTML = '';
+    for(let i=11; i>=0; i--){
+        const row = document.createElement('div'); row.className='mil-row'; row.id='milrow'+i;
+        const rn = document.createElement('span'); rn.className='rnum'; rn.textContent=(i+1)+'.';
+        const pr = document.createElement('span'); pr.textContent=fPrize(MIL_PRIZES[i]);
+        row.appendChild(rn); row.appendChild(pr); el.appendChild(row);
     }
     updateLadder();
 }
 
 function updateLadder(){
-    for(let i=0;i<12;i++){
-        const row=document.getElementById('milRow'+i);
+    for(let i=0; i<12; i++){
+        const row = document.getElementById('milrow'+i);
         if(!row) continue;
         row.classList.remove('current','done');
-        if(i<milCurrentQ) row.classList.add('done');
-        else if(i===milCurrentQ) row.classList.add('current');
+        if(i < milIdx) row.classList.add('done');
+        else if(i === milIdx) row.classList.add('current');
     }
 }
 
-function renderMilQuestion(){
-    if(milCurrentQ>=12){ endMillionaire(true); return; }
-    const q=milQuestions[milCurrentQ];
-    document.getElementById('milQuestionNum').textContent=`Pytanie ${milCurrentQ+1} z 12`;
-    document.getElementById('milPrizeDisplay').textContent=formatPrize(MIL_PRIZES[milCurrentQ]);
-    document.getElementById('milQuestion').textContent=q.text;
-    document.getElementById('milFeedback').textContent='';
-    document.getElementById('milFeedback').className='mil-feedback';
-    milAnswered=false;
-    milDisabled50=[];
-    milUsedThisRound=false;
-    // Jeśli second_active zostało z poprzedniej rundy (nie użyte) - zachowaj
-    // (second_active resetujemy tylko po użyciu lub po błędnej odpowiedzi)
-    milLifelines.second_active=false; // reset aktywacji 2szansy na nową rundę
+function renderMilQ(){
+    if(milIdx >= 12){ endMil(true); return; }
+    const q = milQs[milIdx];
+    document.getElementById('milQNum').textContent = `Pytanie ${milIdx+1} z 12`;
+    document.getElementById('milPrizeBox').textContent = fPrize(MIL_PRIZES[milIdx]);
+    document.getElementById('milQuestion').textContent = q.text;
+    document.getElementById('milFeedback').textContent = '';
+    document.getElementById('milFeedback').className = 'mil-feedback';
+    milAnswered = false;
+    milDisabled = [];
+    milUsedThisRound = false;
+    milSecondActive = false;
     updateLadder();
-    updateLifelineButtons();
     renderMilAnswers();
+    updateLL();
 }
 
-function renderMilAnswers(revealCorrect=false, selectedIdx=-1){
-    const q=milQuestions[milCurrentQ];
-    const letters=['A','B','C','D'];
-    const container=document.getElementById('milAnswers');
-    container.innerHTML='';
-    q.answers.forEach((ans,idx)=>{
-        const btn=document.createElement('button');
-        btn.className='mil-answer-btn';
-        const isDisabled=milDisabled50.includes(idx);
-        if(isDisabled){
-            btn.classList.add('disabled-ans');
-            btn.disabled=true;
+function renderMilAnswers(){
+    const q = milQs[milIdx];
+    const letters = ['A','B','C','D'];
+    const cont = document.getElementById('milAnswers');
+    cont.innerHTML = '';
+    q.answers.forEach((ans, idx)=>{
+        const btn = document.createElement('button');
+        btn.className = 'mil-ans-btn';
+        const letter = document.createElement('span'); letter.className='mil-ans-letter'; letter.textContent=letters[idx]+':';
+        const txt = document.createElement('span'); txt.textContent=ans;
+        btn.appendChild(letter); btn.appendChild(txt);
+        if(milDisabled.includes(idx)){
+            btn.classList.add('ans-wrong');
+            btn.disabled = true;
+        } else if(!milAnswered){
+            btn.addEventListener('click', ()=>milPick(idx));
+        } else {
+            btn.disabled = true;
         }
-        if(revealCorrect){
-            if(q.correctIndexes[0]===idx) btn.classList.add('correct-ans');
-            else if(idx===selectedIdx) btn.classList.add('wrong-ans');
-            btn.disabled=true;
-        }
-        const lspan=document.createElement('span'); lspan.className='mil-answer-letter'; lspan.textContent=letters[idx]+':';
-        const tspan=document.createElement('span'); tspan.textContent=ans;
-        btn.appendChild(lspan); btn.appendChild(tspan);
-        if(!isDisabled && !revealCorrect && !milAnswered){
-            btn.addEventListener('click',()=>milSelectAnswer(idx));
-        }
-        container.appendChild(btn);
+        cont.appendChild(btn);
     });
 }
 
-// Aktualizuje wizualny stan przycisków kół ratunkowych
-function updateLifelineButtons(){
-    const ll50=document.getElementById('ll50');
-    const llChange=document.getElementById('llChange');
-    const ll2=document.getElementById('ll2chance');
+// ===== KOŁA RATUNKOWE =====
+function updateLL(){
+    const el50 = document.getElementById('ll50');
+    const elCh = document.getElementById('llChange');
+    const el2  = document.getElementById('ll2nd');
 
-    // Wyszarz zużyte globalnie
-    ll50.classList.toggle('used', milLifelines.fifty);
-    llChange.classList.toggle('used', milLifelines.change || milQuestions[12]===null);
-    ll2.classList.toggle('used', milLifelines.second);
+    // Reset klas
+    [el50, elCh, el2].forEach(e=>{ e.classList.remove('ll-used','ll-blocked','ll-active'); });
 
-    // Jeśli w tej rundzie użyto już jakiegokolwiek koła - wyszarz pozostałe
+    // Globalnie zużyte
+    if(milLL.fifty)  el50.classList.add('ll-used');
+    if(milLL.change || milQs[12]===null) elCh.classList.add('ll-used');
+    if(milLL.second) el2.classList.add('ll-used');
+
+    // Jeśli w tej rundzie użyto już koła – zablokuj pozostałe
     if(milUsedThisRound){
-        if(!milLifelines.fifty) ll50.classList.add('used');
-        if(!milLifelines.change && milQuestions[12]!==null) llChange.classList.add('used');
-        if(!milLifelines.second && !milLifelines.second_active) ll2.classList.add('used');
+        if(!milLL.fifty && !el50.classList.contains('ll-used'))   el50.classList.add('ll-blocked');
+        if(!milLL.change && !elCh.classList.contains('ll-used'))  elCh.classList.add('ll-blocked');
+        if(!milLL.second && !el2.classList.contains('ll-used'))   el2.classList.add('ll-blocked');
     }
 
-    // 2 szansa aktywna - podświetl
-    if(milLifelines.second_active){
-        ll2.style.background='#fff3cd';
-        ll2.style.borderColor='#f0c040';
-    } else {
-        ll2.style.background='';
-        ll2.style.borderColor='';
-    }
+    // 2szansa aktywna – podświetl
+    if(milSecondActive) el2.classList.add('ll-active');
 }
 
-// --- KOŁA RATUNKOWE ---
-
-function useFiftyFifty(){
-    // Sprawdź czy można użyć
-    if(milLifelines.fifty) return; // już globalnie zużyte
-    if(milUsedThisRound) return;   // w tej rundzie już użyto koła
+function llFifty(){
+    if(milLL.fifty) return;
+    if(milUsedThisRound) return;
     if(milAnswered) return;
 
-    milLifelines.fifty=true;
-    milUsedThisRound=true;
+    milLL.fifty = true;
+    milUsedThisRound = true;
 
-    const q=milQuestions[milCurrentQ];
-    const correct=q.correctIndexes[0];
-    const wrongOpts=q.answers.map((_,i)=>i).filter(i=>i!==correct && !milDisabled50.includes(i));
-    const toRemove=shuffle(wrongOpts).slice(0,2);
-    milDisabled50=[...milDisabled50, ...toRemove];
+    const q = milQs[milIdx];
+    const correct = q.correctIndexes[0];
+    const wrong = shuffle(q.answers.map((_,i)=>i).filter(i=>i!==correct));
+    milDisabled = wrong.slice(0,2);
 
-    updateLifelineButtons();
     renderMilAnswers();
-
-    const fb=document.getElementById('milFeedback');
-    fb.textContent='⚖️ Usunięto 2 błędne odpowiedzi!';
-    fb.className='mil-feedback';
+    updateLL();
+    document.getElementById('milFeedback').textContent = '⚖️ Usunięto 2 błędne odpowiedzi.';
+    document.getElementById('milFeedback').className = 'mil-feedback';
 }
 
-function useChangeQuestion(){
-    if(milLifelines.change) return;
-    if(milQuestions[12]===null || milQuestions[12]===undefined) return;
+function llChange_(){
+    if(milLL.change) return;
+    if(milQs[12] === null || milQs[12] === undefined) return;
     if(milUsedThisRound) return;
     if(milAnswered) return;
 
-    milLifelines.change=true;
-    milUsedThisRound=true;
+    milLL.change = true;
+    milUsedThisRound = true;
 
-    // Zamień bieżące pytanie na zapasowe (13.)
-    milQuestions[milCurrentQ]=milQuestions[12];
-    milQuestions[12]=null;
-    milDisabled50=[];
+    milQs[milIdx] = milQs[12];
+    milQs[12] = null;
+    milDisabled = [];
 
-    updateLifelineButtons();
-    renderMilQuestion();
-    // Nadpisz feedback po renderMilQuestion (który czyści feedback)
+    // renderMilQ resetuje milUsedThisRound – zabezpiecz
+    const savedUsed = true;
+    renderMilQ();
+    milUsedThisRound = savedUsed;
+    milLL.change = true; // renderMilQ nie dotyka milLL – OK
+
+    updateLL();
     setTimeout(()=>{
-        const fb=document.getElementById('milFeedback');
-        fb.textContent='🔄 Pytanie zostało zmienione!';
-        fb.className='mil-feedback';
-    },50);
+        document.getElementById('milFeedback').textContent = '🔄 Pytanie zostało zmienione!';
+        document.getElementById('milFeedback').className = 'mil-feedback';
+    }, 30);
 }
 
-function useSecondChance(){
-    if(milLifelines.second) return;       // globalnie zużyte
-    if(milLifelines.second_active) return; // już aktywne
+function llSecond(){
+    if(milLL.second) return;
+    if(milSecondActive) return;
     if(milUsedThisRound) return;
     if(milAnswered) return;
 
-    milLifelines.second_active=true;
-    milUsedThisRound=true;
+    milSecondActive = true;
+    milUsedThisRound = true;
 
-    updateLifelineButtons();
-
-    const fb=document.getElementById('milFeedback');
-    fb.textContent='💡 Koło „2 szansa" aktywne! Możesz się pomylić raz bez końca gry.';
-    fb.className='mil-feedback';
+    updateLL();
+    document.getElementById('milFeedback').textContent = '💡 2 szansa aktywna! Możesz się pomylić raz.';
+    document.getElementById('milFeedback').className = 'mil-feedback';
 }
 
-// --- WYBÓR ODPOWIEDZI ---
-
-function milSelectAnswer(idx){
+// ===== WYBÓR ODPOWIEDZI =====
+function milPick(idx){
     if(milAnswered) return;
-    if(milDisabled50.includes(idx)) return;
+    if(milDisabled.includes(idx)) return;
 
-    const q=milQuestions[milCurrentQ];
-    const correct=q.correctIndexes[0];
+    const q = milQs[milIdx];
+    const correct = q.correctIndexes[0];
+    const fb = document.getElementById('milFeedback');
 
-    if(idx===correct){
+    if(idx === correct){
         // POPRAWNA
-        milAnswered=true;
-        // Jeśli second_active nie zostało użyte - oznacz jako globalnie zużyte
-        if(milLifelines.second_active){
-            milLifelines.second=true;
-            milLifelines.second_active=false;
-        }
-        renderMilAnswers(true, idx);
-        const fb=document.getElementById('milFeedback');
-        fb.textContent='✅ Prawidłowa odpowiedź!';
-        fb.className='mil-feedback ok';
-        milCurrentQ++;
+        milAnswered = true;
+        milSecondActive = false;
+        const btns = document.getElementById('milAnswers').querySelectorAll('.mil-ans-btn');
+        btns[correct].classList.add('ans-correct');
+        btns.forEach((b,i)=>{ if(i!==correct) b.disabled=true; });
+        fb.textContent = '✅ Prawidłowa odpowiedź!';
+        fb.className = 'mil-feedback ok';
+        milIdx++;
         setTimeout(()=>{
-            if(milCurrentQ>=12) endMillionaire(true);
-            else renderMilQuestion();
-        },1800);
+            if(milIdx >= 12) endMil(true);
+            else renderMilQ();
+        }, 1800);
     } else {
         // BŁĘDNA
-        if(milLifelines.second_active){
-            // 2 szansa chroni - zaznacz odpowiedź na czerwono, gra trwa
-            milLifelines.second_active=false;
-            milLifelines.second=true; // globalnie zużyte
-            milUsedThisRound=true;
-
-            // Dodaj błędną odpowiedź do wyszarzonych i przerenderuj
-            milDisabled50=[...milDisabled50, idx];
-            updateLifelineButtons();
-
-            // Przerenderuj odpowiedzi - błędna będzie wyszarzona
-            renderMilAnswers(false, -1);
-            // Dodatkowo oznacz tę odpowiedź kolorem czerwonym (jest w milDisabled50 więc disabled)
-            const allBtns=document.getElementById('milAnswers').querySelectorAll('.mil-answer-btn');
-            if(allBtns[idx]){
-                allBtns[idx].classList.add('wrong-ans');
-                allBtns[idx].style.opacity='0.7';
-            }
-
-            const fb=document.getElementById('milFeedback');
-            fb.textContent='⚠️ Błędna odpowiedź! Ale masz jeszcze jedną szansę – wybierz inną.';
-            fb.className='mil-feedback bad';
+        if(milSecondActive){
+            // 2 szansa – zaznacz błędną, gra trwa
+            milSecondActive = false;
+            milLL.second = true;
+            milDisabled = [...milDisabled, idx];
+            const btns = document.getElementById('milAnswers').querySelectorAll('.mil-ans-btn');
+            btns[idx].classList.add('ans-wrong');
+            btns[idx].disabled = true;
+            renderMilAnswers();
+            // przywróć kolor błędnej (renderMilAnswers ją wyszarza, chcemy czerwoną)
+            const btns2 = document.getElementById('milAnswers').querySelectorAll('.mil-ans-btn');
+            if(btns2[idx]){ btns2[idx].classList.add('ans-wrong'); btns2[idx].style.opacity='0.7'; }
+            updateLL();
+            fb.textContent = '⚠️ Błędna! Masz jeszcze jedną szansę – wybierz inną odpowiedź.';
+            fb.className = 'mil-feedback bad';
         } else {
             // KONIEC GRY
-            milAnswered=true;
-            renderMilAnswers(true, idx);
-            const fb=document.getElementById('milFeedback');
-            fb.textContent='❌ Błędna odpowiedź! Koniec gry.';
-            fb.className='mil-feedback bad';
-            setTimeout(()=>endMillionaire(false),2200);
+            milAnswered = true;
+            const btns = document.getElementById('milAnswers').querySelectorAll('.mil-ans-btn');
+            btns[idx].classList.add('ans-wrong');
+            btns[correct].classList.add('ans-correct');
+            btns.forEach(b=>b.disabled=true);
+            fb.textContent = '❌ Błędna odpowiedź! Koniec gry.';
+            fb.className = 'mil-feedback bad';
+            setTimeout(()=>endMil(false), 2200);
         }
     }
 }
 
-function quitMillionaire(){
-    const prize=milCurrentQ>0 ? MIL_PRIZES[milCurrentQ-1] : 0;
-    endMillionaire(false, true, prize);
+function milQuit(){
+    const prize = milIdx > 0 ? MIL_PRIZES[milIdx-1] : 0;
+    endMil(false, true, prize);
 }
 
-function endMillionaire(won, quit=false, quitPrize=0){
-    hideAll();
-    document.getElementById('milEndScreen').classList.remove('hidden');
-    const icon=document.getElementById('milEndIcon');
-    const title=document.getElementById('milEndTitle');
-    const prize=document.getElementById('milEndPrize');
-    const msg=document.getElementById('milEndMsg');
-
+function endMil(won, quit=false, quitPrize=0){
+    showScreen('milEndScreen');
+    const icon  = document.getElementById('milEndIcon');
+    const title = document.getElementById('milEndTitle');
+    const prize = document.getElementById('milEndPrize');
+    const msg   = document.getElementById('milEndMsg');
     if(won){
-        icon.textContent='🏆';
-        title.textContent='Zostałeś Milionerem!';
-        prize.textContent='Wygrałeś: '+formatPrize(1000000);
+        icon.textContent='🏆'; title.textContent='Zostałeś Milionerem!';
+        prize.textContent='Wygrałeś: '+fPrize(1000000);
         msg.textContent='Niesamowite! Odpowiedziałeś poprawnie na wszystkie 12 pytań!';
         launchConfetti();
     } else if(quit){
-        icon.textContent='💼';
-        title.textContent='Rezygnujesz z gry';
-        prize.textContent=quitPrize>0?'Zabierasz: '+formatPrize(quitPrize):'Zabierasz: 0 zł';
-        msg.textContent='Odważna decyzja! Wychodzisz z wygraną.';
+        icon.textContent='💼'; title.textContent='Rezygnujesz z gry';
+        prize.textContent = quitPrize>0 ? 'Zabierasz: '+fPrize(quitPrize) : 'Zabierasz: 0 zł';
+        msg.textContent='Odważna decyzja!';
     } else {
-        const safePrize=milCurrentQ>=7?MIL_PRIZES[6]:milCurrentQ>=2?MIL_PRIZES[1]:0;
-        const reached=milCurrentQ>0?MIL_PRIZES[milCurrentQ-1]:0;
-        icon.textContent='😔';
-        title.textContent='Koniec gry!';
-        prize.textContent='Kwota gwarantowana: '+formatPrize(safePrize);
-        msg.textContent=`Dotarłeś do pytania ${milCurrentQ+1} za ${formatPrize(reached)}.`;
+        const safe = milIdx>=7 ? MIL_PRIZES[6] : milIdx>=2 ? MIL_PRIZES[1] : 0;
+        const reached = milIdx>0 ? MIL_PRIZES[milIdx-1] : 0;
+        icon.textContent='😔'; title.textContent='Koniec gry!';
+        prize.textContent='Kwota gwarantowana: '+fPrize(safe);
+        msg.textContent=`Dotarłeś do pytania ${milIdx+1} za ${fPrize(reached)}.`;
     }
 }
 
 function milGoBack(){
-    if(activeSetIndex!==null) openSetMenu(parsedSets[activeSetIndex],allQuestions.length);
+    if(activeSetIndex !== null) openSetMenu(parsedSets[activeSetIndex], allQuestions.length);
     else goBackToStart();
 }
 
-// ================================================
-// KONFETTI
-// ================================================
+// ===== KONFETTI =====
 function launchConfetti(){
     const colors=['#f0c040','#1976d2','#4caf50','#f44336','#9c27b0','#ff9800'];
-    for(let i=0;i<120;i++){
+    for(let i=0; i<120; i++){
         setTimeout(()=>{
-            const el=document.createElement('div');
-            el.className='confetti-piece';
+            const el=document.createElement('div'); el.className='cfp';
             el.style.left=Math.random()*100+'vw';
             el.style.background=colors[Math.floor(Math.random()*colors.length)];
-            el.style.width=(8+Math.random()*8)+'px';
-            el.style.height=(8+Math.random()*8)+'px';
+            el.style.width=(8+Math.random()*8)+'px'; el.style.height=el.style.width;
             el.style.animationDuration=(2+Math.random()*2)+'s';
-            el.style.animationDelay=(Math.random()*1)+'s';
+            el.style.animationDelay=(Math.random()*0.5)+'s';
             document.body.appendChild(el);
-            setTimeout(()=>el.remove(),4000);
-        },i*30);
+            setTimeout(()=>el.remove(), 4500);
+        }, i*25);
     }
 }
 
-// ================================================
-// RENDER SIATKI ZESTAWÓW
-// ================================================
-function renderSetGrid(){
-    parsedSets=parseSets(RAW_QUESTIONS.trim());
-    const hasSets=parsedSets.some(s=>s.number!==null);
-    const section=document.getElementById('predefinedSetsSection');
-    const grid=document.getElementById('setGrid');
-    grid.innerHTML='';
-    if(!hasSets){ section.classList.add('hidden'); return; }
-    parsedSets.forEach((s,i)=>{
-        if(s.number===null) return;
-        const card=document.createElement('div'); card.className='set-card';
-        const numEl=document.createElement('div'); numEl.className='set-card-number'; numEl.textContent='Zestaw '+s.number; card.appendChild(numEl);
-        if(s.name){ const nEl=document.createElement('div'); nEl.className='set-card-name'; nEl.textContent=s.name; card.appendChild(nEl); }
-        const qs=parseQuestions(s.raw);
-        const cEl=document.createElement('div'); cEl.className='set-card-count'; cEl.textContent=qs.length+' pytań'; card.appendChild(cEl);
-        card.addEventListener('click',()=>{ activeSetIndex=i; allQuestions=qs; openSetMenu(s,qs.length); });
-        grid.appendChild(card);
-    });
-}
+// =====================================================================
+// ========================= EVENTY ====================================
+// =====================================================================
 
-// ================================================
-// AKTUALIZACJA PRZYCISKU MILIONERZY (własna baza)
-// ================================================
-function updateCustomMilBtn(qs){
-    const btn=document.getElementById('customMilBtn');
-    const tip=document.getElementById('customMilTooltip');
-    const milQs=filterMilQuestions(qs);
-    if(milQs.length>=13){
-        btn.disabled=false; btn.style.opacity='1';
-        tip.textContent='Kliknij, aby zagrać w Milionerów! Dostępnych pytań: '+milQs.length;
-    } else {
-        btn.disabled=true; btn.style.opacity='0.45';
-        tip.textContent='Tryb Milionerzy wymaga min. 13 pytań z dokładnie 4 odpowiedziami (a–d) i 1 poprawną. Dostępnych: '+milQs.length;
-    }
-}
-
-// ================================================
-// EVENTY
-// ================================================
-document.getElementById('customDbHeader').addEventListener('click',()=>{
+// Rozwijanie własnej bazy
+document.getElementById('customDbHeader').addEventListener('click', ()=>{
     document.getElementById('customDbBody').classList.toggle('open');
     document.getElementById('customDbHeader').classList.toggle('open');
 });
 
-document.getElementById('customStartBtn').addEventListener('click',()=>{
-    const raw=document.getElementById('questionsInput').value.trim();
+// Aktualizacja przycisku Milionerzy przy wklejaniu
+document.getElementById('questionsInput').addEventListener('input', ()=>{
+    const raw = document.getElementById('questionsInput').value.trim();
+    if(!raw) return;
+    const qs = parseQuestions(raw);
+    const milAvail = filterMil(qs);
+    const btn = document.getElementById('customMilBtn');
+    const tip = document.getElementById('customMilTip');
+    if(milAvail.length >= 13){
+        btn.disabled = false; btn.style.opacity='1';
+        tip.textContent='Kliknij aby zagrać! Dostępnych: '+milAvail.length;
+    } else {
+        btn.disabled = true; btn.style.opacity='0.45';
+        tip.textContent=`Wymaga min. 13 pytań z 4 odp. (a–d) i 1 poprawną. Dostępnych: ${milAvail.length}`;
+    }
+});
+
+// Własna baza – Quiz
+document.getElementById('customStartBtn').addEventListener('click', ()=>{
+    const raw = document.getElementById('questionsInput').value.trim();
     if(!raw){ alert('Wklej najpierw pytania.'); return; }
-    const sets=parseSets(raw); const hasSets=sets.some(s=>s.number!==null);
+    const sets = parseSets(raw);
+    const hasSets = sets.some(s=>s.number!==null);
     if(hasSets){
-        parsedSets=sets;
-        const grid=document.getElementById('setGrid'); grid.innerHTML='';
-        document.getElementById('predefinedSetsSection').classList.remove('hidden');
+        parsedSets = sets;
+        const grid = document.getElementById('setGrid'); grid.innerHTML='';
+        document.getElementById('setGridSection').style.display='';
         sets.forEach((s,i)=>{
             if(s.number===null) return;
-            const card=document.createElement('div'); card.className='set-card';
-            const numEl=document.createElement('div'); numEl.className='set-card-number'; numEl.textContent='Zestaw '+s.number; card.appendChild(numEl);
-            if(s.name){ const nEl=document.createElement('div'); nEl.className='set-card-name'; nEl.textContent=s.name; card.appendChild(nEl); }
             const qs=parseQuestions(s.raw);
-            const cEl=document.createElement('div'); cEl.className='set-card-count'; cEl.textContent=qs.length+' pytań'; card.appendChild(cEl);
-            card.addEventListener('click',()=>{ activeSetIndex=i; allQuestions=qs; openSetMenu(s,qs.length); });
-            grid.appendChild(card);
+            grid.appendChild(buildSetCard(s,qs,i));
         });
         document.getElementById('customDbBody').classList.remove('open');
         document.getElementById('customDbHeader').classList.remove('open');
         grid.scrollIntoView({behavior:'smooth'});
     } else {
-        const qs=parseQuestions(raw); if(qs.length===0){ alert('Brak poprawnie sparsowanych pytań. Sprawdź format.'); return; }
+        const qs=parseQuestions(raw);
+        if(qs.length===0){ alert('Brak poprawnie sparsowanych pytań.'); return; }
         activeSetIndex=null; startQuiz(qs,'questionCount');
     }
 });
 
-document.getElementById('customStudyBtn').addEventListener('click',()=>{
-    const raw=document.getElementById('questionsInput').value.trim();
+// Własna baza – Nauka
+document.getElementById('customStudyBtn').addEventListener('click', ()=>{
+    const raw = document.getElementById('questionsInput').value.trim();
     if(!raw){ alert('Wklej najpierw pytania.'); return; }
-    const qs=parseQuestions(raw); if(qs.length===0){ alert('Brak poprawnie sparsowanych pytań.'); return; }
-    activeSetIndex=null; renderStudyMode(qs);
+    const qs = parseQuestions(raw);
+    if(qs.length===0){ alert('Brak poprawnie sparsowanych pytań.'); return; }
+    activeSetIndex=null; renderStudy(qs);
 });
 
-document.getElementById('customMilBtn').addEventListener('click',()=>{
-    const raw=document.getElementById('questionsInput').value.trim();
+// Własna baza – Milionerzy
+document.getElementById('customMilBtn').addEventListener('click', ()=>{
+    const raw = document.getElementById('questionsInput').value.trim();
     if(!raw){ alert('Wklej najpierw pytania.'); return; }
-    const qs=parseQuestions(raw);
-    activeSetIndex=null; startMillionaire(qs);
+    const qs = parseQuestions(raw);
+    activeSetIndex=null; startMil(qs);
 });
 
-// Walidacja własnej bazy po wklejeniu
-document.getElementById('questionsInput').addEventListener('input',()=>{
-    const raw=document.getElementById('questionsInput').value.trim();
-    if(!raw) return;
-    const qs=parseQuestions(raw); updateCustomMilBtn(qs);
+// Menu zestawu
+document.getElementById('setStartBtn').addEventListener('click', ()=>startQuiz(allQuestions,'setQuestionCount'));
+document.getElementById('setStudyBtn').addEventListener('click', ()=>renderStudy(allQuestions));
+document.getElementById('setMilBtn').addEventListener('click', ()=>{
+    if(filterMil(allQuestions).length < 13) return;
+    startMil(allQuestions);
 });
+document.getElementById('backToStartBtn').addEventListener('click', goBackToStart);
 
-document.getElementById('setStartBtn').addEventListener('click',()=>{ startQuiz(allQuestions,'setQuestionCount'); });
-document.getElementById('setStudyBtn').addEventListener('click',()=>{ renderStudyMode(allQuestions); });
-document.getElementById('setMilBtn').addEventListener('click',()=>{
-    const milQs=filterMilQuestions(allQuestions);
-    if(milQs.length<13){ return; }
-    startMillionaire(allQuestions);
-});
-document.getElementById('backToStartBtn').addEventListener('click',goBackToStart);
-
-document.getElementById('backToMenuBtn').addEventListener('click',goBackFromQuiz);
-document.getElementById('summaryBackToMenuBtn').addEventListener('click',goBackFromQuiz);
-document.getElementById('studyBackToMenuBtn').addEventListener('click',()=>{
+// Quiz
+document.getElementById('quizBackBtn').addEventListener('click', goBackFromQuiz);
+document.getElementById('summaryBackBtn').addEventListener('click', goBackFromQuiz);
+document.getElementById('studyBackBtn').addEventListener('click', ()=>{
     if(activeSetIndex!==null) openSetMenu(parsedSets[activeSetIndex],allQuestions.length);
     else goBackToStart();
 });
-
-document.getElementById('prevQuestionBtn').addEventListener('click',()=>{
-    saveCurrentSelection(); if(currentIndex>0){ currentIndex--; renderQuestion(); }
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+    saveSelection();
+    if(currentIndex>0){ currentIndex--; renderQuestion(); }
 });
-document.getElementById('checkNextBtn').addEventListener('click',()=>{
-    if(!checkedQuestions[currentIndex]){ checkCurrentQuestion(); }
-    else { saveCurrentSelection(); if(currentIndex===quizQuestions.length-1) showSummary(); else { currentIndex++; renderQuestion(); } }
+document.getElementById('checkBtn').addEventListener('click', ()=>{
+    if(!checkedQuestions[currentIndex]){
+        checkCurrentQuestion();
+    } else {
+        saveSelection();
+        if(currentIndex===quizQuestions.length-1) showSummary();
+        else { currentIndex++; renderQuestion(); }
+    }
 });
 
-// ================================================
-// START
-// ================================================
+// ===== START =====
 renderSetGrid();
 </script>
 </body>
