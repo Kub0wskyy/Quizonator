@@ -327,7 +327,7 @@ d)  5</pre>
             <div class="mil-answers" id="milAnswers"></div>
             <div class="mil-feedback" id="milFeedback"></div>
             <div class="mil-nav">
-                <button class="ghost" onclick="milQuit()">🚪 Rezygnuję i biorę wygraną</button>
+                <button class="ghost" id="milQuitBtn" onclick="milQuit()">🚪 Rezygnuję i biorę wygraną</button>
             </div>
         </div>
         <div class="mil-ladder" id="milLadder"></div>
@@ -345,7 +345,7 @@ d)  5</pre>
     </div>
 </div>
 
-<div class="footer">Autor: Kub0wskyy</div>
+<div class="footer">Quizonator</div>
 </div><!-- /.app -->
 
 <script>
@@ -1709,6 +1709,7 @@ function renderMilQ(){
     updateLadder();
     renderMilAnswers();
     updateLL();
+    updateQuitBtn(true);
 }
 
 function renderMilAnswers(){
@@ -1758,6 +1759,14 @@ function updateLL(){
     // 2szansa aktywna – podświetl
     if(milSecondActive) el2.classList.add('ll-active');
 }
+function updateQuitBtn(enabled){
+    const btn = document.getElementById('milQuitBtn');
+    if(!btn) return;
+    btn.disabled = !enabled;
+    btn.style.opacity = enabled ? '1' : '0.35';
+    btn.style.cursor = enabled ? 'pointer' : 'not-allowed';
+}
+
 
 function llFifty(){
     if(milLL.fifty) return;
@@ -1774,6 +1783,7 @@ function llFifty(){
 
     renderMilAnswers();
     updateLL();
+    updateQuitBtn(false);
     document.getElementById('milFeedback').textContent = '⚖️ Usunięto 2 błędne odpowiedzi.';
     document.getElementById('milFeedback').className = 'mil-feedback';
 }
@@ -1798,6 +1808,7 @@ function llChange_(){
     milLL.change = true; // renderMilQ nie dotyka milLL – OK
 
     updateLL();
+    updateQuitBtn(false);
     setTimeout(()=>{
         document.getElementById('milFeedback').textContent = '🔄 Pytanie zostało zmienione!';
         document.getElementById('milFeedback').className = 'mil-feedback';
@@ -1814,6 +1825,7 @@ function llSecond(){
     milUsedThisRound = true;
 
     updateLL();
+    updateQuitBtn(false);
     document.getElementById('milFeedback').textContent = '💡 2 szansa aktywna! Możesz się pomylić raz.';
     document.getElementById('milFeedback').className = 'mil-feedback';
 }
@@ -1861,6 +1873,7 @@ function milPick(idx){
         } else {
             // KONIEC GRY
             milAnswered = true;
+            updateQuitBtn(false);
             const btns = document.getElementById('milAnswers').querySelectorAll('.mil-ans-btn');
             btns[idx].classList.add('ans-wrong');
             btns[correct].classList.add('ans-correct');
@@ -1873,6 +1886,8 @@ function milPick(idx){
 }
 
 function milQuit(){
+    const btn = document.getElementById('milQuitBtn');
+    if(btn && btn.disabled) return;
     const prize = milIdx > 0 ? MIL_PRIZES[milIdx-1] : 0;
     endMil(false, true, prize);
 }
