@@ -1842,6 +1842,7 @@ function milPick(idx){
     if(idx === correct){
         // POPRAWNA
         milAnswered = true;
+        if(milSecondActive) milLL.second = true;
         milSecondActive = false;
         const btns = document.getElementById('milAnswers').querySelectorAll('.mil-ans-btn');
         btns[correct].classList.add('ans-correct');
